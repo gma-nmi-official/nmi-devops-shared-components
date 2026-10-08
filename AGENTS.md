@@ -52,6 +52,9 @@ Preserve approvals already granted for the same scope and action.
 16. Keep `CHANGELOG.md` current in the same delivery unit as any published-package
     change. Record the affected component, consumer impact, SemVer classification,
     migration notes when needed, and validation evidence before release review.
+17. Feature work must merge to `master` through an approved pull request. The user
+    or authorized repository owner performs the final merge after review approval;
+    agents and developers must not merge on the user's behalf.
 
 ## Repository structure
 

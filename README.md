@@ -117,3 +117,5 @@ This repository vendors the GNO workflow configuration used by agents and develo
 - [`prompt.md`](prompt.md) — startup instructions for an agent session
 
 Start by reading [`AGENTS.md`](AGENTS.md), then [`prompt.md`](prompt.md), before beginning a new delivery unit.
+
+Feature branches merge to `master` only through an approved pull request. The user or authorized repository owner executes the final merge after review approval.

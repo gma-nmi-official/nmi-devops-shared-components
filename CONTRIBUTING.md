@@ -121,4 +121,8 @@ git tag -a v0.1.0 -m "release: gno-shared-components v0.1.0"
 
 Bitbucket tag builds produce a versioned `.tgz` artifact. Do not publish, push, create a pull request, or upload a release without the separate approval required for that action.
 
+## Branch and merge ownership
+
+Create feature, fix, documentation, or chore branches and open a pull request to `master`. GitHub Actions must pass and the required reviewer must approve the pull request. The user or authorized repository owner performs the final merge. Developers and agents may prepare, review, and update the pull request, but must not merge it on the user's behalf.
+
 See [`docs/versioning.md`](docs/versioning.md) for the detailed release policy and [`docs/consumer-setup.md`](docs/consumer-setup.md) for consumer guidance.

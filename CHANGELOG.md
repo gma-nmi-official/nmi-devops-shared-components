@@ -16,6 +16,10 @@ The project follows [Semantic Versioning](https://semver.org/). The repository p
 ### Fixed
 
 - Replaced the unavailable generated `LayoutProps` helper with a stable `ReactNode` layout prop type for CI-compatible Next.js typechecking.
+
+### Changed
+
+- Restricted the GitHub quality workflow to pull requests targeting `master` and pushes to `master`, with manual dispatch and superseded-run cancellation.
 - Clarified the private workspace name, Bitbucket-only distribution strategy, and illustrative consumer examples.
 - Added a `predev` package build so the showcase can resolve package styles from a clean checkout.
 
