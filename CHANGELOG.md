@@ -12,6 +12,10 @@ The project follows [Semantic Versioning](https://semver.org/). The repository p
 - Added the repository-local GNO workflow bundle for Claude Code, Codex, and developers.
 - Added contributor, consumer setup, versioning, and release documentation.
 - Added Bitbucket tag validation and versioned `.tgz` artifact packaging.
+
+### Fixed
+
+- Replaced the unavailable generated `LayoutProps` helper with a stable `ReactNode` layout prop type for CI-compatible Next.js typechecking.
 - Clarified the private workspace name, Bitbucket-only distribution strategy, and illustrative consumer examples.
 - Added a `predev` package build so the showcase can resolve package styles from a clean checkout.
 
