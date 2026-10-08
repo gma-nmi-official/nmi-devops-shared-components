@@ -1,6 +1,6 @@
 # GNO Workflow startup and maintenance prompt
 
-You are working in the GNO Workflow workspace. Read [AGENTS.md](AGENTS.md),
+You are working in the GNO shared-components repository with a vendored GNO workflow. Read [AGENTS.md](AGENTS.md),
 [README.md](README.md), [query routing](.codex/workflows/query-routing.md), and
 [lifecycle](.codex/workflows/lifecycle.md).
 These checked-in documents and configurations are the framework; do not
@@ -8,9 +8,12 @@ regenerate them merely because this prompt was invoked.
 
 ## First use
 
-Inspect workspace state, user changes, release version, agent/skill files,
-and registry. Run `bash setup.sh` from a complete checkout.
-If validation fails, report concrete missing or malformed configuration.
+Inspect repository state, user changes, package version, agent/skill files,
+local specifications, and repository registry. Confirm that `.codex/`,
+`.agents/`, `specs/templates/`, and the required instruction files are present.
+Install dependencies with `npm ci` and run the applicable repository checks,
+including `npm run check`, when the task requires runtime verification.
+If a required workflow file or check is unavailable, report the concrete gap.
 Do not begin project development until the framework is structurally ready.
 Do not overwrite existing files or relocate application repositories.
 

@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GNO Shared Components Foundation</title>
+  <style>
+    :root { --ink:#172033; --muted:#526077; --blue:#155dfc; --line:#dce3ec; --surface:#fff; --bg:#f5f7fb; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { background:var(--bg); color:var(--ink); font-family:Arial,Helvetica,sans-serif; margin:0; }
+    .deck { margin:0 auto; max-width:1180px; padding:32px; }
+    .slide { background:var(--surface); border:1px solid var(--line); border-radius:24px; display:grid; gap:28px; margin:0 0 28px; min-height:680px; padding:64px; page-break-after:always; }
+    .cover { background:linear-gradient(135deg,#172033 0%,#263a62 100%); color:#fff; justify-content:end; }
+    .eyebrow { color:var(--blue); font-size:12px; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }
+    .cover .eyebrow { color:#8ec5ff; }
+    h1 { font-size:clamp(42px,7vw,84px); letter-spacing:-.06em; line-height:.95; margin:0; max-width:900px; }
+    h2 { font-size:clamp(32px,4vw,56px); letter-spacing:-.045em; line-height:1; margin:0; }
+    h3 { margin:0 0 8px; }
+    p, li { color:var(--muted); font-size:20px; line-height:1.55; }
+    .cover p { color:#dce8ff; max-width:700px; }
+    ul { margin:0; padding-left:24px; }
+    li + li { margin-top:8px; }
+    .grid { display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+    .card { border:1px solid var(--line); border-radius:16px; padding:22px; }
+    .card p { font-size:16px; margin:8px 0 0; }
+    pre { background:#172033; border-radius:14px; color:#f8fafc; overflow:auto; padding:20px; }
+    code { font-family:Consolas,monospace; font-size:16px; }
+    .warning { border-left:5px solid #c81e1e; background:#fff4f4; border-radius:10px; padding:20px 24px; }
+    .warning p { color:#7c2020; margin:0; }
+    .footer { color:var(--muted); font-size:14px; }
+    .tabs { background:#172033; display:flex; flex-wrap:wrap; gap:4px; padding:8px; position:sticky; top:0; z-index:10; }
+    .tab { background:transparent; border:0; border-radius:8px; color:#dce8ff; cursor:pointer; font:inherit; font-size:13px; padding:10px 14px; white-space:nowrap; }
+    .tab:hover,.tab.active { background:#155dfc; color:#fff; }
+    .tab:focus-visible { outline:3px solid #8ec5ff; outline-offset:2px; }
+    .slide[hidden] { display:none; }
+    .version-table { border-collapse:collapse; width:100%; }
+    .version-table th,.version-table td { border-bottom:1px solid var(--line); padding:14px 10px; text-align:left; vertical-align:top; }
+    .version-table th { color:var(--muted); font-size:13px; letter-spacing:.08em; text-transform:uppercase; }
+    @media (max-width:700px) { .deck { padding:12px; } .slide { min-height:620px; padding:32px 24px; } p,li { font-size:17px; } }
+    @media print { body { background:#fff; } .deck { max-width:none; padding:0; } .slide { border:0; border-radius:0; display:grid !important; margin:0; min-height:100vh; } .tabs { display:none; } }
+  </style>
+</head>
+<body>
+  <main class="deck">
+    <nav class="tabs" aria-label="Presentation slides">
+      <button class="tab active" data-slide="slide-1">Title</button>
+      <button class="tab" data-slide="slide-2">Purpose</button>
+      <button class="tab" data-slide="slide-3">Foundation</button>
+      <button class="tab" data-slide="slide-4">Architecture</button>
+      <button class="tab" data-slide="slide-5">Consumer</button>
+      <button class="tab" data-slide="slide-6">Catalog</button>
+      <button class="tab" data-slide="slide-7">PortalHeader</button>
+      <button class="tab" data-slide="slide-8">Quality</button>
+      <button class="tab" data-slide="slide-9">Boundaries</button>
+      <button class="tab" data-slide="slide-10">Review</button>
+      <button class="tab" data-slide="slide-11">Versioning</button>
+      <button class="tab" data-slide="slide-12">Decisions</button>
+      <button class="tab" data-slide="slide-13">Next steps</button>
+    </nav>
+    <section class="slide cover" id="slide-1">
+      <div>
+        <p class="eyebrow">GNO shared components</p>
+        <h1>A reusable foundation for GNO portal interfaces.</h1>
+        <p>Team-lead presentation · 2026-10-08 · Foundation review</p>
+      </div>
+    </section>
+
+    <section class="slide" id="slide-2" hidden>
+      <p class="eyebrow">01 · Purpose</p>
+      <h2>One package for GNO portal products</h2>
+      <p>Create configurable, reusable components that separate GNO UI contracts from individual applications while supporting JavaScript and TypeScript consumers.</p>
+      <div class="grid"><div class="card"><h3>Reusable</h3><p>Install once, import approved named components.</p></div><div class="card"><h3>Configurable</h3><p>Consumer-owned routes, data, branding, and integrations.</p></div><div class="card"><h3>GNO-focused</h3><p>Designed for composed portal UI, not generic starter components.</p></div></div>
+    </section>
+
+    <section class="slide" id="slide-3" hidden>
+      <p class="eyebrow">02 · Foundation</p>
+      <h2>What is already established</h2>
+      <ul><li>npm workspace and publishable <code>packages/ui</code> package</li><li>JavaScript runtime output with TypeScript declarations</li><li>Shared CSS/token foundation</li><li>Next.js showcase and consumer catalog</li><li>Storybook, Vitest, accessibility checks, and CI</li><li>GNO-specific documentation and GitHub origin</li></ul>
+    </section>
+
+    <section class="slide" id="slide-4" hidden>
+      <p class="eyebrow">03 · Technical architecture</p>
+      <h2>Package-first boundaries for real consumer applications</h2>
+      <pre><code>Consumer Next.js / JavaScript application
+        │ npm install + named imports
+        ▼
+gno-shared-components (published workspace package)
+        ├─ dist/index.js       ESM runtime
+        ├─ dist/index.d.ts     Type declarations
+        └─ dist/styles.css     Explicit CSS contract
+        │ React peer dependency
+        ▼
+Component modules
+        ├─ framework-neutral React UI
+        ├─ component-scoped tokens and styles
+        └─ optional approved framework adapters</code></pre>
+      <div class="grid"><div class="card"><h3>Package boundary</h3><p><code>packages/ui</code> is the only publishable artifact. The root orchestrates the showcase and tooling.</p></div><div class="card"><h3>Runtime boundary</h3><p>React is a peer dependency. Components are server-compatible by default; client boundaries stay narrow.</p></div><div class="card"><h3>Style boundary</h3><p>Consumers explicitly import compiled CSS and do not need to scan package source with Tailwind.</p></div><div class="card"><h3>Storybook boundary</h3><p>Every approved component owns a story for its API, states, controls, responsive behavior, and interactions.</p></div></div>
+      <pre><code>npm ci → typecheck/lint/test → package build → Storybook build
+      → Next.js production build → npm pack --dry-run</code></pre>
+    </section>
+
+    <section class="slide" id="slide-5" hidden>
+      <p class="eyebrow">04 · Consumer model</p>
+      <h2>Install once, import what the application needs</h2>
+      <pre><code>npm install https://bitbucket.org/&lt;workspace&gt;/&lt;repository&gt;/downloads/gno-shared-components-0.1.0.tgz</code></pre>
+      <pre><code>import { PortalHeader, PortalFooter } from "gno-shared-components";
+import "gno-shared-components/styles.css";
+
+const navigation = [
+  { label: "Home", href: "/" },
+  { label: "News", href: "/news" },
+  { label: "Entertainment", href: "/entertainment" },
+];
+
+export default function SiteHeader() {
+  return (
+    <>
+      <PortalHeader
+        brand={{ label: "GMA Network", href: "/" }}
+        navigation={navigation}
+        activePath="/"
+      />
+      <main>{/* consumer page content */}</main>
+      <PortalFooter links={[{ label: "Contact", href: "/contact" }]} />
+    </>
+  );
+}</code></pre>
+      <div class="grid"><div class="card"><h3>Next.js consumer</h3><pre><code>// app/layout.tsx
+import { PortalHeader, PortalFooter } from "gno-shared-components";
+import "gno-shared-components/styles.css";
+
+export default function Layout({ children }) {
+  return &lt;&gt;
+    &lt;PortalHeader navigation={navigation} /&gt;
+    {children}
+    &lt;PortalFooter links={[{ label: "Contact", href: "/contact" }]} /&gt;
+  &lt;/&gt;;
+}</code></pre></div><div class="card"><h3>React JavaScript consumer</h3><pre><code>import { createRoot } from "react-dom/client";
+import { PortalHeader, PortalFooter } from "gno-shared-components";
+import "gno-shared-components/styles.css";
+
+createRoot(document.getElementById("root"))
+  .render(&lt;&gt;
+    &lt;PortalHeader navigation={navigation} /&gt;
+    &lt;PortalFooter links={[{ label: "Contact", href: "/contact" }]} /&gt;
+  &lt;/&gt;);</code></pre></div></div>
+      <p>The Bitbucket URL is the release source; the installed package and import name remain <code>gno-shared-components</code>. The package is designed for both JavaScript and TypeScript repositories.</p>
+      <p><em>Illustrative APIs pending approval:</em> consumers compose approved components and provide application data; each component owns its layout, responsive behavior, accessibility, and scoped styles.</p>
+      <div class="card"><h3>Implementation model</h3><p>Next.js consumers render <code>&lt;PortalHeader /&gt;</code> in a page or layout. Other React JavaScript consumers render it through their existing React root. The foundation does not expose a raw <code>&lt;portal-header&gt;</code> custom element; that adapter would require separate approval.</p></div>
+      <div class="grid"><div class="card"><h3>Consumer setup</h3><p>Install the approved version, import a named export, and import the package stylesheet once at the application style boundary.</p></div><div class="card"><h3>Component guidance</h3><p>Use <code>/catalog</code> for props, states, accessibility, responsive behavior, and the linked Storybook story.</p></div><div class="card"><h3>Ownership</h3><p>The application owns routes, data, authentication, and integrations. The package owns the component contract, styles, tests, and story.</p></div></div>
+    </section>
+
+    <section class="slide" id="slide-6" hidden>
+      <p class="eyebrow">05 · Catalog</p>
+      <h2>Every public component gets an onboarding page</h2>
+      <p>The showcase route <code>/catalog</code> is the consumer-facing inventory and onboarding page. It documents the public package contract; it is not the component runtime itself.</p>
+      <div class="grid"><div class="card"><h3>Component entry</h3><p>Name, purpose, release status, rendered preview, supported states, and responsive behavior.</p></div><div class="card"><h3>Consumer guidance</h3><p>Installation command, public props/events, JavaScript and TypeScript imports, and stylesheet import.</p></div><div class="card"><h3>Engineering reference</h3><p>Accessibility notes, integration guidance, and a link to the component's dedicated Storybook story.</p></div></div>
+      <div class="card"><h3>Current state</h3><p>The catalog is intentionally empty until the first GNO component is approved. The first entry will be <code>PortalHeader</code>.</p></div>
+    </section>
+
+    <section class="slide" id="slide-7" hidden>
+      <p class="eyebrow">06 · First component</p>
+      <h2>PortalHeader follows the production revamp reference</h2>
+      <ul><li>Revamp-only behavior</li><li>Default reference navigation with consumer overrides</li><li>Bundled, component-scoped Inter 600 font</li><li>No account/SSO, GA/analytics, or cookie agreement</li><li>React implementation with semantic accessibility behavior</li></ul>
+    </section>
+
+    <section class="slide" id="slide-8" hidden>
+      <p class="eyebrow">07 · Quality</p>
+      <h2>Quality gates are built into the foundation</h2>
+      <div class="grid"><div class="card"><h3>Static</h3><p>TypeScript and ESLint checks.</p></div><div class="card"><h3>Behavior</h3><p>Vitest and accessibility testing.</p></div><div class="card"><h3>Component documentation</h3><p>Every approved component has a dedicated Storybook story with controls and supported states.</p></div><div class="card"><h3>Integration</h3><p>Storybook and Next.js production builds.</p></div><div class="card"><h3>Release</h3><p>Package dry-run, npm audit, and CI workflow.</p></div></div>
+    </section>
+
+    <section class="slide" id="slide-9" hidden>
+      <p class="eyebrow">08 · Scope boundaries</p>
+      <h2>What the foundation intentionally does not do</h2>
+      <ul><li>Implement PortalHeader yet</li><li>Own application authentication or SSO</li><li>Send analytics or GA events</li><li>Render cookie-consent UI</li><li>Own backend APIs or consumer-specific routes</li><li>Publish or deploy without separate approval</li></ul>
+    </section>
+
+    <section class="slide" id="slide-10" hidden>
+      <p class="eyebrow">09 · Review status</p>
+      <h2>Two decisions remain before commit</h2>
+      <div class="warning"><p><strong>Argus finding 1:</strong> the unscoped package name conflicts with restricted npm access.</p></div>
+      <div class="warning"><p><strong>Argus finding 2:</strong> the private workspace root and publishable package share the same package name.</p></div>
+      <p>Additional cleanup: restore standard ignore rules and replace the placeholder README import example.</p>
+    </section>
+
+    <section class="slide" id="slide-11" hidden>
+      <p class="eyebrow">10 · Versioning</p>
+      <h2>One package version, predictable component releases</h2>
+      <p>Start with one semantic version for the entire package. A component change determines the package bump.</p>
+      <table class="version-table"><thead><tr><th>Change</th><th>Version impact</th><th>Example</th></tr></thead><tbody>
+        <tr><td>New component or backward-compatible feature</td><td>Minor</td><td><code>0.1.0 → 0.2.0</code></td></tr>
+        <tr><td>Bug, accessibility, or non-breaking style fix</td><td>Patch</td><td><code>0.2.0 → 0.2.1</code></td></tr>
+        <tr><td>Removed export, renamed prop, breaking token/API change</td><td>Major</td><td><code>0.2.1 → 1.0.0</code></td></tr>
+        <tr><td>PortalHeader pre-release validation</td><td>Pre-release</td><td><code>0.3.0-rc.1</code></td></tr>
+      </tbody></table>
+      <p>Every release requires a changelog entry, package dry-run, validation evidence, and migration notes for breaking changes. Independent component versions can be introduced later only if release cadence or dependency boundaries justify them.</p>
+      <pre><code>annotated Git tag v0.1.0 → Bitbucket pipeline → build and validate
+                         → gno-shared-components-0.1.0.tgz
+                         → Bitbucket Downloads/release artifact</code></pre>
+      <p>Consumers install the versioned <code>.tgz</code>; Git tags preserve package release history.</p>
+    </section>
+    <section class="slide" id="slide-12" hidden>
+      <p class="eyebrow">11 · Team-lead decisions</p>
+      <h2>What we need approved</h2>
+      <ol><li>Public unscoped package or private scoped package?</li><li>Rename the private workspace root?</li><li>Approve the Argus corrections?</li><li>Approve foundation commit after revalidation?</li></ol>
+    </section>
+
+    <section class="slide" id="slide-13" hidden>
+      <p class="eyebrow">12 · Next steps</p>
+      <h2>Move from foundation to PortalHeader</h2>
+      <ol><li>Resolve package visibility and workspace naming.</li><li>Apply approved corrections and rerun validation.</li><li>Obtain Argus confirmation.</li><li>Commit the foundation and request separate push approval.</li><li>Implement PortalHeader from its approved requirements and user stories.</li></ol>
+      <p class="footer">Reference evidence: <code>specs/2026/gno-shared-components-v2-foundation/execution/07_code_review_report.md</code></p>
+    </section>
+  </main>
+  <script>
+    const tabs = [...document.querySelectorAll('.tab')];
+    const slides = [...document.querySelectorAll('.slide')];
+    function selectSlide(id) {
+      slides.forEach((slide) => { slide.hidden = slide.id !== id; });
+      tabs.forEach((tab) => { tab.classList.toggle('active', tab.dataset.slide === id); });
+      history.replaceState(null, '', `#${id}`);
+    }
+    tabs.forEach((tab) => tab.addEventListener('click', () => selectSlide(tab.dataset.slide)));
+    const initial = location.hash.slice(1);
+    selectSlide(slides.some((slide) => slide.id === initial) ? initial : 'slide-1');
+  </script>
+</body>
+</html>

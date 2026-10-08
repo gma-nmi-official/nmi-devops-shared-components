@@ -118,4 +118,8 @@ This repository vendors the GNO workflow configuration used by agents and develo
 
 Start by reading [`AGENTS.md`](AGENTS.md), then [`prompt.md`](prompt.md), before beginning a new delivery unit.
 
+The workflow is intentionally configuration-only: this repository does not include
+shell bootstrap or validation scripts. Local setup uses the documented npm
+commands and the checked-in workflow files above.
+
 Feature branches merge to `master` only through an approved pull request. The user or authorized repository owner executes the final merge after review approval.
