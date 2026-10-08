@@ -1,26 +1,51 @@
 {
-  "name": "my-app",
+  "name": "gno-shared-components-workspace",
   "version": "0.1.0",
   "private": true,
+  "workspaces": ["packages/*"],
+  "engines": { "node": ">=20.9.0", "npm": ">=10" },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "predev": "npm run build:package",
+    "build": "npm run build:package && next build",
+    "build:package": "npm run build -w gno-shared-components",
+    "build-storybook": "storybook build",
+    "check": "npm run typecheck && npm run lint && npm run test && npm run build:package && npm run build-storybook && next build",
+    "dev:storybook": "storybook dev -p 6006",
+    "lint": "eslint .",
+    "pack:check": "npm pack -w gno-shared-components --dry-run",
+    "pack:release": "node scripts/pack-release.mjs",
     "start": "next start",
-    "lint": "eslint"
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit && npm run typecheck -w gno-shared-components"
   },
   "dependencies": {
+    "gno-shared-components": "workspace:*",
     "next": "16.3.8",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
   "devDependencies": {
+    "@storybook/addon-a11y": "^10.0.0",
+    "@storybook/addon-docs": "^10.0.0",
+    "@storybook/nextjs-vite": "^10.0.0",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.0.0",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "^4.0.0",
+    "axe-core": "^4.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.3.8",
+    "jsdom": "^27.0.0",
+    "playwright": "^1.50.0",
+    "storybook": "^10.0.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vite": "^7.0.0",
+    "vitest": "^4.0.0"
   }
 }

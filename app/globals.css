@@ -1,26 +1,15 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+:root { color-scheme:light; } * { box-sizing:border-box; } body { margin:0; background:#f5f7fb; color:#172033; font-family:Arial,Helvetica,sans-serif; }
+.showcase { display:grid; gap:2rem; margin:0 auto; max-width:70rem; min-height:100vh; padding:5rem 2rem; }
+.showcase__intro { max-width:50rem; } .showcase__intro h1 { font-size:clamp(2.5rem,7vw,5rem); letter-spacing:-.055em; line-height:.98; margin:.5rem 0 1.5rem; } .showcase__intro p:last-child { color:#526077; font-size:1.1rem; line-height:1.7; }
+.showcase__eyebrow { color:#155dfc; font-size:.75rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
+.showcase__catalog-link { color:#155dfc; display:inline-block; font-weight:700; margin-top:1rem; text-decoration:none; } .showcase__catalog-link:hover { text-decoration:underline; }
+.showcase__panel { align-items:center; background:#fff; border:1px solid #dce3ec; border-radius:1rem; display:grid; gap:2rem; padding:2rem; } .showcase__panel h2 { font-size:2rem; margin:.25rem 0 0; } .showcase__row { align-items:center; display:flex; flex-wrap:wrap; gap:1rem; } .showcase__dark { background:#172033; display:flex; flex-wrap:wrap; }
+.catalog { display:grid; gap:2rem; margin:0 auto; max-width:78rem; min-height:100vh; padding:3rem 2rem 5rem; } .catalog__header { max-width:55rem; } .catalog__header h1 { font-size:clamp(2.5rem,6vw,4.5rem); letter-spacing:-.05em; line-height:1; margin:.5rem 0 1.25rem; } .catalog__header > p:not(.showcase__eyebrow) { color:#526077; font-size:1.1rem; line-height:1.7; } .catalog__back { color:#526077; display:inline-block; margin-bottom:3rem; text-decoration:none; } .catalog__back:hover { color:#155dfc; }
+.catalog__index { align-items:center; background:#fff; border:1px solid #dce3ec; border-radius:1rem; display:flex; flex-wrap:wrap; gap:1rem 1.5rem; padding:1rem 1.25rem; } .catalog__index a { color:#155dfc; font-weight:700; text-decoration:none; }
+.catalog__empty { background:#fff; border:1px solid #dce3ec; border-radius:1rem; padding:2rem; } .catalog__empty h2 { font-size:2rem; margin:.25rem 0 1rem; } .catalog__empty p:not(.showcase__eyebrow) { color:#526077; line-height:1.7; } .catalog__empty pre { background:#172033; border-radius:.65rem; color:#f8fafc; overflow:auto; padding:1rem; }
+.catalog__entry { background:#fff; border:1px solid #dce3ec; border-radius:1rem; display:grid; gap:2rem; padding:2rem; scroll-margin-top:1rem; } .catalog__entry-heading { align-items:start; display:flex; gap:2rem; justify-content:space-between; } .catalog__entry h2 { font-size:2.5rem; margin:.25rem 0 .5rem; } .catalog__entry-heading p:last-child { color:#526077; line-height:1.6; margin:0; }
+.catalog__preview { align-items:center; background:#f5f7fb; border-radius:.75rem; display:flex; flex-wrap:wrap; gap:1rem; padding:2rem; } .catalog__details { display:grid; gap:1rem; grid-template-columns:repeat(3,1fr); margin:0; } .catalog__details div { border-top:1px solid #dce3ec; padding-top:.75rem; } .catalog__details dt { color:#526077; font-size:.75rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; } .catalog__details dd { margin:.4rem 0 0; }
+.catalog__usage { display:grid; gap:1rem; grid-template-columns:repeat(3,1fr); } .catalog__usage h3 { font-size:1rem; margin:0 0 .5rem; } .catalog__usage pre { background:#172033; border-radius:.65rem; color:#f8fafc; min-height:8rem; overflow:auto; padding:1rem; white-space:pre-wrap; } .catalog__usage code { font-family:Consolas,monospace; font-size:.8rem; line-height:1.5; }
+@media (max-width:40rem) { .showcase { padding:3rem 1rem; } .showcase__panel { padding:1.25rem; } }
+@media (max-width:55rem) { .catalog { padding:2rem 1rem 4rem; } .catalog__entry-heading { display:grid; } .catalog__details,.catalog__usage { grid-template-columns:1fr; } }

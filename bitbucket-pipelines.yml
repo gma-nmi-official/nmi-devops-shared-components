@@ -1,0 +1,29 @@
+image: node:20
+
+definitions:
+  caches:
+    npm: ~/.npm
+
+pipelines:
+  default:
+    - step:
+        name: Validate foundation
+        caches:
+          - npm
+        script:
+          - npm ci
+          - npm run check
+          - npm run pack:check
+
+  tags:
+    "v*":
+      - step:
+          name: Build release artifact
+          caches:
+            - npm
+          script:
+            - npm ci
+            - npm run check
+            - npm run pack:release
+          artifacts:
+            - release-artifacts/*.tgz

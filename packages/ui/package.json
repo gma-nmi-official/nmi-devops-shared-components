@@ -1,0 +1,22 @@
+{
+  "name": "gno-shared-components",
+  "version": "0.1.0",
+  "description": "Configurable shared React components for Next.js applications.",
+  "type": "module",
+  "sideEffects": ["**/*.css"],
+  "files": ["dist", "README.md"],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./styles.css": "./dist/styles.css"
+  },
+  "scripts": {
+    "build": "node scripts/clean.mjs && tsc -p tsconfig.build.json && node scripts/copy-styles.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "peerDependencies": { "react": ">=19.0.0 <20.0.0", "react-dom": ">=19.0.0 <20.0.0" },
+  "devDependencies": { "@types/react": "^19", "@types/react-dom": "^19", "react": "19.2.8", "react-dom": "19.2.8", "typescript": "^5" },
+  "engines": { "node": ">=20.9.0" },
+  "license": "UNLICENSED"
+}

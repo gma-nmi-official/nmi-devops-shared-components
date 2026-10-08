@@ -1,0 +1,7 @@
+@layer gno-tokens, gno-components;
+@layer gno-tokens {
+  :root { --gno-color-primary:#155dfc; --gno-color-primary-hover:#1447e6; --gno-color-on-primary:#fff; --gno-color-surface:#fff; --gno-color-surface-hover:#f1f5f9; --gno-color-text:#172033; --gno-color-border:#cbd5e1; --gno-color-danger:#c81e1e; --gno-color-danger-hover:#a80f0f; --gno-focus-ring:#51a2ff; --gno-radius-control:.5rem; --gno-font-body:ui-sans-serif,system-ui,sans-serif; }
+  [data-gno-theme="dark"] { --gno-color-primary:#51a2ff; --gno-color-primary-hover:#8ec5ff; --gno-color-on-primary:#0f172a; --gno-color-surface:#172033; --gno-color-surface-hover:#25324a; --gno-color-text:#f8fafc; --gno-color-border:#526077; --gno-color-danger:#ff6467; --gno-color-danger-hover:#ff8a8d; --gno-focus-ring:#8ec5ff; }
+}
+@layer gno-components {
+}

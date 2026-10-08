@@ -1,0 +1,63 @@
+# Package and component versioning
+
+## One package, one release version
+
+`gno-shared-components` is currently distributed as one Bitbucket-hosted `.tgz` package. Components are organized and documented independently, but they do not have independent package versions. The private workspace root is `gno-shared-components-workspace`; only `packages/ui` owns the consumer package identity.
+
+For example, a `PortalHeader` enhancement is released by updating the package from `0.2.0` to `0.3.0`. A consumer installs the package version, not a component-specific version.
+
+The root workspace version and `packages/ui/package.json` version must remain aligned. The lockfile must be updated when package metadata changes.
+
+## How to select the version bump
+
+Select the highest-impact public change in the release:
+
+| Change | Package bump | Example |
+| --- | --- | --- |
+| Bug, accessibility, documentation, or non-breaking style fix | Patch | `0.2.0` → `0.2.1` |
+| New component or backward-compatible capability | Minor | `0.2.1` → `0.3.0` |
+| Removed export, renamed prop, breaking event, token, or behavior change | Major | `0.3.0` → `1.0.0` |
+| Consumer validation before stable release | Pre-release | `0.3.0-rc.1` |
+
+Component scope determines what changed; package impact determines the version bump.
+
+## Release decision examples
+
+- Add optional `PortalHeader` navigation configuration: **minor**.
+- Fix mobile menu keyboard focus in `PortalHeader`: **patch**.
+- Rename `PortalHeader`'s `navigation` prop: **major**.
+- Add `PortalFooter` and fix a `PortalHeader` bug in one release: **minor**, because minor is the highest required bump.
+- Update internal build scripts without changing `dist`, exports, styles, or consumer behavior: **no package release**.
+
+## Required changelog entry
+
+Before a release:
+
+1. Move completed items from `Unreleased` into a dated version section.
+2. Identify the affected component(s) and public package surface.
+3. State whether the change is patch, minor, major, or pre-release.
+4. Add migration instructions for breaking changes.
+5. Record validation evidence: typecheck, lint, tests, Storybook build, Next.js build, and `npm pack --dry-run` as applicable.
+6. Align the root and `packages/ui` versions and update the lockfile.
+
+## Tagged Bitbucket release
+
+Create an annotated Git tag only after validation and changelog approval:
+
+```bash
+git tag -a v0.1.0 -m "release: gno-shared-components v0.1.0"
+git push origin v0.1.0
+```
+
+The Bitbucket pipeline runs for tags matching `v*`. It executes the full quality gate and writes the installable artifact to `release-artifacts/`:
+
+```bash
+npm run check
+npm run pack:release
+```
+
+The resulting `gno-shared-components-<version>.tgz` is a pipeline artifact. The release owner must attach it to the corresponding Bitbucket release/downloads entry before consumers receive the install URL. The package is not published to the public npm registry by this workflow.
+
+## Future option: independent component packages
+
+Independent component versions may be introduced later only if release cadence, dependency boundaries, or package size justify multiple published packages. That would be a separate architecture decision and migration, not an implicit change to the current policy.
