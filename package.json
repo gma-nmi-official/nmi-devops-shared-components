@@ -17,6 +17,7 @@
     "pack:release": "node scripts/pack-release.mjs",
     "start": "next start",
     "test": "vitest run",
+    "test:e2e": "playwright test",
     "typecheck": "tsc --noEmit && npm run typecheck -w gno-shared-components"
   },
   "dependencies": {
