@@ -9,6 +9,7 @@
 | U-005 | First approved GNO component vertical slice | R-003, R-008 / AC-005, AC-006, AC-009, AC-012 | gno-shared-components-v2 | U-003, U-004 | Forge | Public GNO component API, stories, tests, styles, accessibility, and exports satisfy criteria | Planned |
 | U-006 | Integration, documentation, and release readiness | R-002, R-007, R-009 / AC-003, AC-004, AC-011, AC-013 | gno-shared-components-v2 | U-002 through U-005 | Forge/Vera/Argus | Clean full checks pass, showcase consumes package, docs are current, independent review is complete | Planned |
 | U-007 | Consumer-facing component catalog foundation | R-013 / AC-017, AC-018 | gno-shared-components-v2 | U-002, U-004 | Forge/Vera | Empty inventory, catalog contract, installation/import guidance, browser validation, and future component-entry pattern satisfy the catalog criteria | Complete |
+| U-008 | Rename the shared package and current consumer contract | R-014 / AC-019 | nmi-devops-shared-components | U-002, U-006 | Forge/Vera/Argus | Workspace/package identities, lockfile, imports, artifact names, docs, migration note, automated checks, manual QA, and independent review align | In progress |
 
 ## Delivery order and integration
 

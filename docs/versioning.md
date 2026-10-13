@@ -2,7 +2,7 @@
 
 ## One package, one release version
 
-`gno-shared-components` is currently distributed as one Bitbucket-hosted `.tgz` package. Components are organized and documented independently, but they do not have independent package versions. The private workspace root is `gno-shared-components-workspace`; only `packages/ui` owns the consumer package identity.
+`nmi-devops-shared-components` is currently distributed as one Bitbucket-hosted `.tgz` package. Components are organized and documented independently, but they do not have independent package versions. The private workspace root is `nmi-devops-shared-components-workspace`; only `packages/ui` owns the consumer package identity.
 
 For example, a `PortalHeader` enhancement is released by updating the package from `0.2.0` to `0.3.0`. A consumer installs the package version, not a component-specific version.
 
@@ -16,7 +16,7 @@ Select the highest-impact public change in the release:
 | --- | --- | --- |
 | Bug, accessibility, documentation, or non-breaking style fix | Patch | `0.2.0` → `0.2.1` |
 | New component or backward-compatible capability | Minor | `0.2.1` → `0.3.0` |
-| Removed export, renamed prop, breaking event, token, or behavior change | Major | `0.3.0` → `1.0.0` |
+| Removed export, renamed prop, breaking event, token, behavior change, or consumer package-ID rename | Major | `0.3.0` → `1.0.0` |
 | Consumer validation before stable release | Pre-release | `0.3.0-rc.1` |
 
 Component scope determines what changed; package impact determines the version bump.
@@ -26,6 +26,7 @@ Component scope determines what changed; package impact determines the version b
 - Add optional `PortalHeader` navigation configuration: **minor**.
 - Fix mobile menu keyboard focus in `PortalHeader`: **patch**.
 - Rename `PortalHeader`'s `navigation` prop: **major**.
+- Rename the package ID: **major**; consumers must install the new artifact and update package and stylesheet imports.
 - Add `PortalFooter` and fix a `PortalHeader` bug in one release: **minor**, because minor is the highest required bump.
 - Update internal build scripts without changing `dist`, exports, styles, or consumer behavior: **no package release**.
 
@@ -45,7 +46,7 @@ Before a release:
 Create an annotated Git tag only after validation and changelog approval:
 
 ```bash
-git tag -a v0.1.0 -m "release: gno-shared-components v0.1.0"
+git tag -a v0.1.0 -m "release: nmi-devops-shared-components v0.1.0"
 git push origin v0.1.0
 ```
 
@@ -56,7 +57,7 @@ npm run check
 npm run pack:release
 ```
 
-The resulting `gno-shared-components-<version>.tgz` is a pipeline artifact. The release owner must attach it to the corresponding Bitbucket release/downloads entry before consumers receive the install URL. The package is not published to the public npm registry by this workflow.
+The resulting `nmi-devops-shared-components-<version>.tgz` is a pipeline artifact. The release owner must attach it to the corresponding Bitbucket release/downloads entry before consumers receive the install URL. The package is not published to the public npm registry by this workflow. The former package ID was `gno-shared-components`; consumers of that artifact must migrate to the new package and import name.
 
 ## Future option: independent component packages
 

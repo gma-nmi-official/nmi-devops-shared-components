@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `gno-shared-components` are documented in this file.
+All notable changes to `nmi-devops-shared-components` are documented in this file.
 
 The project follows [Semantic Versioning](https://semver.org/). The repository publishes one npm package, so every published release has one package version even when only one component changed.
 
@@ -19,6 +19,7 @@ The project follows [Semantic Versioning](https://semver.org/). The repository p
 
 ### Changed
 
+- Renamed the consumer package to `nmi-devops-shared-components` (display name: **NMI DevOps Shared Components**). Consumers using the former package ID must update the install artifact URL, dependency/import name, and stylesheet import; treat the published package-identity change as a major migration.
 - Restricted the GitHub quality workflow to pull requests targeting `master` and pushes to `master`, with manual dispatch and superseded-run cancellation.
 - Clarified the private workspace name, Bitbucket-only distribution strategy, and illustrative consumer examples.
 - Added a `predev` package build so the showcase can resolve package styles from a clean checkout.

@@ -1,4 +1,4 @@
-# GNO Shared Components Foundation
+# NMI DevOps Shared Components Foundation
 
 ## Team-lead presentation
 
@@ -40,7 +40,7 @@ gno-shared-components-v2/
 Consumer Next.js / JavaScript application
         │ npm install + named imports
         ▼
-gno-shared-components (published workspace package)
+nmi-devops-shared-components (published workspace package)
         ├─ dist/index.js          ESM runtime
         ├─ dist/index.d.ts        Type declarations
         └─ dist/styles.css        Explicit CSS contract
@@ -57,7 +57,7 @@ Technical boundaries:
 - `packages/ui` is the only publishable artifact; the root is an orchestration/showcase workspace.
 - React and React DOM are peer dependencies so consumers own the runtime version.
 - Components are server-compatible by default; interactive modules receive narrow client boundaries.
-- CSS is explicitly imported from `gno-shared-components/styles.css`; consumer Tailwind scanning is not required.
+- CSS is explicitly imported from `nmi-devops-shared-components/styles.css`; consumer Tailwind scanning is not required.
 - Public exports are controlled through `packages/ui/package.json#exports`; internal source paths are not API.
 - Storybook exercises components in isolation; the Next.js showcase validates real consumer integration.
 - Every approved component owns a colocated Storybook story covering its API, states, controls, responsive behavior, and interactions.
@@ -76,12 +76,12 @@ npm ci → typecheck/lint/test → TypeScript package build → CSS copy
 Consumers install the package once and import approved named exports:
 
 ```bash
-npm install https://bitbucket.org/<workspace>/<repository>/downloads/gno-shared-components-0.1.0.tgz
+npm install https://bitbucket.org/<workspace>/<repository>/downloads/nmi-devops-shared-components-0.1.0.tgz
 ```
 
 ```tsx
-import { PortalHeader, PortalFooter } from "gno-shared-components";
-import "gno-shared-components/styles.css";
+import { PortalHeader, PortalFooter } from "nmi-devops-shared-components";
+import "nmi-devops-shared-components/styles.css";
 
 const navigation = [
   { label: "Home", href: "/" },
@@ -104,7 +104,7 @@ export default function SiteHeader() {
 }
 ```
 
-The Bitbucket URL is the release source; the installed package and import name remain `gno-shared-components`. The package is intended to support both JavaScript and TypeScript consumers.
+The Bitbucket URL is the release source; the installed package and import name remain `nmi-devops-shared-components`. The package is intended to support both JavaScript and TypeScript consumers.
 
 The `PortalHeader` and `PortalFooter` examples are illustrative until their requirements and public prop contracts are approved. Consumers compose approved components and provide application data; each component owns its layout, responsive behavior, accessibility, and component-scoped styles.
 
@@ -118,7 +118,7 @@ Consumer setup presented to application teams:
 
 1. Install the approved package version.
 2. Import a public named component export.
-3. Import `gno-shared-components/styles.css` once at the application style boundary.
+3. Import `nmi-devops-shared-components/styles.css` once at the application style boundary.
 4. Follow the component catalog for props, states, accessibility, and responsive behavior.
 5. Use the linked Storybook story as the isolated engineering reference.
 
@@ -212,12 +212,11 @@ Additional cleanup findings are restoring standard `.gitignore` exclusions and r
 
 Review report: `execution/07_code_review_report.md`.
 
-## 10. Decisions requested
+## 10. Current review and naming status
 
-1. Should the package be public as `gno-shared-components`, or private under an approved scope such as `@gma-nmi/gno-shared-components`?
-2. Approve renaming the private workspace root so it differs from the published package.
-3. Approve correction of the Argus findings.
-4. Approve the foundation commit after corrections and revalidation.
+The previous Argus findings were closed for the earlier package identity. The product is now **NMI DevOps Shared Components**, with consumer package ID `nmi-devops-shared-components` and private workspace root `nmi-devops-shared-components-workspace`. This new package-identity change requires fresh validation and independent review before commit approval. The former package ID is retained in the changelog as the migration source.
+
+The package artifact remains distributed through Bitbucket; public npm registry publication is not authorized. Confirm artifact download permissions with the repository owner before consumer release.
 
 ## 11. Component versioning
 
@@ -228,6 +227,7 @@ The initial recommendation is one version for the whole package, not independent
 | New component or backward-compatible feature | Minor | `0.1.0` → `0.2.0` |
 | Bug fix, accessibility fix, or non-breaking style correction | Patch | `0.2.0` → `0.2.1` |
 | Removed export, renamed prop, incompatible behavior, or breaking token change | Major | `0.2.1` → `1.0.0` |
+| Consumer package ID rename | Major migration | Consumers update install, package, and stylesheet imports |
 | PortalHeader pre-release testing | Pre-release tag | `0.3.0-rc.1` |
 
 Every release should include a changelog entry, package dry-run, validation evidence, and a documented migration note for breaking changes. A component-specific version should only be introduced later if the package becomes large enough to require independent release cadence or dependencies.
@@ -236,7 +236,7 @@ Release artifact flow:
 
 ```text
 annotated Git tag v0.1.0 → Bitbucket pipeline → build and validate
-                         → gno-shared-components-0.1.0.tgz
+                         → nmi-devops-shared-components-0.1.0.tgz
                          → Bitbucket Downloads/release artifact
 ```
 
@@ -244,9 +244,10 @@ Consumers install the versioned `.tgz`; Git tags preserve package release histor
 
 ## 12. Next steps
 
-1. Resolve package visibility and workspace naming.
-2. Apply approved Argus corrections.
-3. Re-run validation and package checks.
+1. Complete package-rename verification and QA.
+2. Obtain independent review.
+3. Obtain fresh commit approval and separate push approval.
+4. Confirm Bitbucket artifact access before consumer release.
 4. Obtain Argus confirmation on the corrected revision.
 5. Obtain commit approval and commit the foundation.
 6. Request separate push approval for `origin/master`.

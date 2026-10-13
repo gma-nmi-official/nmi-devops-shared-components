@@ -1,4 +1,4 @@
-# GNO shared components
+# NMI DevOps Shared Components
 
 This repository is dedicated to configurable, reusable GNO portal components for JavaScript and TypeScript consumer applications.
 
@@ -85,16 +85,16 @@ The workflow files are available under [`.codex/`](.codex/), [`.agents/`](.agent
 When the first component is approved, consumers will install the package and import a named export:
 
 ```bash
-npm install https://bitbucket.org/<workspace>/<repository>/downloads/gno-shared-components-0.1.0.tgz
+npm install https://bitbucket.org/<workspace>/<repository>/downloads/nmi-devops-shared-components-0.1.0.tgz
 ```
 
 ```tsx
 // Illustrative only until the first approved public component is exported.
-import { /* ApprovedGnoComponent */ } from "gno-shared-components";
-import "gno-shared-components/styles.css";
+import { /* ApprovedGnoComponent */ } from "nmi-devops-shared-components";
+import "nmi-devops-shared-components/styles.css";
 ```
 
-The Bitbucket URL is the release source; `gno-shared-components` remains the package and import name. See `/catalog` while running the showcase for the current public inventory and copyable JavaScript/TypeScript examples.
+The Bitbucket URL is the release source; `nmi-devops-shared-components` remains the package and import name. See `/catalog` while running the showcase for the current public inventory and copyable JavaScript/TypeScript examples.
 
 For complete setup guidance, see [`docs/consumer-setup.md`](docs/consumer-setup.md).
 

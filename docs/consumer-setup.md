@@ -7,10 +7,10 @@ This guide explains how a JavaScript or TypeScript application consumes the publ
 Install the approved `.tgz` release artifact from Bitbucket in the consumer application:
 
 ```bash
-npm install https://bitbucket.org/<workspace>/<repository>/downloads/gno-shared-components-0.1.0.tgz
+npm install https://bitbucket.org/<workspace>/<repository>/downloads/nmi-devops-shared-components-0.1.0.tgz
 ```
 
-The Bitbucket URL identifies the release source. The installed package and import name remain `gno-shared-components`. Replace the placeholder workspace and repository with the actual Bitbucket location.
+The Bitbucket URL identifies the release source. The installed package and import name remain `nmi-devops-shared-components`. Replace the placeholder workspace and repository with the actual Bitbucket location.
 
 ## 2. Import the component and styles
 
@@ -18,8 +18,8 @@ Import components through the package's public named exports. Do not import inte
 
 ```tsx
 // Replace ApprovedGnoComponent with an approved exported component.
-import { ApprovedGnoComponent } from "gno-shared-components";
-import "gno-shared-components/styles.css";
+import { ApprovedGnoComponent } from "nmi-devops-shared-components";
+import "nmi-devops-shared-components/styles.css";
 ```
 
 The stylesheet import is required for the package tokens and component-scoped styles.
@@ -30,7 +30,7 @@ Server-compatible components can be rendered from a Server Component. If a compo
 
 ```tsx
 // Replace ApprovedGnoComponent with an approved exported component.
-import { ApprovedGnoComponent } from "gno-shared-components";
+import { ApprovedGnoComponent } from "nmi-devops-shared-components";
 
 export default function Page() {
   return <ApprovedGnoComponent />;

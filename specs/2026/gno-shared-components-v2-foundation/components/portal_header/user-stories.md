@@ -6,7 +6,7 @@
 - Account/SSO and GA/analytics are out of scope for this component revision.
 - Cookie agreement/consent notification, NPC seal, privacy-policy banner, and consent analytics are out of scope for this component revision.
 - Default navigation follows the reference `secondary` menu and remains consumer-overridable.
-- Inter 600 is bundled and scoped to Portal_Header inside `gno-shared-components`.
+- Inter 600 is bundled and scoped to Portal_Header inside `nmi-devops-shared-components`.
 
 ## US-1: News Text Renders in Inter Semi Bold
 

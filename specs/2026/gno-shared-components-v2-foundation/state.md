@@ -2,19 +2,21 @@
 
 - Workflow release: current checked-in GNO lifecycle as of 2026-10-02
 - Objective and agreed endpoint: design a configurable shared component foundation; proposed endpoint is validated and independently reviewed local implementation, then commit decision
-- Current phase / stage / delivery unit: Git delivery / Orion committing the reviewed foundation candidate to `master`
+- Current phase / stage / delivery unit: Commit approval / package identity rename (R-014)
 - Owner: Orion
 - Last updated: 2026-10-13 Asia/Shanghai
-- Active requirements/design version: initial draft created 2026-10-02
+- Active requirements/design version: foundation design with A-009/A-010 package-name amendment
 - Approval log: `approvals.md`; A-006 approved the review corrections and temporary development-only audit exception; A-007 approved the one-line mobile overflow amendment
-- Blockers: No validation or review blocker. The full development audit retains five advisories under A-006. A-008 approves the exact reviewed 13-file commit on `master`; push remains separately gated after its hash and command are presented.
-- Next concrete action: Complete the approved commit, record its hash, then present the exact Bitbucket push summary for separate approval.
+- Blockers: Explicit commit approval for the exact candidate below is pending. A-008 applies only to its earlier exact files and does not cover this amendment. Push and publication remain separately gated.
+- Next concrete action: User to approve or decline the prepared commit candidate in `execution/12_package_identity_review_2026-10-13.md`; after approval, Orion stages only those files and commits.
+
+The user approved product display name **NMI DevOps Shared Components** and consumer package ID `nmi-devops-shared-components` on 2026-10-13. Work is on `feature/foundation-package-rename` from `6c1a403f334a7d07fea8665d27e7f55e53526839`. The former ID remains in historical approvals and verification results as evidence of the prior contract; the changelog and versioning guide document its migration. This amendment supersedes the earlier A-002/A-003 package-name decision. Manual rename QA MT-NAME-001–004 passed on 2026-10-13 and is recorded in [`manual_testing.md`](../../../manual_testing.md) and [`execution/11_package_identity_rename_2026-10-13.md`](execution/11_package_identity_rename_2026-10-13.md). Argus independently reviewed the rename with no findings; see [`execution/12_package_identity_review_2026-10-13.md`](execution/12_package_identity_review_2026-10-13.md). Commit approval for the exact candidate is pending.
 
 ## Repository baseline and current evidence
 
 | Repository / absolute path | Branch / base | HEAD | Dirty diff evidence | Adoption record / freshness check |
 | --- | --- | --- | --- | --- |
-| gno-shared-components-v2 / `repository checkout root` | `master` | `c580e40819842932fe9430cefddca92bf6525867` | Approved uncommitted candidate: `.gitignore`, `app/globals.css`, `package.json`, `playwright.config.ts`, `tests/e2e/showcase.spec.ts`, approval/state/manual records, and execution reports 06/07/08/09/10 | `../gno-shared-components-v2-adoption/adoption.md`; identity, branch, revision, scripts, test setup, and current diff refreshed 2026-10-12 |
+| gno-shared-components-v2 / `repository checkout root` | `feature/foundation-package-rename` | `6c1a403f334a7d07fea8665d27e7f55e53526839` | Package identity rename and current docs; unrelated `repositories/repositories.md` edit, `.playwright-mcp/`, and announcement planning package preserved | `../gno-shared-components-v2-adoption/adoption.md`; repository identity and current branch/status refreshed 2026-10-13 |
 
 Verification refresh at `c580e40819842932fe9430cefddca92bf6525867`: automated evidence is recorded in
 [`execution/06_verification_audit_2026-10-09.md`](execution/06_verification_audit_2026-10-09.md),
@@ -43,7 +45,7 @@ Before implementation, recheck HEAD, branch, worktree status, instructions, and 
 
 ## Handoff and open decisions
 
-A-002 and A-003 are approved with the public package name `gno-shared-components`. A-006 and A-007 authorize the completed correction scope. Argus closed all required findings on 2026-10-12. A-004 described a documentation-only commit, so Orion must renew that gate for the expanded final file set. A-005 cannot authorize a future push until the reviewed commit hash and exact command exist. PR, publication, merge, and deployment remain unapproved.
+A-002 and A-003 approved `gno-shared-components` at the time; that name decision is superseded by A-009/A-010 (`nmi-devops-shared-components`). A-006 and A-007 authorize the completed earlier correction scope. Argus closed those earlier findings on 2026-10-12; the new package-identity change still needs independent review. A-008 approved a different exact commit candidate and cannot authorize this change. Commit, push, PR, publication, merge, and deployment remain separately gated for the updated scope.
 
 On 2026-10-02, the user initially selected
 `https://github.com/gma-nmi-official/2026-GNO-Website-Revamp---Shared-Components.git`

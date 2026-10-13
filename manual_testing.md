@@ -125,3 +125,20 @@ historical evidence of the agent-runner and Windows-permission issue.
 | `npm run pack:check` | Local writable environment | PASS | Version `0.1.0`, 7 package files |
 | `npm run pack:release` | Local writable environment | PASS | `gno-shared-components-0.1.0.tgz` created without `DEP0190` |
 | Generated-output ignore checks | Repository working tree | PASS | Generated output patterns are ignored |
+
+## Package identity rename QA — 2026-10-13
+
+- Requirement / acceptance criterion: R-014 / AC-019
+- QA owner: Vera
+- Repository / branch / revision: `gno-shared-components-v2`, `feature/foundation-package-rename`, `6c1a403f334a7d07fea8665d27e7f55e53526839` (uncommitted rename change set)
+- Environment: Windows PowerShell, Node.js/npm workspace, local Next.js 16.3.8 dev server, Playwright browser.
+- Setup: `npm run dev -- --hostname 0.0.0.0`; server built the package and became ready at `http://localhost:3000`.
+
+| ID | Action | Expected result | Actual result | Status |
+| --- | --- | --- | --- | --- |
+| MT-NAME-001 | Inspect root and `packages/ui` manifests plus lockfile workspace entries. | Root is `nmi-devops-shared-components-workspace`; published package and workspace dependency are `nmi-devops-shared-components`. | PowerShell JSON inspection confirmed root and lock root names are `nmi-devops-shared-components-workspace`, package and lock workspace names are `nmi-devops-shared-components`, version is `0.1.0`, and lock dependency resolves to `packages/ui`. | PASS |
+| MT-NAME-002 | Open `/` and `/catalog` in the browser and inspect page title and heading. | Product is identified as NMI DevOps Shared Components; catalog imports and examples use the new package ID. | Playwright opened `http://localhost:3000/` (title `NMI DevOps Shared Components`; page heading `A dedicated foundation for GNO portal interfaces.`) and `/catalog` (title `Component catalog | NMI DevOps Shared Components`; visible package ID and install/import/style examples use `nmi-devops-shared-components`). | PASS |
+| MT-NAME-003 | Run package dry-run and inspect generated artifact metadata/name. | Tarball uses `nmi-devops-shared-components-<version>.tgz` and package metadata reports the new ID. | `npm run pack:check` exited 0; npm reported `nmi-devops-shared-components@0.1.0`, filename `nmi-devops-shared-components-0.1.0.tgz`, and 7 files. | PASS |
+| MT-NAME-004 | Follow consumer setup example using the new package ID and stylesheet path. | Example installation/import guidance is internally consistent; migration note identifies the old ID only as the previous package. | Read `docs/consumer-setup.md`, `packages/ui/README.md`, and root `README.md`: install URL, JS/TS import, and `styles.css` path consistently use the renamed ID; versioning guidance and changelog explain the old ID as a migration source. | PASS |
+
+These cases supplement, and do not rewrite, the completed historical checks below. Browser inspection was performed manually with Playwright; the separate automated E2E run remains recorded in the execution report.
