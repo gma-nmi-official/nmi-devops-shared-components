@@ -2,21 +2,21 @@
 
 - Workflow release: current checked-in GNO lifecycle as of 2026-10-02
 - Objective and agreed endpoint: design a configurable shared component foundation; proposed endpoint is validated and independently reviewed local implementation, then commit decision
-- Current phase / stage / delivery unit: Commit approval / package identity rename (R-014)
+- Current phase / stage / delivery unit: Direct merge blocked / package identity rename (R-014)
 - Owner: Orion
 - Last updated: 2026-10-13 Asia/Shanghai
 - Active requirements/design version: foundation design with A-009/A-010 package-name amendment
 - Approval log: `approvals.md`; A-006 approved the review corrections and temporary development-only audit exception; A-007 approved the one-line mobile overflow amendment
-- Blockers: Explicit commit approval for the exact candidate below is pending. A-008 applies only to its earlier exact files and does not cover this amendment. Push and publication remain separately gated.
-- Next concrete action: User to approve or decline the prepared commit candidate in `execution/12_package_identity_review_2026-10-13.md`; after approval, Orion stages only those files and commits.
+- Blockers: User declined PR creation and requested a direct merge. Auto-review rejected a direct update to protected/default `master` because it bypasses the repository-mandated PR and merge gates; no further push attempt is allowed. Remote master remains at `6c1a403f334a7d07fea8665d27e7f55e53526839`.
+- Next concrete action: Await an authorized repository-governance change or a workflow-compliant path; do not create a PR or retry the direct master update under the current instructions.
 
-The user approved product display name **NMI DevOps Shared Components** and consumer package ID `nmi-devops-shared-components` on 2026-10-13. Work is on `feature/foundation-package-rename` from `6c1a403f334a7d07fea8665d27e7f55e53526839`. The former ID remains in historical approvals and verification results as evidence of the prior contract; the changelog and versioning guide document its migration. This amendment supersedes the earlier A-002/A-003 package-name decision. Manual rename QA MT-NAME-001–004 passed on 2026-10-13 and is recorded in [`manual_testing.md`](../../../manual_testing.md) and [`execution/11_package_identity_rename_2026-10-13.md`](execution/11_package_identity_rename_2026-10-13.md). Argus independently reviewed the rename with no findings; see [`execution/12_package_identity_review_2026-10-13.md`](execution/12_package_identity_review_2026-10-13.md). Commit approval for the exact candidate is pending.
+The user approved product display name **NMI DevOps Shared Components** and consumer package ID `nmi-devops-shared-components` on 2026-10-13. Commit `eb7a73e52f0c4010c1decab37951752ef6f950cc` (`chore: rename package to NMI DevOps Shared Components`) was created on `feature/foundation-package-rename` from base `6c1a403f334a7d07fea8665d27e7f55e53526839` with the approved 32 files and pushed to `origin/feature/foundation-package-rename` on 2026-10-13. The remote branch was confirmed at the same commit with `git ls-remote`. The former ID remains in historical approvals and verification results as evidence of the prior contract; the changelog and versioning guide document its migration. This amendment supersedes the earlier A-002/A-003 package-name decision. Manual rename QA MT-NAME-001–004 passed on 2026-10-13 and is recorded in [`manual_testing.md`](../../../manual_testing.md) and [`execution/11_package_identity_rename_2026-10-13.md`](execution/11_package_identity_rename_2026-10-13.md). Argus independently reviewed the rename with no findings; see [`execution/12_package_identity_review_2026-10-13.md`](execution/12_package_identity_review_2026-10-13.md). The unrelated working-tree changes remain uncommitted.
 
 ## Repository baseline and current evidence
 
 | Repository / absolute path | Branch / base | HEAD | Dirty diff evidence | Adoption record / freshness check |
 | --- | --- | --- | --- | --- |
-| gno-shared-components-v2 / `repository checkout root` | `feature/foundation-package-rename` | `6c1a403f334a7d07fea8665d27e7f55e53526839` | Package identity rename and current docs; unrelated `repositories/repositories.md` edit, `.playwright-mcp/`, and announcement planning package preserved | `../gno-shared-components-v2-adoption/adoption.md`; repository identity and current branch/status refreshed 2026-10-13 |
+| gno-shared-components-v2 / `repository checkout root` | `feature/foundation-package-rename` | `eb7a73e52f0c4010c1decab37951752ef6f950cc` | Commit pushed to `origin/feature/foundation-package-rename`. Local state/review-result updates and unrelated `repositories/repositories.md`, `.playwright-mcp/`, and announcement planning package remain uncommitted and preserved | `../gno-shared-components-v2-adoption/adoption.md`; repository identity and current branch/status refreshed 2026-10-13 |
 
 Verification refresh at `c580e40819842932fe9430cefddca92bf6525867`: automated evidence is recorded in
 [`execution/06_verification_audit_2026-10-09.md`](execution/06_verification_audit_2026-10-09.md),

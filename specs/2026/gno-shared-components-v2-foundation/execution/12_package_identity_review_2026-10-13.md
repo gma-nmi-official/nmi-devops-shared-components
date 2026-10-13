@@ -67,4 +67,45 @@ Excluded from this candidate: `repositories/repositories.md`, `.playwright-mcp/`
 
 Recorded PASS: `npm run check`; `npm run test:e2e` (6 Chromium desktop/mobile tests); `npm run pack:check`; MT-NAME-001–004; `git diff --check`; independent Argus review. Argus's rerun attempts for the first two commands were blocked by runner process permissions as above.
 
-**Commit approval status: pending.** The user must approve this exact file list, branch, and message before Orion stages and commits. Push requires separate approval after the resulting commit hash and exact push target/command are presented.
+## Commit result
+
+The user approved this exact candidate with “Proceed.” Orion committed all 32 listed files on `feature/foundation-package-rename` as `eb7a73e52f0c4010c1decab37951752ef6f950cc`, message `chore: rename package to NMI DevOps Shared Components`. The unrelated `repositories/repositories.md`, `.playwright-mcp/`, and announcement planning changes were left out of the commit.
+
+## Push result
+
+The user approved pushing the exact commit to the named branch with “I see proceed with the next step” after the concrete push proposal. Orion verified the local branch, HEAD, and HTTP `origin`, then ran `git push origin feature/foundation-package-rename`. The push succeeded and Bitbucket reported the new branch `feature/foundation-package-rename`. `git ls-remote origin refs/heads/feature/foundation-package-rename` confirmed the remote hash is `eb7a73e52f0c4010c1decab37951752ef6f950cc`. No force push, PR, merge, or publication occurred.
+
+The user declined the prepared PR and reiterated a request for direct merge because the change is a package rename. The direct update remains blocked by automatic review and the repository's required PR/merge gates. No PR was created and no further attempt to update `master` was made. Remote `master` remains unchanged at `6c1a403f334a7d07fea8665d27e7f55e53526839`.
+
+## Direct merge request — blocked
+
+The user then requested “@orion directly to merge to master.” The commit is a fast-forward child of the then-current remote `master`, but the attempted direct push to `refs/heads/master` could not connect to Bitbucket over port 80. A retry with network access was rejected by automatic approval review because it would update the protected/default `master` branch directly and bypass the repository-mandated PR and merge gates. No workaround was attempted. A subsequent read-only `git ls-remote` confirmed `master` remains at `6c1a403f334a7d07fea8665d27e7f55e53526839`, while the feature branch remains at `eb7a73e52f0c4010c1decab37951752ef6f950cc`. The prepared PR proposal below is the compliant next step; no PR has been created.
+
+## Prepared pull request — approval required
+
+- Repository: Bitbucket `gma_rnd/reactjs-shared-components`.
+- Base: `master` at `6c1a403f334a7d07fea8665d27e7f55e53526839`.
+- Head: `feature/foundation-package-rename` at `eb7a73e52f0c4010c1decab37951752ef6f950cc`.
+- Proposed title: `feat: rename foundation package to NMI DevOps Shared Components`.
+- Proposed description:
+
+```markdown
+## Summary
+
+Rename the shared package identity to **NMI DevOps Shared Components** with consumer package ID `nmi-devops-shared-components`. The workspace manifest, package metadata, lockfile, build and release scripts, showcase, catalog, consumer documentation, and migration guidance now use the new identity. The catalog install and import examples show the new package name. The changelog documents the consumer migration as a major package identity change.
+
+## Validation
+
+- `npm run check` — PASS (including package, Storybook, and Next.js builds; no unit test files or configured Storybook stories currently exist).
+- `npm run test:e2e` — PASS (6 Chromium desktop/mobile tests).
+- `npm run pack:check` — PASS (`nmi-devops-shared-components@0.1.0`, 7 files).
+- Manual QA MT-NAME-001–004 — PASS.
+- Independent Argus review — PROCEED, no findings.
+- `git diff --check` — PASS.
+
+## Consumer impact
+
+Consumers migrate package installation, JavaScript/TypeScript imports, and the stylesheet import from `gno-shared-components` to `nmi-devops-shared-components`. No public component is currently exported.
+```
+
+No PR has been created. PR approval remains pending; merge, publication, and deployment each require their own authorization.
