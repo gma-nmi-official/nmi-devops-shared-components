@@ -45,6 +45,8 @@ async function focusWithKeyboard(page: Page, accessibleName: string) {
 
 test("navigates through the showcase and empty catalog with keyboard focus", async ({ page }) => {
   await page.goto("/");
+  await expect(page).toHaveTitle("NMI DevOps Shared Components");
+  await expect(page.getByText("NMI DevOps Shared Components", { exact: true })).toBeVisible();
 
   await expect(
     page.getByRole("heading", { level: 1, name: "A dedicated foundation for GNO portal interfaces." }),
@@ -55,6 +57,7 @@ test("navigates through the showcase and empty catalog with keyboard focus", asy
   await catalogLink.press("Enter");
 
   await expect(page).toHaveURL(/\/catalog$/);
+  await expect(page).toHaveTitle("Component catalog | NMI DevOps Shared Components");
   await expect(
     page.getByRole("heading", { level: 1, name: "Importable building blocks for GNO portal products." }),
   ).toBeVisible();
@@ -63,7 +66,7 @@ test("navigates through the showcase and empty catalog with keyboard focus", asy
   ).toBeVisible();
   await expect(page.getByText("Rendered preview and supported states", { exact: true })).toBeVisible();
   await expect(page.getByText("Dedicated Storybook story with controls and interaction coverage", { exact: true })).toBeVisible();
-  await expect(page.getByText('import { ApprovedGnoComponent } from "gno-shared-components";', { exact: false })).toBeVisible();
+  await expect(page.getByText('import { ApprovedGnoComponent } from "nmi-devops-shared-components";', { exact: false })).toBeVisible();
 
   await page.goBack();
   await expect(page).toHaveURL(/\/$/);

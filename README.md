@@ -1,4 +1,4 @@
-# GNO shared components
+# NMI DevOps Shared Components
 
 This repository is dedicated to configurable, reusable GNO portal components for JavaScript and TypeScript consumer applications.
 
@@ -63,7 +63,7 @@ npm run pack:check
 npm run pack:release
 ```
 
-`pack:check` previews package contents. `pack:release` writes a versioned `.tgz` file under `release-artifacts/` for Bitbucket release handling.
+`pack:check` previews package contents. `pack:release` writes a versioned `.tgz` file under `release-artifacts/` for GitHub Release upload.
 
 ## GNO workflow
 
@@ -76,7 +76,7 @@ The repository includes the GNO workflow so developers and agents use the same p
 5. Run automated and manual verification.
 6. Obtain independent review before commit.
 7. Update the changelog and package version according to [`docs/versioning.md`](docs/versioning.md).
-8. Create a tagged release only after the required approval.
+8. After an owner-confirmed merge to `master`, Orion starts release readiness; push the version tag only after its exact target and publication effect receive separate approval.
 
 The workflow files are available under [`.codex/`](.codex/), [`.agents/`](.agents/), and [`specs/`](specs/).
 
@@ -85,22 +85,23 @@ The workflow files are available under [`.codex/`](.codex/), [`.agents/`](.agent
 When the first component is approved, consumers will install the package and import a named export:
 
 ```bash
-npm install https://bitbucket.org/<workspace>/<repository>/downloads/gno-shared-components-0.1.0.tgz
+gh release download v0.1.0 --repo gma-nmi-official/2026-GNO-Website-Revamp---Shared-Components --pattern 'nmi-devops-shared-components-0.1.0.tgz'
+npm install ./nmi-devops-shared-components-0.1.0.tgz
 ```
 
 ```tsx
 // Illustrative only until the first approved public component is exported.
-import { /* ApprovedGnoComponent */ } from "gno-shared-components";
-import "gno-shared-components/styles.css";
+import { /* ApprovedGnoComponent */ } from "nmi-devops-shared-components";
+import "nmi-devops-shared-components/styles.css";
 ```
 
-The Bitbucket URL is the release source; `gno-shared-components` remains the package and import name. See `/catalog` while running the showcase for the current public inventory and copyable JavaScript/TypeScript examples.
+Set `GH_TOKEN` to a token with repository read access before downloading; keep it in the consumer's CI secret store. `nmi-devops-shared-components` remains the package and import name. See `/catalog` while running the showcase for the current public inventory and copyable JavaScript/TypeScript examples.
 
 For complete setup guidance, see [`docs/consumer-setup.md`](docs/consumer-setup.md).
 
 For release and component versioning rules, see [`CHANGELOG.md`](CHANGELOG.md) and [`docs/versioning.md`](docs/versioning.md).
 
-Tagged Bitbucket builds produce a versioned `.tgz` package artifact through `npm run pack:release`.
+Pushing an approved `v*` tag starts GitHub Actions, which validates the version, runs the quality gate, packages the `.tgz`, and attaches it to a GitHub Release. See [`docs/versioning.md`](docs/versioning.md) for the release process.
 
 For the contributor workflow, see [`CONTRIBUTING.md`](CONTRIBUTING.md).
 

@@ -4,13 +4,16 @@ This guide explains how a JavaScript or TypeScript application consumes the publ
 
 ## 1. Install the package
 
-Install the approved `.tgz` release artifact from Bitbucket in the consumer application:
+Download the approved `.tgz` asset from the GitHub Release, then install it in the consumer application. Set `GH_TOKEN` in the environment to a GitHub token authorized to read this private repository:
 
 ```bash
-npm install https://bitbucket.org/<workspace>/<repository>/downloads/gno-shared-components-0.1.0.tgz
+gh release download v0.1.0 \
+  --repo gma-nmi-official/2026-GNO-Website-Revamp---Shared-Components \
+  --pattern 'nmi-devops-shared-components-0.1.0.tgz'
+npm install ./nmi-devops-shared-components-0.1.0.tgz
 ```
 
-The Bitbucket URL identifies the release source. The installed package and import name remain `gno-shared-components`. Replace the placeholder workspace and repository with the actual Bitbucket location.
+Replace `v0.1.0` and the tarball version with the approved release version. Keep the token in the consumer's CI secret store; do not commit it. The installed package and import name remain `nmi-devops-shared-components`.
 
 ## 2. Import the component and styles
 
@@ -18,8 +21,8 @@ Import components through the package's public named exports. Do not import inte
 
 ```tsx
 // Replace ApprovedGnoComponent with an approved exported component.
-import { ApprovedGnoComponent } from "gno-shared-components";
-import "gno-shared-components/styles.css";
+import { ApprovedGnoComponent } from "nmi-devops-shared-components";
+import "nmi-devops-shared-components/styles.css";
 ```
 
 The stylesheet import is required for the package tokens and component-scoped styles.
@@ -30,7 +33,7 @@ Server-compatible components can be rendered from a Server Component. If a compo
 
 ```tsx
 // Replace ApprovedGnoComponent with an approved exported component.
-import { ApprovedGnoComponent } from "gno-shared-components";
+import { ApprovedGnoComponent } from "nmi-devops-shared-components";
 
 export default function Page() {
   return <ApprovedGnoComponent />;

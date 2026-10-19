@@ -1,4 +1,4 @@
-# Contributing to GNO shared components
+# Contributing to NMI DevOps Shared Components
 
 This repository uses a staged workflow so every shared component has an approved contract, implementation evidence, documentation, and a reproducible release. The workflow bundle is checked into `.codex/` and `.agents/`, so developers and agents use the same local policy after cloning the repository.
 
@@ -116,10 +116,12 @@ When multiple components change, use the highest-impact bump. Keep the root and 
 Create an annotated tag only after validation and approval:
 
 ```bash
-git tag -a v0.1.0 -m "release: gno-shared-components v0.1.0"
+git tag -a v0.1.0 -m "release: nmi-devops-shared-components v0.1.0"
 ```
 
-Bitbucket tag builds produce a versioned `.tgz` artifact. Do not publish, push, create a pull request, or upload a release without the separate approval required for that action.
+GitHub tag builds produce a versioned `.tgz` asset attached to a GitHub Release. Do not publish, push a tag, create a pull request, or create a release without the separate approval required for that action.
+
+After the user or authorized repository owner merges the PR to `master`, Orion begins release readiness for that merged commit. Confirm the root and `packages/ui` versions match and the changelog entry is present. Orion then presents the exact tag and explains that pushing it creates the GitHub Release asset; the tag push requires its own explicit approval. A merge alone does not publish a package.
 
 ## Branch and merge ownership
 

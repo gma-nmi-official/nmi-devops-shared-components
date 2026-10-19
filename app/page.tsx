@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <main className="showcase">
       <section className="showcase__intro">
-        <p className="showcase__eyebrow">GNO shared components</p>
+        <p className="showcase__eyebrow">NMI DevOps Shared Components</p>
         <h1>A dedicated foundation for GNO portal interfaces.</h1>
         <p>
           The component package is ready for the first approved GNO component. Browse the
