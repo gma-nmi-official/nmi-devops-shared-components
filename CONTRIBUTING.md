@@ -119,7 +119,9 @@ Create an annotated tag only after validation and approval:
 git tag -a v0.1.0 -m "release: nmi-devops-shared-components v0.1.0"
 ```
 
-Bitbucket tag builds produce a versioned `.tgz` artifact. Do not publish, push, create a pull request, or upload a release without the separate approval required for that action.
+GitHub tag builds produce a versioned `.tgz` asset attached to a GitHub Release. Do not publish, push a tag, create a pull request, or create a release without the separate approval required for that action.
+
+After the user or authorized repository owner merges the PR to `master`, Orion begins release readiness for that merged commit. Confirm the root and `packages/ui` versions match and the changelog entry is present. Orion then presents the exact tag and explains that pushing it creates the GitHub Release asset; the tag push requires its own explicit approval. A merge alone does not publish a package.
 
 ## Branch and merge ownership
 

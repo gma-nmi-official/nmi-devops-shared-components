@@ -1,5 +1,7 @@
 # Review-adjustment validation: Bitbucket handoff candidate
 
+> Historical validation from 2026-10-09 for the then-approved Bitbucket target. The active package release process now uses GitHub Releases; this completed validation is retained as history.
+
 ## Context
 
 - Date: 2026-10-09 Asia/Shanghai

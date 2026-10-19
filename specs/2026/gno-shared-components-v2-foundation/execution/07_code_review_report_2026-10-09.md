@@ -1,5 +1,7 @@
 # Independent review: Bitbucket handoff candidate
 
+> Historical review from 2026-10-09. Its Bitbucket findings and target describe the then-approved delivery plan; current package releases use GitHub Releases as recorded in the current state and versioning guide.
+
 ## Context
 
 - Date: 2026-10-09 Asia/Shanghai

@@ -1,5 +1,7 @@
 # Independent review closure: Bitbucket handoff candidate
 
+> Historical closure from 2026-10-12. Bitbucket reachability and handoff statements below record the target at that time; the current package release process uses GitHub Releases.
+
 ## Context
 
 - Date: 2026-10-12 Asia/Shanghai

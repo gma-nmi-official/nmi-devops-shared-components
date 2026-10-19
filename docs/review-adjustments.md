@@ -1,6 +1,6 @@
 # Argus review adjustment record
 
-Historical note: this record describes the 2026-10-08 correction under the former package ID `gno-shared-components`. The current product display name is **NMI DevOps Shared Components**, and the consumer package ID is `nmi-devops-shared-components`; see the foundation naming amendment and changelog.
+Historical note: this record describes the 2026-10-08 correction under the former package ID `gno-shared-components` and the distribution plan approved at that time. The Bitbucket distribution statements below are historical; the current release source is GitHub Releases as documented in [`versioning.md`](versioning.md). The current product display name is **NMI DevOps Shared Components**, and the consumer package ID is `nmi-devops-shared-components`; see the foundation naming amendment and changelog.
 
 ## Scope
 

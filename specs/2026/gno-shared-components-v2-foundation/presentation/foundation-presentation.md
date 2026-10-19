@@ -1,5 +1,7 @@
 # NMI DevOps Shared Components Foundation
 
+> Updated 2026-10-19: Current distribution uses GitHub Releases. Release approval, private asset authentication, and workflow details are in [`docs/versioning.md`](../../../docs/versioning.md) and [`docs/consumer-setup.md`](../../../docs/consumer-setup.md).
+
 ## Team-lead presentation
 
 **Date:** 2026-10-08  
@@ -76,7 +78,8 @@ npm ci → typecheck/lint/test → TypeScript package build → CSS copy
 Consumers install the package once and import approved named exports:
 
 ```bash
-npm install https://bitbucket.org/<workspace>/<repository>/downloads/nmi-devops-shared-components-0.1.0.tgz
+gh release download v0.1.0 --repo gma-nmi-official/2026-GNO-Website-Revamp---Shared-Components --pattern 'nmi-devops-shared-components-0.1.0.tgz'
+npm install ./nmi-devops-shared-components-0.1.0.tgz
 ```
 
 ```tsx
@@ -104,7 +107,7 @@ export default function SiteHeader() {
 }
 ```
 
-The Bitbucket URL is the release source; the installed package and import name remain `nmi-devops-shared-components`. The package is intended to support both JavaScript and TypeScript consumers.
+The GitHub Release URL is the release source; the installed package and import name remain `nmi-devops-shared-components`. Since the repository is private, consumers need repository access and authenticated asset downloads. The package is intended to support both JavaScript and TypeScript consumers.
 
 The `PortalHeader` and `PortalFooter` examples are illustrative until their requirements and public prop contracts are approved. Consumers compose approved components and provide application data; each component owns its layout, responsive behavior, accessibility, and component-scoped styles.
 
@@ -216,7 +219,7 @@ Review report: `execution/07_code_review_report.md`.
 
 The previous Argus findings were closed for the earlier package identity. The product is now **NMI DevOps Shared Components**, with consumer package ID `nmi-devops-shared-components` and private workspace root `nmi-devops-shared-components-workspace`. This new package-identity change requires fresh validation and independent review before commit approval. The former package ID is retained in the changelog as the migration source.
 
-The package artifact remains distributed through Bitbucket; public npm registry publication is not authorized. Confirm artifact download permissions with the repository owner before consumer release.
+The package artifact is attached to a GitHub Release by the tag-triggered workflow; public npm registry publication is not authorized. Confirm artifact download permissions with the repository owner before consumer release.
 
 ## 11. Component versioning
 
@@ -235,9 +238,9 @@ Every release should include a changelog entry, package dry-run, validation evid
 Release artifact flow:
 
 ```text
-annotated Git tag v0.1.0 → Bitbucket pipeline → build and validate
+annotated Git tag v0.1.0 → GitHub Actions → validate and package
                          → nmi-devops-shared-components-0.1.0.tgz
-                         → Bitbucket Downloads/release artifact
+                         → GitHub Release asset
 ```
 
 Consumers install the versioned `.tgz`; Git tags preserve package release history.
@@ -247,7 +250,7 @@ Consumers install the versioned `.tgz`; Git tags preserve package release histor
 1. Complete package-rename verification and QA.
 2. Obtain independent review.
 3. Obtain fresh commit approval and separate push approval.
-4. Confirm Bitbucket artifact access before consumer release.
+4. Confirm private GitHub Release asset access before consumer release.
 4. Obtain Argus confirmation on the corrected revision.
 5. Obtain commit approval and commit the foundation.
 6. Request separate push approval for `origin/master`.

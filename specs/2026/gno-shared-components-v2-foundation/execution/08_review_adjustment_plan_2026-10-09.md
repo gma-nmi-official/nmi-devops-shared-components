@@ -1,5 +1,7 @@
 # Review adjustment plan: Bitbucket handoff readiness
 
+> Historical plan from 2026-10-09 for the then-approved Bitbucket target. The active package release process now uses GitHub Releases; this completed plan is retained as history.
+
 ## Objective
 
 Resolve Argus findings F-003 and F-005 through F-007, establish a reviewable commit candidate, and prepare the exact `master` push to the empty Bitbucket repository.

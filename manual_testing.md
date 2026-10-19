@@ -3,8 +3,10 @@
 ## Scope
 
 Foundation verification for the shared-components repository, including the
-catalog, Storybook setup, consumer documentation, vendored workflow, and
-Bitbucket release-artifact flow.
+catalog, Storybook setup, consumer documentation, vendored workflow, and the
+release-artifact flow. The original 2026-10-08 release checks were for the then
+planned Bitbucket process; current release guidance uses GitHub Releases, with
+its workflow QA recorded below.
 
 ## Environment
 
@@ -142,3 +144,19 @@ historical evidence of the agent-runner and Windows-permission issue.
 | MT-NAME-004 | Follow consumer setup example using the new package ID and stylesheet path. | Example installation/import guidance is internally consistent; migration note identifies the old ID only as the previous package. | Read `docs/consumer-setup.md`, `packages/ui/README.md`, and root `README.md`: install URL, JS/TS import, and `styles.css` path consistently use the renamed ID; versioning guidance and changelog explain the old ID as a migration source. | PASS |
 
 These cases supplement, and do not rewrite, the completed historical checks below. Browser inspection was performed manually with Playwright; the separate automated E2E run remains recorded in the execution report.
+
+## GitHub Release workflow QA — 2026-10-19
+
+- Requirement: release the versioned package from GitHub Actions as a GitHub Release asset.
+- Workflow: `.github/workflows/release.yml`
+- QA owner: Vera / release owner
+- Execution status: Pending a separately approved tag push. No release tag was pushed as part of this change.
+- Local automated validation: `npm run check` PASS and `npm run pack:check` PASS on Node.js `v26.10.0` / npm `11.19.1` (2026-10-19). The check reports no Vitest test files, an expected empty Storybook story pattern, and a non-blocking chunk-size warning.
+
+| ID | Setup / steps | Expected result | Actual result | Status |
+| --- | --- | --- | --- | --- |
+| MT-REL-001 | Inspect the workflow trigger, permissions, version check, package steps, and release command. | A `v*` tag starts the workflow; only the required `contents: write` permission is granted; the tag must match both package versions; the workflow runs checks, packs one `.tgz`, and attaches it to the release. | Static inspection confirms those configured steps and permissions. | PASS |
+| MT-REL-002 | Push an approved tag matching the root and package versions; inspect the GitHub Actions run and release assets. | Workflow completes and attaches the matching `.tgz` to the GitHub Release. | Requires an approved tag push and GitHub Actions run. | BLOCKED |
+| MT-REL-003 | From an authorized consumer CI environment, authenticate, download the release asset with the documented command, then install the local tarball. | The expected package version installs and its package imports resolve. | Requires a created private GitHub Release and authorized consumer credentials. | BLOCKED |
+| MT-REL-004 | Simulate Orion receiving confirmation that a PR has merged to `master`, with matching versions/changelog and passing checks. | Orion verifies the merged commit and release readiness, then presents the exact tag push and requests separate approval; it does not merge or tag automatically. | This handoff behavior is documented but has not been exercised in a live release handoff. | BLOCKED |
+| MT-REL-005 | Repeat the handoff with a missing version bump or changelog entry. | Orion reports a blocker and routes the missing work through a reviewed PR; it does not tag the incomplete release. | This blocker path is documented but has not been exercised in a live release handoff. | BLOCKED |

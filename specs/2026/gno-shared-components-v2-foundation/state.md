@@ -1,5 +1,15 @@
 # Current state: gno-shared-components-v2 foundation
 
+## Current hosting and package-release update — 2026-10-19
+
+The current delivery target is GitHub `origin`, not the historical Bitbucket target documented below. The user approved updating the active package release guidance and adding `.github/workflows/release.yml`. The workflow runs for `v*` tags, verifies the tag against root and package versions, runs `npm run check`, packages the `.tgz`, and creates a GitHub Release with the package asset. Active consumer/setup guidance now uses GitHub Release assets and explains authenticated download for this private repository. A-014 records this local workflow-change approval.
+
+No tag was pushed and no GitHub Release was created. Commit, push, and release-tag push remain separately gated. Manual cases MT-REL-002 and MT-REL-003 are BLOCKED until an approved release tag and authorized consumer credentials are available. Historical Bitbucket approvals and execution records below are retained as history.
+
+On 2026-10-19 the user also approved A-015: after a PR is confirmed merged to `master` by the user or authorized repository owner, Orion should begin release readiness without waiting for another reminder. Orion verifies the merged revision, checks, aligned versions, and changelog, then prepares the exact tag push and resulting GitHub Release action for separate approval. Orion does not merge or tag without authorization. See `execution/13_orion_post_merge_release_handoff_2026-10-19.md`.
+
+The current commit candidate passed `npm run check` and `git diff --check`. Argus independently reviewed it; both Minor findings were corrected under A-016 and closed on re-review. No required review findings remain. The candidate is ready for the user-approved commit to `feature/foundation-package-rename`; push remains pending the exact post-commit summary and approval.
+
 - Workflow release: current checked-in GNO lifecycle as of 2026-10-02
 - Objective and agreed endpoint: design a configurable shared component foundation; proposed endpoint is validated and independently reviewed local implementation, then commit decision
 - Current phase / stage / delivery unit: Direct merge blocked / package identity rename (R-014)

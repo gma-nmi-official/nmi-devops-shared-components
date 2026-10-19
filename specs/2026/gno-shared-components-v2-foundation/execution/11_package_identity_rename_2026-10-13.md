@@ -31,6 +31,8 @@ Updated root and package manifests, lockfile, workspace dependency and scripts, 
 
 Renaming the consumer package ID changes install URLs and JavaScript/TypeScript import paths, including the CSS import. The changelog classifies a published package-ID change as a major migration and includes the former ID as the migration source. Package version remains `0.1.0` in this implementation candidate; release version/tag and Bitbucket publication remain separately gated.
 
+Current distribution was later moved to GitHub Releases; see the 2026-10-19 hosting update in [`state.md`](../state.md) and the current [`docs/versioning.md`](../../../../docs/versioning.md).
+
 ## Recommendation and next action
 
 The code, docs, lockfile, showcase, and package artifact are aligned for the new identity; all four manual QA cases passed and Argus found no findings. No review-adjustment plan is needed for this iteration. A commit proposal for this exact rename scope is prepared in [report 12](12_package_identity_review_2026-10-13.md). A-008 does not cover this changed scope. No commit or push was performed.

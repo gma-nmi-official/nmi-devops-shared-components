@@ -1,5 +1,7 @@
 # Package identity rename — independent review and commit proposal
 
+> Historical Git handoff details below refer to the Bitbucket target active on 2026-10-13. The current repository origin and package release flow are on GitHub; see the current state and [`docs/versioning.md`](../../../../docs/versioning.md).
+
 ## Review context
 
 - Repository: `D:\gno-node-projects\gno-shared-components-v2`.
