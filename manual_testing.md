@@ -160,3 +160,36 @@ These cases supplement, and do not rewrite, the completed historical checks belo
 | MT-REL-003 | From an authorized consumer CI environment, authenticate, download the release asset with the documented command, then install the local tarball. | The expected package version installs and its package imports resolve. | Requires a created private GitHub Release and authorized consumer credentials. | BLOCKED |
 | MT-REL-004 | Simulate Orion receiving confirmation that a PR has merged to `master`, with matching versions/changelog and passing checks. | Orion verifies the merged commit and release readiness, then presents the exact tag push and requests separate approval; it does not merge or tag automatically. | This handoff behavior is documented but has not been exercised in a live release handoff. | BLOCKED |
 | MT-REL-005 | Repeat the handoff with a missing version bump or changelog entry. | Orion reports a blocker and routes the missing work through a reviewed PR; it does not tag the incomplete release. | This blocker path is documented but has not been exercised in a live release handoff. | BLOCKED |
+
+## Initial stable release preparation QA — 2026-10-19
+
+- Requirement / acceptance criterion: R-009 / AC-013
+- Repository / branch / base: `gno-shared-components-v2`, `feature/foundation-release-v1.0.0`, `b0c0aba`
+- Environment: Windows PowerShell, Node.js `v26.10.0`, npm `11.19.1`
+- Setup: repository root with the committed npm lockfile and installed workspace dependencies; no secrets, service, or production data required.
+- QA owner: Vera (handoff pending); MT-REL-006 was executed by Forge as a metadata acceptance check.
+- Handoff: Prepared; execution evidence recorded by Forge, independent review pending.
+
+| ID | Action / exact command | Expected result | Actual result | Status |
+| --- | --- | --- | --- | --- |
+| MT-REL-006 | Inspect `package.json`, `packages/ui/package.json`, and `package-lock.json`; run `npm run pack:check`; inspect `README.md`, `CONTRIBUTING.md`, `docs/versioning.md`, `docs/consumer-setup.md`, `/catalog`, the foundation presentation, and `CHANGELOG.md`. | Root, package, and lock versions all equal `1.0.0`; dry-run names `nmi-devops-shared-components@1.0.0`; all current tag/download examples use `v1.0.0` and the matching tarball; changelog lists every former Unreleased item, major SemVer rationale, migration notes, and validation evidence. | Node/npm JSON inspection confirmed all workspace/package/lock versions equal `1.0.0`; `npm run pack:check` reported `nmi-devops-shared-components@1.0.0`, `nmi-devops-shared-components-1.0.0.tgz`, and 7 package files. Inspected README, CONTRIBUTING, versioning and consumer setup guides, catalog example, both presentation formats, and changelog: all current release examples use `v1.0.0`; no current-surface `v0.1.0` examples remain. Dated manual/execution evidence and the old changelog entry remain unchanged. | PASS |
+
+This release-metadata check supplements automated quality validation. It does not push a tag, create a GitHub Release, or test authenticated consumer download; MT-REL-002 and MT-REL-003 remain separately blocked pending those operations and credentials.
+
+## Initial stable release preparation — Vera validation — 2026-10-19
+
+- Requirement / acceptance criterion: R-009 / AC-013; release-preparation checks in `specs/2026/gno-shared-components-v2-foundation/execution/14_release_preparation_2026-10-19.md`.
+- Repository / branch / base: `gno-shared-components-v2`, `feature/foundation-release-v1.0.0`, HEAD `b0c0aba1ced6b0f91dc37e7890044c83b984a801` with the approved, uncommitted release-preparation diff (15 files including this QA record).
+- Environment: Windows PowerShell, Node.js `v26.10.0`, npm `11.19.1`; installed dependencies from the repository lockfile.
+- Setup and safety: run from repository root; no production credentials, external services, or production data used. A sandbox permission restriction required retrying the local build/test and npm-cache commands with local process/cache access enabled.
+- QA owner: Vera.
+- QA recipient: Atlas for handoff to Argus independent review.
+- Handoff: Prepared; validation evidence completed and reported to Atlas. No external message sent. Independent review remains pending.
+
+| ID | Action / exact command | Expected result | Actual result | Status |
+| --- | --- | --- | --- | --- |
+| MT-REL-007 | Run `npm run check` from the repository root. | Typecheck, lint, tests, package build, Storybook static build, and Next.js production build complete successfully. | First sandbox attempt stopped at Vitest/esbuild with Windows `spawn EPERM`; retry with local process access exited 0. Typecheck and lint passed; Vitest exited 0 with no test files; package build, Storybook build, and Next.js 16.3.8 production build passed. Storybook emitted the expected no-stories notice, a non-blocking chunk-size warning, and a Node deprecation warning. | PASS |
+| MT-REL-008 | Run `npm run pack:check` from the repository root. | Dry-run reports `nmi-devops-shared-components@1.0.0`, the matching tarball name, and only intended package files. | First sandbox attempt could not write npm's local cache (`EPERM`); retry with cache access exited 0 and reported `nmi-devops-shared-components@1.0.0`, `nmi-devops-shared-components-1.0.0.tgz`, and 7 files. | PASS |
+| MT-REL-009 | Run `git diff --check`; parse root/package/lock metadata; inspect active README, contributor, consumer setup, versioning, catalog, and presentation examples, then inspect historical QA/review evidence. | No whitespace errors; all four version metadata locations equal `1.0.0`; current examples use `v1.0.0`; prior release evidence remains intact. | `git diff --check` exited 0. PowerShell JSON inspection confirmed root, publishable package, lock root, and `packages/ui` lock version are all `1.0.0`. Scanned all 7 active example surfaces: none contains a `v0.1.0` tag/download example. The `0.1.0` changelog section and former package/artifact references remain in dated historical QA/review evidence. | PASS |
+
+These checks validate only the local metadata candidate. A real GitHub Release, authenticated consumer download, and tag-triggered workflow remain unexecuted; see MT-REL-002/003. No commit, push, PR, or tag was created by this QA run.

@@ -6,7 +6,7 @@
 
 For example, a `PortalHeader` enhancement is released by updating the package from `0.2.0` to `0.3.0`. A consumer installs the package version, not a component-specific version.
 
-The root workspace version and `packages/ui/package.json` version must remain aligned. The lockfile must be updated when package metadata changes.
+The root workspace version and `packages/ui/package.json` version must remain aligned. The lockfile must be updated when package metadata changes. The initial stable package release is `1.0.0`; its major bump records the package-identity migration described in the changelog.
 
 ## How to select the version bump
 
@@ -48,8 +48,8 @@ Include the release version and changelog entry in the reviewed PR. After the us
 Once release-ready, Orion presents the exact annotated tag, target commit, remote, and push command. Explicit approval is required because pushing the tag triggers GitHub Actions to create the release and publish its asset. Then create and push the annotated tag:
 
 ```bash
-git tag -a v0.1.0 -m "release: nmi-devops-shared-components v0.1.0"
-git push origin v0.1.0
+git tag -a v1.0.0 -m "release: nmi-devops-shared-components v1.0.0"
+git push origin v1.0.0
 ```
 
 GitHub Actions runs [`.github/workflows/release.yml`](../.github/workflows/release.yml) for tags matching `v*`. It verifies that the tag matches both package versions, runs the full quality gate, and writes the installable artifact to `release-artifacts/`:

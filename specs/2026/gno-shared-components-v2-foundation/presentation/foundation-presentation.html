@@ -103,8 +103,8 @@ Component modules
     <section class="slide" id="slide-5" hidden>
       <p class="eyebrow">04 · Consumer model</p>
       <h2>Install once, import what the application needs</h2>
-      <pre><code>gh release download v0.1.0 --repo gma-nmi-official/2026-GNO-Website-Revamp---Shared-Components --pattern 'nmi-devops-shared-components-0.1.0.tgz'
-npm install ./nmi-devops-shared-components-0.1.0.tgz</code></pre>
+      <pre><code>gh release download v1.0.0 --repo gma-nmi-official/2026-GNO-Website-Revamp---Shared-Components --pattern 'nmi-devops-shared-components-1.0.0.tgz'
+npm install ./nmi-devops-shared-components-1.0.0.tgz</code></pre>
       <pre><code>import { PortalHeader, PortalFooter } from "nmi-devops-shared-components";
 import "nmi-devops-shared-components/styles.css";
 
@@ -196,8 +196,8 @@ createRoot(document.getElementById("root"))
         <tr><td>PortalHeader pre-release validation</td><td>Pre-release</td><td><code>0.3.0-rc.1</code></td></tr>
       </tbody></table>
       <p>Every release requires a changelog entry, package dry-run, validation evidence, and migration notes for breaking changes. Independent component versions can be introduced later only if release cadence or dependency boundaries justify them.</p>
-      <pre><code>annotated Git tag v0.1.0 → GitHub Actions → validate and package
-                         → nmi-devops-shared-components-0.1.0.tgz
+      <pre><code>annotated Git tag v1.0.0 → GitHub Actions → validate and package
+                         → nmi-devops-shared-components-1.0.0.tgz
                          → GitHub Release asset</code></pre>
       <p>Consumers install the versioned <code>.tgz</code>; Git tags preserve package release history.</p>
     </section>
