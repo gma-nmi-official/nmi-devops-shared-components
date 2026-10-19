@@ -1,6 +1,19 @@
 # Current state: gno-shared-components-v2 foundation
 
-## Current hosting and package-release update — 2026-10-19
+## Initial stable release preparation — 2026-10-19
+
+- Objective: prepare the initial `1.0.0` package metadata and release documentation after the foundation was confirmed merged to `master` at `b0c0aba`.
+- Active unit / stage: U-REL-001 release preparation; release candidate and push-result evidence are pushed, awaiting PR preparation and approval.
+- Branch / base / commits: `feature/foundation-release-v1.0.0`, base `b0c0aba`, release-preparation commit `b8b2b56e54f024f9e8b29d98d7ca5f7261ed18c6`, documentation commits `cdce290df6870e91462027daba2a7759508bda8f` and `533aababb2fc025b9a920a6bb68eb66666779d26` (`docs: record v1.0.0 push outcome`).
+- Approvals: A-017 authorizes release preparation; A-018 authorizes the release-preparation commit; A-019 and A-021 record the separate push approvals; A-020 records approval of the push-outcome documentation commit. PR creation, tag push, and release execution are not authorized yet.
+- Scope: root/package/lockfile version alignment; dated changelog and migration notes; `v1.0.0` tag and consumer install examples across README, contributor guide, consumer setup guide, catalog, and foundation presentation; QA, execution, and approval evidence. Catalog/presentation edits only update displayed examples; no runtime behavior or package API changes.
+- Diff reference: release-preparation commit `b8b2b56` contains the 15-path Argus candidate plus the review report (16 paths); `cdce290` records its commit result; `533aaba` records the push result and approval history. The branch is synchronized with `origin` at `533aababb2fc025b9a920a6bb68eb66666779d26`. Current local documentation correction is uncommitted in `approvals.md`, this `state.md`, and `execution/17_push_record_2026-10-19.md`.
+- Checks: final `npm run check` PASS; `npm run pack:check` PASS; MT-REL-006 PASS; `git diff --check` PASS. Vitest found no test files; Storybook emitted expected no-story, non-blocking chunk-size, and Node deprecation warnings.
+- Independent review: Argus returned PROCEED; F-REL-001 was closed after the state record distinguished the original 15-file candidate from the review report. See `execution/15_release_preparation_review_2026-10-19.md`.
+- Remote: `origin` is the configured GitHub repository. The initial feature-branch push and subsequent documentation update push succeeded; `git ls-remote` confirmed `origin/feature/foundation-release-v1.0.0` at `533aababb2fc025b9a920a6bb68eb66666779d26`.
+- Next action: request commit approval for the reviewed documentation-evidence correction, then obtain separate push approval for its resulting commit. After the push, prepare PR title/body/base/head and request PR approval before creating it.
+
+## Previous GitHub hosting and package-release update — 2026-10-19
 
 The current delivery target is GitHub `origin`, not the historical Bitbucket target documented below. The user approved updating the active package release guidance and adding `.github/workflows/release.yml`. The workflow runs for `v*` tags, verifies the tag against root and package versions, runs `npm run check`, packages the `.tgz`, and creates a GitHub Release with the package asset. Active consumer/setup guidance now uses GitHub Release assets and explains authenticated download for this private repository. A-014 records this local workflow-change approval.
 
@@ -8,7 +21,7 @@ No tag was pushed and no GitHub Release was created. Commit, push, and release-t
 
 On 2026-10-19 the user also approved A-015: after a PR is confirmed merged to `master` by the user or authorized repository owner, Orion should begin release readiness without waiting for another reminder. Orion verifies the merged revision, checks, aligned versions, and changelog, then prepares the exact tag push and resulting GitHub Release action for separate approval. Orion does not merge or tag without authorization. See `execution/13_orion_post_merge_release_handoff_2026-10-19.md`.
 
-The current commit candidate passed `npm run check` and `git diff --check`. Argus independently reviewed it; both Minor findings were corrected under A-016 and closed on re-review. No required review findings remain. The candidate is ready for the user-approved commit to `feature/foundation-package-rename`; push remains pending the exact post-commit summary and approval.
+That previous workflow-change candidate passed `npm run check` and `git diff --check`. Argus independently reviewed it; both Minor findings were corrected under A-016 and closed on re-review. No required review findings remained for that earlier change. Its commit/push status is historical and does not establish review readiness for the current release-preparation candidate.
 
 - Workflow release: current checked-in GNO lifecycle as of 2026-10-02
 - Objective and agreed endpoint: design a configurable shared component foundation; proposed endpoint is validated and independently reviewed local implementation, then commit decision
@@ -22,11 +35,13 @@ The current commit candidate passed `npm run check` and `git diff --check`. Argu
 
 The user approved product display name **NMI DevOps Shared Components** and consumer package ID `nmi-devops-shared-components` on 2026-10-13. Commit `eb7a73e52f0c4010c1decab37951752ef6f950cc` (`chore: rename package to NMI DevOps Shared Components`) was created on `feature/foundation-package-rename` from base `6c1a403f334a7d07fea8665d27e7f55e53526839` with the approved 32 files and pushed to `origin/feature/foundation-package-rename` on 2026-10-13. The remote branch was confirmed at the same commit with `git ls-remote`. The former ID remains in historical approvals and verification results as evidence of the prior contract; the changelog and versioning guide document its migration. This amendment supersedes the earlier A-002/A-003 package-name decision. Manual rename QA MT-NAME-001–004 passed on 2026-10-13 and is recorded in [`manual_testing.md`](../../../manual_testing.md) and [`execution/11_package_identity_rename_2026-10-13.md`](execution/11_package_identity_rename_2026-10-13.md). Argus independently reviewed the rename with no findings; see [`execution/12_package_identity_review_2026-10-13.md`](execution/12_package_identity_review_2026-10-13.md). The unrelated working-tree changes remain uncommitted.
 
-## Repository baseline and current evidence
+## Current repository baseline
 
 | Repository / absolute path | Branch / base | HEAD | Dirty diff evidence | Adoption record / freshness check |
 | --- | --- | --- | --- | --- |
-| gno-shared-components-v2 / `repository checkout root` | `feature/foundation-package-rename` | `eb7a73e52f0c4010c1decab37951752ef6f950cc` | Commit pushed to `origin/feature/foundation-package-rename`. Local state/review-result updates and unrelated `repositories/repositories.md`, `.playwright-mcp/`, and announcement planning package remain uncommitted and preserved | `../gno-shared-components-v2-adoption/adoption.md`; repository identity and current branch/status refreshed 2026-10-13 |
+| gno-shared-components-v2 / `D:\gno-node-projects\gno-shared-components-v2` | `feature/foundation-release-v1.0.0` | `533aababb2fc025b9a920a6bb68eb66666779d26` | Remote origin branch is confirmed at this commit; local worktree has exactly three modified documentation paths listed above, pending review and separately gated commit/push. No unrelated changes were present at branch creation. | `../gno-shared-components-v2-adoption/adoption.md`; identity, branch, and push revision refreshed 2026-10-19 |
+
+## Prior foundation evidence and history
 
 Verification refresh at `c580e40819842932fe9430cefddca92bf6525867`: automated evidence is recorded in
 [`execution/06_verification_audit_2026-10-09.md`](execution/06_verification_audit_2026-10-09.md),

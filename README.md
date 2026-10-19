@@ -85,8 +85,8 @@ The workflow files are available under [`.codex/`](.codex/), [`.agents/`](.agent
 When the first component is approved, consumers will install the package and import a named export:
 
 ```bash
-gh release download v0.1.0 --repo gma-nmi-official/2026-GNO-Website-Revamp---Shared-Components --pattern 'nmi-devops-shared-components-0.1.0.tgz'
-npm install ./nmi-devops-shared-components-0.1.0.tgz
+gh release download v1.0.0 --repo gma-nmi-official/2026-GNO-Website-Revamp---Shared-Components --pattern 'nmi-devops-shared-components-1.0.0.tgz'
+npm install ./nmi-devops-shared-components-1.0.0.tgz
 ```
 
 ```tsx

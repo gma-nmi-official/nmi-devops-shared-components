@@ -78,8 +78,8 @@ npm ci → typecheck/lint/test → TypeScript package build → CSS copy
 Consumers install the package once and import approved named exports:
 
 ```bash
-gh release download v0.1.0 --repo gma-nmi-official/2026-GNO-Website-Revamp---Shared-Components --pattern 'nmi-devops-shared-components-0.1.0.tgz'
-npm install ./nmi-devops-shared-components-0.1.0.tgz
+gh release download v1.0.0 --repo gma-nmi-official/2026-GNO-Website-Revamp---Shared-Components --pattern 'nmi-devops-shared-components-1.0.0.tgz'
+npm install ./nmi-devops-shared-components-1.0.0.tgz
 ```
 
 ```tsx
@@ -238,8 +238,8 @@ Every release should include a changelog entry, package dry-run, validation evid
 Release artifact flow:
 
 ```text
-annotated Git tag v0.1.0 → GitHub Actions → validate and package
-                         → nmi-devops-shared-components-0.1.0.tgz
+annotated Git tag v1.0.0 → GitHub Actions → validate and package
+                         → nmi-devops-shared-components-1.0.0.tgz
                          → GitHub Release asset
 ```
 

@@ -4,7 +4,11 @@ All notable changes to `nmi-devops-shared-components` are documented in this fil
 
 The project follows [Semantic Versioning](https://semver.org/). The repository publishes one npm package, so every published release has one package version even when only one component changed.
 
-## [Unreleased]
+## [1.0.0] - 2026-10-19
+
+This is the initial stable release of the **NMI DevOps Shared Components** package foundation. This release contains package, build, showcase, catalog, documentation, and release infrastructure; it does not add a public UI component export.
+
+**SemVer: Major.** The release establishes the stable package identity `nmi-devops-shared-components`, replacing the former package ID. Any consumer using the former package must migrate its release artifact URL, dependency/import name, and stylesheet import to `nmi-devops-shared-components` and `nmi-devops-shared-components/styles.css` before upgrading. There are no component API changes in this release.
 
 ### Added
 
@@ -12,6 +16,7 @@ The project follows [Semantic Versioning](https://semver.org/). The repository p
 - Added the repository-local GNO workflow bundle for Claude Code, Codex, and developers.
 - Added contributor, consumer setup, versioning, and release documentation.
 - Added GitHub tag validation and versioned `.tgz` release-asset packaging.
+- Added Orion's post-merge release-readiness handoff with separate tag-push approval.
 
 ### Fixed
 
@@ -19,11 +24,12 @@ The project follows [Semantic Versioning](https://semver.org/). The repository p
 
 ### Changed
 
-- Renamed the consumer package to `nmi-devops-shared-components` (display name: **NMI DevOps Shared Components**). Consumers using the former package ID must update the install artifact URL, dependency/import name, and stylesheet import; treat the published package-identity change as a major migration.
+- Renamed the consumer package to `nmi-devops-shared-components` (display name: **NMI DevOps Shared Components**); migration details are above.
 - Restricted the GitHub quality workflow to pull requests targeting `master` and pushes to `master`, with manual dispatch and superseded-run cancellation.
 - Switched private package distribution from Bitbucket to GitHub Releases and documented authenticated consumer asset downloads.
-- Documented Orion's post-merge release-readiness handoff with separate tag-push approval.
 - Added a `predev` package build so the showcase can resolve package styles from a clean checkout.
+
+**Validation evidence:** `npm run check` and `npm run pack:check` were run for this release-preparation revision on Node.js `v26.10.0` / npm `11.19.1`. `npm run check` runs typecheck, lint, Vitest, the package build, Storybook static build, and Next.js production build. Vitest currently finds no test files; this is the repository's configured empty-test-suite behavior. The package dry run confirms the `nmi-devops-shared-components@1.0.0` artifact metadata and contents. See [`manual_testing.md`](manual_testing.md) and [`execution/14_release_preparation_2026-10-19.md`](specs/2026/gno-shared-components-v2-foundation/execution/14_release_preparation_2026-10-19.md) for actual outcomes.
 
 ## [0.1.0] - 2026-10-08
 

@@ -29,8 +29,8 @@ export default function CatalogPage() {
           <li>Dedicated Storybook story with controls and interaction coverage</li>
           <li>JavaScript and TypeScript import examples</li>
         </ul>
-        <pre><code>{`gh release download v0.1.0 --repo gma-nmi-official/2026-GNO-Website-Revamp---Shared-Components --pattern 'nmi-devops-shared-components-0.1.0.tgz'
-npm install ./nmi-devops-shared-components-0.1.0.tgz
+        <pre><code>{`gh release download v1.0.0 --repo gma-nmi-official/2026-GNO-Website-Revamp---Shared-Components --pattern 'nmi-devops-shared-components-1.0.0.tgz'
+npm install ./nmi-devops-shared-components-1.0.0.tgz
 
 // Illustrative only until the first approved public component is exported.
 import { ApprovedGnoComponent } from "nmi-devops-shared-components";
