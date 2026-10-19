@@ -3,14 +3,15 @@
 ## Initial stable release preparation — 2026-10-19
 
 - Objective: prepare the initial `1.0.0` package metadata and release documentation after the foundation was confirmed merged to `master` at `b0c0aba`.
-- Active unit / stage: U-REL-001 release preparation; approved review correction F-REL-001.
-- Branch / base: `feature/foundation-release-v1.0.0` / `b0c0aba`.
-- Approval: A-017 authorizes this exact local release-preparation scope; it does not authorize commit, push, PR creation, tag push, or release execution.
+- Active unit / stage: U-REL-001 release preparation; approved release commit complete; post-commit evidence update is being prepared.
+- Branch / base / commit: `feature/foundation-release-v1.0.0`, base `b0c0aba`, commit `b8b2b56e54f024f9e8b29d98d7ca5f7261ed18c6` (`chore: prepare foundation v1.0.0 release`).
+- Approvals: A-017 authorizes the release-preparation scope; A-018 records the separate approval for this exact 16-path commit. Push, PR, tag push, and release execution are not authorized yet.
 - Scope: root/package/lockfile version alignment; dated changelog and migration notes; `v1.0.0` tag and consumer install examples across README, contributor guide, consumer setup guide, catalog, and foundation presentation; QA, execution, and approval evidence. Catalog/presentation edits only update displayed examples; no runtime behavior or package API changes.
-- Diff reference: the reviewed release-preparation candidate was 15 files at the Argus snapshot (14 tracked modifications plus new `execution/14_release_preparation_2026-10-19.md`). The current worktree has 16 changed/added paths because `execution/15_release_preparation_review_2026-10-19.md` was added afterward. Execution/14 retains the original 15-file candidate scope; execution/15 records the separate review evidence.
+- Diff reference: release-preparation commit `b8b2b56` contains the 15-path Argus candidate plus the review report (16 paths). Current post-commit evidence changes are limited to `approvals.md`, this `state.md`, and new `execution/16_commit_record_2026-10-19.md`; validate against `git status --short` before the next commit gate.
 - Checks: final `npm run check` PASS; `npm run pack:check` PASS; MT-REL-006 PASS; `git diff --check` PASS. Vitest found no test files; Storybook emitted expected no-story, non-blocking chunk-size, and Node deprecation warnings.
-- Independent review: Argus reviewed the 15-file candidate and returned BLOCKED on F-REL-001; the approved correction now distinguishes that candidate from the 16-path current worktree, which includes the review report. See `execution/15_release_preparation_review_2026-10-19.md`.
-- Next action: return the corrected state record to Argus for finding closure. Commit remains separately gated.
+- Independent review: Argus returned PROCEED; F-REL-001 was closed after the state record distinguished the original 15-file candidate from the review report. See `execution/15_release_preparation_review_2026-10-19.md`.
+- Remote: `origin` is the configured GitHub repository. A read-only `git ls-remote` found no existing `feature/foundation-release-v1.0.0` ref, so push would create that branch.
+- Next action: validate and independently review the post-commit evidence update, then request its separate commit approval. After that, present the exact push summary and request push approval; then prepare PR details and request PR approval.
 
 ## Previous GitHub hosting and package-release update — 2026-10-19
 
@@ -38,7 +39,7 @@ The user approved product display name **NMI DevOps Shared Components** and cons
 
 | Repository / absolute path | Branch / base | HEAD | Dirty diff evidence | Adoption record / freshness check |
 | --- | --- | --- | --- | --- |
-| gno-shared-components-v2 / `D:\gno-node-projects\gno-shared-components-v2` | `feature/foundation-release-v1.0.0` | `b0c0aba` | Current worktree: 16 changed/added paths (14 tracked modifications plus untracked `execution/14_release_preparation_2026-10-19.md` and `execution/15_release_preparation_review_2026-10-19.md`). The reviewed release-preparation candidate itself was 15 paths before execution/15 was added. No unrelated changes were present at branch creation. | `../gno-shared-components-v2-adoption/adoption.md`; identity, clean state, and base refreshed 2026-10-19 |
+| gno-shared-components-v2 / `D:\gno-node-projects\gno-shared-components-v2` | `feature/foundation-release-v1.0.0` | `b8b2b56e54f024f9e8b29d98d7ca5f7261ed18c6` | Three post-commit evidence paths are being prepared: two modified records and untracked `execution/16_commit_record_2026-10-19.md`. No unrelated changes were present at branch creation. | `../gno-shared-components-v2-adoption/adoption.md`; identity, branch, and commit refreshed 2026-10-19 |
 
 ## Prior foundation evidence and history
 
