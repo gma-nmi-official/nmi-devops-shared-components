@@ -3,15 +3,15 @@
 ## Initial stable release preparation — 2026-10-19
 
 - Objective: prepare the initial `1.0.0` package metadata and release documentation after the foundation was confirmed merged to `master` at `b0c0aba`.
-- Active unit / stage: U-REL-001 release preparation; release candidate pushed, push-outcome evidence is being recorded before PR preparation.
-- Branch / base / commits: `feature/foundation-release-v1.0.0`, base `b0c0aba`, release-preparation commit `b8b2b56e54f024f9e8b29d98d7ca5f7261ed18c6`, documentation follow-up `cdce290df6870e91462027daba2a7759508bda8f` (`docs: record v1.0.0 commit outcome`).
-- Approvals: A-017 authorizes release preparation; A-018 authorizes the release-preparation commit; A-019 records the separate push approval. PR creation, tag push, and release execution are not authorized yet.
+- Active unit / stage: U-REL-001 release preparation; release candidate and push-result evidence are pushed, awaiting PR preparation and approval.
+- Branch / base / commits: `feature/foundation-release-v1.0.0`, base `b0c0aba`, release-preparation commit `b8b2b56e54f024f9e8b29d98d7ca5f7261ed18c6`, documentation commits `cdce290df6870e91462027daba2a7759508bda8f` and `533aababb2fc025b9a920a6bb68eb66666779d26` (`docs: record v1.0.0 push outcome`).
+- Approvals: A-017 authorizes release preparation; A-018 authorizes the release-preparation commit; A-019 and A-021 record the separate push approvals; A-020 records approval of the push-outcome documentation commit. PR creation, tag push, and release execution are not authorized yet.
 - Scope: root/package/lockfile version alignment; dated changelog and migration notes; `v1.0.0` tag and consumer install examples across README, contributor guide, consumer setup guide, catalog, and foundation presentation; QA, execution, and approval evidence. Catalog/presentation edits only update displayed examples; no runtime behavior or package API changes.
-- Diff reference: release-preparation commit `b8b2b56` contains the 15-path Argus candidate plus the review report (16 paths); commit `cdce290` records the first commit result. Current push-result evidence changes are limited to `approvals.md`, this `state.md`, and new `execution/17_push_record_2026-10-19.md`; validate against `git status --short` before the next commit gate.
+- Diff reference: release-preparation commit `b8b2b56` contains the 15-path Argus candidate plus the review report (16 paths); `cdce290` records its commit result; `533aaba` records the push result and approval history. The branch is synchronized with `origin` at `533aababb2fc025b9a920a6bb68eb66666779d26`. Current local documentation correction is uncommitted in `approvals.md`, this `state.md`, and `execution/17_push_record_2026-10-19.md`.
 - Checks: final `npm run check` PASS; `npm run pack:check` PASS; MT-REL-006 PASS; `git diff --check` PASS. Vitest found no test files; Storybook emitted expected no-story, non-blocking chunk-size, and Node deprecation warnings.
 - Independent review: Argus returned PROCEED; F-REL-001 was closed after the state record distinguished the original 15-file candidate from the review report. See `execution/15_release_preparation_review_2026-10-19.md`.
-- Remote: `origin` is the configured GitHub repository. Push preflight identified a new feature branch; push succeeded and `git ls-remote` confirmed `origin/feature/foundation-release-v1.0.0` at `cdce290df6870e91462027daba2a7759508bda8f`.
-- Next action: validate and independently review the push-outcome evidence update, then request its separate commit approval. After that, prepare PR title/body/base/head and request PR approval before creating it.
+- Remote: `origin` is the configured GitHub repository. The initial feature-branch push and subsequent documentation update push succeeded; `git ls-remote` confirmed `origin/feature/foundation-release-v1.0.0` at `533aababb2fc025b9a920a6bb68eb66666779d26`.
+- Next action: request commit approval for the reviewed documentation-evidence correction, then obtain separate push approval for its resulting commit. After the push, prepare PR title/body/base/head and request PR approval before creating it.
 
 ## Previous GitHub hosting and package-release update — 2026-10-19
 
@@ -39,7 +39,7 @@ The user approved product display name **NMI DevOps Shared Components** and cons
 
 | Repository / absolute path | Branch / base | HEAD | Dirty diff evidence | Adoption record / freshness check |
 | --- | --- | --- | --- | --- |
-| gno-shared-components-v2 / `D:\gno-node-projects\gno-shared-components-v2` | `feature/foundation-release-v1.0.0` | `cdce290df6870e91462027daba2a7759508bda8f` | Remote origin branch is confirmed at this commit. Three push-result evidence paths are being prepared: two modified records and untracked `execution/17_push_record_2026-10-19.md`. No unrelated changes were present at branch creation. | `../gno-shared-components-v2-adoption/adoption.md`; identity, branch, and push revision refreshed 2026-10-19 |
+| gno-shared-components-v2 / `D:\gno-node-projects\gno-shared-components-v2` | `feature/foundation-release-v1.0.0` | `533aababb2fc025b9a920a6bb68eb66666779d26` | Remote origin branch is confirmed at this commit; local worktree has exactly three modified documentation paths listed above, pending review and separately gated commit/push. No unrelated changes were present at branch creation. | `../gno-shared-components-v2-adoption/adoption.md`; identity, branch, and push revision refreshed 2026-10-19 |
 
 ## Prior foundation evidence and history
 
