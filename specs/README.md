@@ -1,6 +1,6 @@
 # Project specifications and execution records
 
-This directory contains repository-local requirements, designs, test plans, approval records, and execution evidence for GNO shared components.
+This directory contains repository-local requirements, designs, test plans, approval records, and execution evidence for NMI DevOps Shared Components.
 
 Use a project folder such as:
 

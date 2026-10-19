@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
-import "gno-shared-components/styles.css";
+import "nmi-devops-shared-components/styles.css";
 
 export const metadata: Metadata = {
-  title: "gno-shared-components",
+  title: "NMI DevOps Shared Components",
   description: "Configurable shared components for Next.js applications.",
 };
 

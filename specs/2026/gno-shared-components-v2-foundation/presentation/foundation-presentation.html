@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>GNO Shared Components Foundation</title>
+  <title>NMI DevOps Shared Components Foundation</title>
   <style>
     :root { --ink:#172033; --muted:#526077; --blue:#155dfc; --line:#dce3ec; --surface:#fff; --bg:#f5f7fb; }
     * { box-sizing:border-box; }
@@ -60,7 +60,7 @@
     </nav>
     <section class="slide cover" id="slide-1">
       <div>
-        <p class="eyebrow">GNO shared components</p>
+        <p class="eyebrow">NMI DevOps Shared Components</p>
         <h1>A reusable foundation for GNO portal interfaces.</h1>
         <p>Team-lead presentation · 2026-10-08 · Foundation review</p>
       </div>
@@ -85,7 +85,7 @@
       <pre><code>Consumer Next.js / JavaScript application
         │ npm install + named imports
         ▼
-gno-shared-components (published workspace package)
+nmi-devops-shared-components (published workspace package)
         ├─ dist/index.js       ESM runtime
         ├─ dist/index.d.ts     Type declarations
         └─ dist/styles.css     Explicit CSS contract
@@ -103,9 +103,10 @@ Component modules
     <section class="slide" id="slide-5" hidden>
       <p class="eyebrow">04 · Consumer model</p>
       <h2>Install once, import what the application needs</h2>
-      <pre><code>npm install https://bitbucket.org/&lt;workspace&gt;/&lt;repository&gt;/downloads/gno-shared-components-0.1.0.tgz</code></pre>
-      <pre><code>import { PortalHeader, PortalFooter } from "gno-shared-components";
-import "gno-shared-components/styles.css";
+      <pre><code>gh release download v1.0.0 --repo gma-nmi-official/2026-GNO-Website-Revamp---Shared-Components --pattern 'nmi-devops-shared-components-1.0.0.tgz'
+npm install ./nmi-devops-shared-components-1.0.0.tgz</code></pre>
+      <pre><code>import { PortalHeader, PortalFooter } from "nmi-devops-shared-components";
+import "nmi-devops-shared-components/styles.css";
 
 const navigation = [
   { label: "Home", href: "/" },
@@ -127,8 +128,8 @@ export default function SiteHeader() {
   );
 }</code></pre>
       <div class="grid"><div class="card"><h3>Next.js consumer</h3><pre><code>// app/layout.tsx
-import { PortalHeader, PortalFooter } from "gno-shared-components";
-import "gno-shared-components/styles.css";
+import { PortalHeader, PortalFooter } from "nmi-devops-shared-components";
+import "nmi-devops-shared-components/styles.css";
 
 export default function Layout({ children }) {
   return &lt;&gt;
@@ -137,15 +138,15 @@ export default function Layout({ children }) {
     &lt;PortalFooter links={[{ label: "Contact", href: "/contact" }]} /&gt;
   &lt;/&gt;;
 }</code></pre></div><div class="card"><h3>React JavaScript consumer</h3><pre><code>import { createRoot } from "react-dom/client";
-import { PortalHeader, PortalFooter } from "gno-shared-components";
-import "gno-shared-components/styles.css";
+import { PortalHeader, PortalFooter } from "nmi-devops-shared-components";
+import "nmi-devops-shared-components/styles.css";
 
 createRoot(document.getElementById("root"))
   .render(&lt;&gt;
     &lt;PortalHeader navigation={navigation} /&gt;
     &lt;PortalFooter links={[{ label: "Contact", href: "/contact" }]} /&gt;
   &lt;/&gt;);</code></pre></div></div>
-      <p>The Bitbucket URL is the release source; the installed package and import name remain <code>gno-shared-components</code>. The package is designed for both JavaScript and TypeScript repositories.</p>
+      <p>Consumers set <code>GH_TOKEN</code> to a token with repository read access before downloading; CI stores this token as a secret. The installed package and import name remain <code>nmi-devops-shared-components</code>. The package is designed for both JavaScript and TypeScript repositories.</p>
       <p><em>Illustrative APIs pending approval:</em> consumers compose approved components and provide application data; each component owns its layout, responsive behavior, accessibility, and scoped styles.</p>
       <div class="card"><h3>Implementation model</h3><p>Next.js consumers render <code>&lt;PortalHeader /&gt;</code> in a page or layout. Other React JavaScript consumers render it through their existing React root. The foundation does not expose a raw <code>&lt;portal-header&gt;</code> custom element; that adapter would require separate approval.</p></div>
       <div class="grid"><div class="card"><h3>Consumer setup</h3><p>Install the approved version, import a named export, and import the package stylesheet once at the application style boundary.</p></div><div class="card"><h3>Component guidance</h3><p>Use <code>/catalog</code> for props, states, accessibility, responsive behavior, and the linked Storybook story.</p></div><div class="card"><h3>Ownership</h3><p>The application owns routes, data, authentication, and integrations. The package owns the component contract, styles, tests, and story.</p></div></div>
@@ -179,10 +180,9 @@ createRoot(document.getElementById("root"))
 
     <section class="slide" id="slide-10" hidden>
       <p class="eyebrow">09 · Review status</p>
-      <h2>Two decisions remain before commit</h2>
-      <div class="warning"><p><strong>Argus finding 1:</strong> the unscoped package name conflicts with restricted npm access.</p></div>
-      <div class="warning"><p><strong>Argus finding 2:</strong> the private workspace root and publishable package share the same package name.</p></div>
-      <p>Additional cleanup: restore standard ignore rules and replace the placeholder README import example.</p>
+      <h2>Review status and package-name update</h2>
+      <p>The previous Argus findings were closed for the earlier package identity. The current product is <strong>NMI DevOps Shared Components</strong>, with consumer package ID <code>nmi-devops-shared-components</code> and private workspace root <code>nmi-devops-shared-components-workspace</code>.</p>
+      <p>This package-identity change needs fresh validation and independent review before commit approval. Public npm registry publication remains unapproved; a tag-triggered GitHub Actions workflow attaches the artifact to a GitHub Release.</p>
     </section>
 
     <section class="slide" id="slide-11" hidden>
@@ -192,25 +192,25 @@ createRoot(document.getElementById("root"))
       <table class="version-table"><thead><tr><th>Change</th><th>Version impact</th><th>Example</th></tr></thead><tbody>
         <tr><td>New component or backward-compatible feature</td><td>Minor</td><td><code>0.1.0 → 0.2.0</code></td></tr>
         <tr><td>Bug, accessibility, or non-breaking style fix</td><td>Patch</td><td><code>0.2.0 → 0.2.1</code></td></tr>
-        <tr><td>Removed export, renamed prop, breaking token/API change</td><td>Major</td><td><code>0.2.1 → 1.0.0</code></td></tr>
+        <tr><td>Removed export, renamed prop, breaking token/API change, or package-ID rename</td><td>Major migration</td><td><code>0.2.1 → 1.0.0</code></td></tr>
         <tr><td>PortalHeader pre-release validation</td><td>Pre-release</td><td><code>0.3.0-rc.1</code></td></tr>
       </tbody></table>
       <p>Every release requires a changelog entry, package dry-run, validation evidence, and migration notes for breaking changes. Independent component versions can be introduced later only if release cadence or dependency boundaries justify them.</p>
-      <pre><code>annotated Git tag v0.1.0 → Bitbucket pipeline → build and validate
-                         → gno-shared-components-0.1.0.tgz
-                         → Bitbucket Downloads/release artifact</code></pre>
+      <pre><code>annotated Git tag v1.0.0 → GitHub Actions → validate and package
+                         → nmi-devops-shared-components-1.0.0.tgz
+                         → GitHub Release asset</code></pre>
       <p>Consumers install the versioned <code>.tgz</code>; Git tags preserve package release history.</p>
     </section>
     <section class="slide" id="slide-12" hidden>
       <p class="eyebrow">11 · Team-lead decisions</p>
-      <h2>What we need approved</h2>
-      <ol><li>Public unscoped package or private scoped package?</li><li>Rename the private workspace root?</li><li>Approve the Argus corrections?</li><li>Approve foundation commit after revalidation?</li></ol>
+      <h2>Current decisions and remaining gates</h2>
+      <ol><li>Product display name: NMI DevOps Shared Components.</li><li>Consumer package ID: nmi-devops-shared-components.</li><li>Run rename validation and obtain independent review.</li><li>Obtain fresh commit approval, then separate push approval.</li><li>Public npm registry publication remains unapproved.</li></ol>
     </section>
 
     <section class="slide" id="slide-13" hidden>
       <p class="eyebrow">12 · Next steps</p>
-      <h2>Move from foundation to PortalHeader</h2>
-      <ol><li>Resolve package visibility and workspace naming.</li><li>Apply approved corrections and rerun validation.</li><li>Obtain Argus confirmation.</li><li>Commit the foundation and request separate push approval.</li><li>Implement PortalHeader from its approved requirements and user stories.</li></ol>
+      <h2>Complete package rename, then continue components</h2>
+      <ol><li>Complete rename verification and QA.</li><li>Obtain independent review.</li><li>Obtain fresh commit approval and separate push approval.</li><li>Confirm private GitHub Release asset access before consumer release.</li><li>Continue PortalHeader from its approved requirements and user stories.</li></ol>
       <p class="footer">Reference evidence: <code>specs/2026/gno-shared-components-v2-foundation/execution/07_code_review_report.md</code></p>
     </section>
   </main>

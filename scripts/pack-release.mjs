@@ -6,7 +6,7 @@ const outputDirectory = fileURLToPath(new URL("../release-artifacts/", import.me
 const npmArguments = [
   "pack",
   "-w",
-  "gno-shared-components",
+  "nmi-devops-shared-components",
   "--pack-destination",
   outputDirectory,
 ];

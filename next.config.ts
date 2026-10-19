@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["gno-shared-components"],
+  transpilePackages: ["nmi-devops-shared-components"],
 };
 
 export default nextConfig;

@@ -1,7 +1,7 @@
 {
-  "name": "gno-shared-components",
-  "version": "0.1.0",
-  "description": "Configurable shared React components for Next.js applications.",
+  "name": "nmi-devops-shared-components",
+  "version": "1.0.0",
+  "description": "NMI DevOps Shared Components: configurable shared React components for Next.js applications.",
   "type": "module",
   "sideEffects": ["**/*.css"],
   "files": ["dist", "README.md"],
