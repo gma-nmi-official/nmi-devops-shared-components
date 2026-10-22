@@ -8,7 +8,7 @@ Download the approved `.tgz` asset from the GitHub Release, then install it in t
 
 ```bash
 gh release download v1.0.0 \
-  --repo gma-nmi-official/2026-GNO-Website-Revamp---Shared-Components \
+  --repo gma-nmi-official/nmi-devops-shared-components \
   --pattern 'nmi-devops-shared-components-1.0.0.tgz'
 npm install ./nmi-devops-shared-components-1.0.0.tgz
 ```
@@ -77,7 +77,7 @@ Run the showcase and open `/catalog` to find each approved component's:
 - stylesheet and installation requirements
 - link to its dedicated Storybook story
 
-Storybook is the isolated engineering reference; the catalog is the consumer onboarding reference.
+The deployed `/docs` route is the interactive component reference; `/catalog` is the consumer onboarding reference.
 
 Portal Header migration from the legacy widget is documented in
 [`portal-header-migration.md`](portal-header-migration.md).

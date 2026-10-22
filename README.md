@@ -34,13 +34,11 @@ Open `http://localhost:3000`. The component catalog is available at `http://loca
 
 The catalog is the consumer-facing documentation surface. Each approved component will show its preview, supported states, configuration, import examples, stylesheet requirements, accessibility notes, and Storybook link.
 
-### Run Storybook
+### Open the deployed documentation
 
-```bash
-npm run dev:storybook
-```
+The application build generates the interactive Storybook reference at `/docs`.
 
-Open `http://localhost:6006`. Storybook is the isolated engineering workshop for checking component states, controls, responsive behavior, interactions, and accessibility. Every approved component must have a dedicated story.
+Open `http://localhost:3000/docs`. Every approved component must have a dedicated story.
 
 ### Run validation and builds
 
@@ -54,7 +52,11 @@ npm run build
 npm run check
 ```
 
-`npm run check` is the complete quality gate. `npm run build` builds the publishable package and the Next.js showcase. `npm run build-storybook` creates the ignored `storybook-static/` output.
+`npm run check` is the complete quality gate. `npm run build` builds the publishable package, static Storybook output, and the Next.js application. `npm run build-storybook` creates the ignored `public/storybook/` output.
+
+### Publish the documentation site
+
+Merging to `master` starts the GitHub Pages workflow in [`.github/workflows/pages.yml`](.github/workflows/pages.yml). The site is published at `https://gma-nmi-official.github.io/nmi-devops-shared-components/` after GitHub Pages is enabled with GitHub Actions as its source.
 
 ### Inspect or create a package artifact
 
@@ -85,7 +87,7 @@ The workflow files are available under [`.codex/`](.codex/), [`.agents/`](.agent
 When the first component is approved, consumers will install the package and import a named export:
 
 ```bash
-gh release download v1.0.0 --repo gma-nmi-official/2026-GNO-Website-Revamp---Shared-Components --pattern 'nmi-devops-shared-components-1.0.0.tgz'
+  gh release download v1.0.0 --repo gma-nmi-official/nmi-devops-shared-components --pattern 'nmi-devops-shared-components-1.0.0.tgz'
 npm install ./nmi-devops-shared-components-1.0.0.tgz
 ```
 
