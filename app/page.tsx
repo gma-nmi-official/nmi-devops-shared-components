@@ -7,15 +7,15 @@ export default function Home() {
         <p className="showcase__eyebrow">NMI DevOps Shared Components</p>
         <h1>A dedicated foundation for GNO portal interfaces.</h1>
         <p>
-          The component package is ready for the first approved GNO component. Browse the
-          catalog for public exports and consumer import guidance.
+          The package now includes the configurable Portal Header. Browse the catalog for its
+          public API, supported states, and consumer integration guidance.
         </p>
         <Link className="showcase__catalog-link" href="/catalog">Open the component catalog →</Link>
       </section>
       <section className="showcase__panel">
         <p className="showcase__eyebrow">Catalog status</p>
-        <h2>No public components yet</h2>
-        <p>The package and documentation surface are initialized. GNO components will be added here through approved delivery units.</p>
+        <h2>Portal Header available</h2>
+        <p>Preview responsive navigation, social presets, native GET search, theme tokens, and router-adapter integration in the component catalog.</p>
       </section>
     </main>
   );

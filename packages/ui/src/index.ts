@@ -1,1 +1,1 @@
-export {};
+export * from "./components/portal-header";
