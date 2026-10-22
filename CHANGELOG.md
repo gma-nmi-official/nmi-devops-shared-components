@@ -4,6 +4,57 @@ All notable changes to `nmi-devops-shared-components` are documented in this fil
 
 The project follows [Semantic Versioning](https://semver.org/). The repository publishes one npm package, so every published release has one package version even when only one component changed.
 
+## [Unreleased]
+
+### Added
+
+- Added the `PortalHeader` component and public TypeScript contracts with
+  configurable branding and section accent, primary/network navigation,
+  accessible full-width responsive dropdown,
+  optional native GET search, consumer router-link adapter, and public CSS tokens.
+- Added immutable Entertainment and News social presets plus deterministic
+  stable-ID override, hide, and append behavior. Social URLs are HTTPS-only and
+  have no analytics integration.
+- Added the immutable 16-link GMA navigation preset in verified production
+  order, with stable-ID override, hide, append, and `none` behavior.
+- Added a verified repository-local GMA logo, individually imported Font Awesome
+  Free icons, third-party notices, focused unit/accessibility coverage, Storybook
+  states, catalog guidance, and migration examples.
+- Aligned the default presentation with the live GMA News header: a compact dark
+  single bar, News-red configurable accent, production-sized logo and label,
+  desktop social/search/grid actions, and mobile search/socials inside the
+  expanded menu. Legacy CSS/JS, Fontello, remote fonts, account/SSO, and
+  analytics remain excluded.
+- Matched the expanded menu ordering with one primary plus three top-to-bottom
+  network columns on desktop and a reachable two-column mobile layout.
+- Replaced the rounded Font Awesome grip with a local nine-solid-square SVG that
+  matches the live menu-grid glyph without loading the legacy Fontello font.
+- Matched the live header's optical brand alignment by positioning the section
+  label 5px below the antenna-inclusive logo image-box center on desktop and mobile.
+- Corrected dropdown focus containment to ignore hidden responsive controls and
+  restored trigger focus after outside-pointer closure.
+- Corrected the public Portal Header text token so root-level overrides drive
+  visible section, navigation, action-button, and social-link colors.
+
+**Consumer impact / SemVer: Minor.** This is a backward-compatible new named
+component export. Existing consumers do not need to change. New consumers import
+`PortalHeader` and the existing package stylesheet, then optionally patch the
+default navigation and provide search configuration. Next.js consumers only need a Client
+Component wrapper when passing the optional function-valued router adapter.
+
+**Migration:** No existing package API migration is required. Legacy-header
+mapping and intentionally unsupported behavior are documented in
+[`docs/portal-header-migration.md`](docs/portal-header-migration.md).
+
+**Validation evidence:** Typecheck, lint, 13/13 unit/accessibility tests, two
+JavaScript/TypeScript consumer fixtures, Storybook, Next.js 16.3.8, the 28/28
+configured Playwright suite, 52/52 installed Windows Chrome/Edge cases, and the
+37-file package dry-run pass. PH-A20 waives unexecuted real screen-reader QA and
+PH-A21 accepts the configured Chromium plus installed Chrome/Edge delivery
+matrix; Firefox, Safari, and second-version coverage remain explicit residual
+risk. Exact-revision GitHub Actions release evidence remains pending until an
+approved tag.
+
 ## [1.0.0] - 2026-10-19
 
 This is the initial stable release of the **NMI DevOps Shared Components** package foundation. This release contains package, build, showcase, catalog, documentation, and release infrastructure; it does not add a public UI component export.
