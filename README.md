@@ -1,8 +1,16 @@
-# GNO shared components
+# NMI DevOps Shared Components
 
-This repository is dedicated to configurable, reusable GNO portal components for JavaScript and TypeScript consumer applications.
+This repository contains configurable, reusable GNO portal components for
+JavaScript and TypeScript consumer applications. The publishable package is
+`nmi-devops-shared-components` and currently exports the `PortalHeader`
+component.
 
-The package foundation and consumer catalog are initialized, but no public components are currently exported. Approved GNO components will be added with their runtime API, styles, tests, stories, and catalog documentation.
+The project includes two documentation surfaces:
+
+- `/docs` — the interactive Storybook reference, with component states,
+  controls, accessibility notes, and release information.
+- `/catalog` — a friendly consumer guide with installation, configuration,
+  examples, and parameter details.
 
 ## Local setup guide
 
@@ -30,17 +38,15 @@ npm run dev
 
 The `predev` lifecycle step builds the shared package first so a clean checkout has the package stylesheet and runtime output available to the showcase.
 
-Open `http://localhost:3000`. The component catalog is available at `http://localhost:3000/catalog`.
+Open `http://localhost:3000` for the documentation landing page. The consumer
+guide is available at `http://localhost:3000/catalog`, and the interactive
+Storybook is available at `http://localhost:3000/docs`.
 
-The catalog is the consumer-facing documentation surface. Each approved component will show its preview, supported states, configuration, import examples, stylesheet requirements, accessibility notes, and Storybook link.
+### Open the deployed documentation
 
-### Run Storybook
-
-```bash
-npm run dev:storybook
-```
-
-Open `http://localhost:6006`. Storybook is the isolated engineering workshop for checking component states, controls, responsive behavior, interactions, and accessibility. Every approved component must have a dedicated story.
+The application build generates the interactive Storybook reference at `/docs`.
+Every public component must have a dedicated story and documented supported
+states.
 
 ### Run validation and builds
 
@@ -54,7 +60,11 @@ npm run build
 npm run check
 ```
 
-`npm run check` is the complete quality gate. `npm run build` builds the publishable package and the Next.js showcase. `npm run build-storybook` creates the ignored `storybook-static/` output.
+`npm run check` is the complete quality gate. `npm run build` builds the publishable package, static Storybook output, and the Next.js application. `npm run build-storybook` creates the ignored `public/storybook/` output.
+
+### Publish the documentation site
+
+Merging to `master` starts the GitHub Pages workflow in [`.github/workflows/pages.yml`](.github/workflows/pages.yml). The site is published at `https://gma-nmi-official.github.io/nmi-devops-shared-components/` after GitHub Pages is enabled with GitHub Actions as its source.
 
 ### Inspect or create a package artifact
 
@@ -63,7 +73,7 @@ npm run pack:check
 npm run pack:release
 ```
 
-`pack:check` previews package contents. `pack:release` writes a versioned `.tgz` file under `release-artifacts/` for Bitbucket release handling.
+`pack:check` previews package contents. `pack:release` writes a versioned `.tgz` file under `release-artifacts/` for GitHub Release upload.
 
 ## GNO workflow
 
@@ -76,31 +86,35 @@ The repository includes the GNO workflow so developers and agents use the same p
 5. Run automated and manual verification.
 6. Obtain independent review before commit.
 7. Update the changelog and package version according to [`docs/versioning.md`](docs/versioning.md).
-8. Create a tagged release only after the required approval.
+8. After an owner-confirmed merge to `master`, Orion starts release readiness; push the version tag only after its exact target and publication effect receive separate approval.
 
 The workflow files are available under [`.codex/`](.codex/), [`.agents/`](.agents/), and [`specs/`](specs/).
 
 ## Consumer contract
 
-When the first component is approved, consumers will install the package and import a named export:
+Consumers install the package and import a named export:
 
 ```bash
-npm install https://bitbucket.org/<workspace>/<repository>/downloads/gno-shared-components-0.1.0.tgz
+  gh release download v1.0.0 --repo gma-nmi-official/nmi-devops-shared-components --pattern 'nmi-devops-shared-components-1.0.0.tgz'
+npm install ./nmi-devops-shared-components-1.0.0.tgz
 ```
 
 ```tsx
-// Illustrative only until the first approved public component is exported.
-import { /* ApprovedGnoComponent */ } from "gno-shared-components";
-import "gno-shared-components/styles.css";
+import { PortalHeader } from "nmi-devops-shared-components";
+import "nmi-devops-shared-components/styles.css";
+
+export function SiteHeader() {
+  return <PortalHeader />;
+}
 ```
 
-The Bitbucket URL is the release source; `gno-shared-components` remains the package and import name. See `/catalog` while running the showcase for the current public inventory and copyable JavaScript/TypeScript examples.
+Set `GH_TOKEN` to a token with repository read access before downloading; keep it in the consumer's CI secret store. `nmi-devops-shared-components` remains the package and import name. See `/catalog` while running the showcase for the current public inventory and copyable JavaScript/TypeScript examples.
 
 For complete setup guidance, see [`docs/consumer-setup.md`](docs/consumer-setup.md).
 
 For release and component versioning rules, see [`CHANGELOG.md`](CHANGELOG.md) and [`docs/versioning.md`](docs/versioning.md).
 
-Tagged Bitbucket builds produce a versioned `.tgz` package artifact through `npm run pack:release`.
+Pushing an approved `v*` tag starts GitHub Actions, which validates the version, runs the quality gate, packages the `.tgz`, and attaches it to a GitHub Release. See [`docs/versioning.md`](docs/versioning.md) for the release process.
 
 For the contributor workflow, see [`CONTRIBUTING.md`](CONTRIBUTING.md).
 

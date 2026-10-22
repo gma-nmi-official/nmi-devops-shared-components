@@ -1,6 +1,14 @@
 # Test plan: gno-shared-components-v2 foundation
 
-- Approved requirements/design: pending
+## Package identity rename (R-014 / AC-019)
+
+- Verify root and publishable `package.json` names, workspace dependency, and `package-lock.json` entries all use their approved new identities.
+- Search active source, current documentation, and release scripts for stale package-ID references; allow old ID only in historical verification and explicit migration notes.
+- Run package typecheck/build and dry-run packing; verify the tarball uses the new package ID and file name.
+- Run showcase tests, typecheck, lint, Storybook build, and Next.js build; check browser-visible product titles.
+- Complete linked manual QA cases in `manual_testing.md`; leave results pending until actually run.
+
+- Approved requirements/design: foundation requirements/design; R-014/AC-019 package-name amendment approved 2026-10-13
 - Repository revision: `ef5546d0dcf953d0fed2e4b844d425d3814f6e98`; units U-001 through U-006
 - Environment and safe test data: local Node/npm environment; no production data, services, or credentials
 - Required tools: npm scripts selected during implementation; Next.js production build; package pack dry run; Storybook/Vitest/browser tooling approved by this plan

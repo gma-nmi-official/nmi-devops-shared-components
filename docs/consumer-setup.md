@@ -4,36 +4,63 @@ This guide explains how a JavaScript or TypeScript application consumes the publ
 
 ## 1. Install the package
 
-Install the approved `.tgz` release artifact from Bitbucket in the consumer application:
+Download the approved `.tgz` asset from the GitHub Release, then install it in the consumer application. Set `GH_TOKEN` in the environment to a GitHub token authorized to read this private repository:
 
 ```bash
-npm install https://bitbucket.org/<workspace>/<repository>/downloads/gno-shared-components-0.1.0.tgz
+gh release download v1.0.0 \
+  --repo gma-nmi-official/nmi-devops-shared-components \
+  --pattern 'nmi-devops-shared-components-1.0.0.tgz'
+npm install ./nmi-devops-shared-components-1.0.0.tgz
 ```
 
-The Bitbucket URL identifies the release source. The installed package and import name remain `gno-shared-components`. Replace the placeholder workspace and repository with the actual Bitbucket location.
+The example uses the initial stable release, `v1.0.0`. Keep the token in the consumer's CI secret store; do not commit it. The installed package and import name remain `nmi-devops-shared-components`.
 
 ## 2. Import the component and styles
 
 Import components through the package's public named exports. Do not import internal files from `packages/ui/src`.
 
 ```tsx
-// Replace ApprovedGnoComponent with an approved exported component.
-import { ApprovedGnoComponent } from "gno-shared-components";
-import "gno-shared-components/styles.css";
+import { PortalHeader } from "nmi-devops-shared-components";
+import "nmi-devops-shared-components/styles.css";
 ```
 
 The stylesheet import is required for the package tokens and component-scoped styles.
+Portal Header defaults to the production-compatible compact dark GMA bar. Use
+`theme.accentColor` or `--gno-portal-header-accent` for the consumer section
+color; the package never loads the legacy stylesheet or a remote font.
 
 ## 3. Use it in a Next.js application
 
-Server-compatible components can be rendered from a Server Component. If a component exposes interactive behavior, follow its catalog and Storybook guidance for the required client boundary.
+`PortalHeader` is an interactive client entry point and can be rendered from a
+Server Component when its props contain only serializable data.
 
 ```tsx
-// Replace ApprovedGnoComponent with an approved exported component.
-import { ApprovedGnoComponent } from "gno-shared-components";
+import { PortalHeader } from "nmi-devops-shared-components";
 
 export default function Page() {
-  return <ApprovedGnoComponent />;
+  return <PortalHeader primaryNavigation={[{ id: "home", current: true }]} />;
+}
+```
+
+The default `gma` navigation preset contains all 16 verified production links in
+reference order. `primaryNavigation` and `networkNavigation` patch defaults by
+stable ID, support `hidden: true`, and append new IDs. Set
+`navigationPreset="none"` to supply a completely custom menu.
+
+If the consumer supplies a Next.js `Link` adapter, define it in a narrow Client
+Component because function props cannot cross the Server/Client boundary:
+
+```tsx
+"use client";
+
+import Link from "next/link";
+import { PortalHeader, type PortalHeaderLinkRenderProps } from "nmi-devops-shared-components";
+
+const renderLink = ({ children, href, ...props }: PortalHeaderLinkRenderProps) =>
+  <Link href={href} {...props}>{children}</Link>;
+
+export function SiteHeader() {
+  return <PortalHeader renderLink={renderLink} />;
 }
 ```
 
@@ -50,7 +77,10 @@ Run the showcase and open `/catalog` to find each approved component's:
 - stylesheet and installation requirements
 - link to its dedicated Storybook story
 
-Storybook is the isolated engineering reference; the catalog is the consumer onboarding reference.
+The deployed `/docs` route is the interactive component reference; `/catalog` is the consumer onboarding reference.
+
+Portal Header migration from the legacy widget is documented in
+[`portal-header-migration.md`](portal-header-migration.md).
 
 ## 5. Keep versions predictable
 

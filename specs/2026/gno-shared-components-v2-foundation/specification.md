@@ -11,6 +11,8 @@
 
 In scope: repository/workspace foundation, package contract, tokens and styling contract, Storybook, automated tests, one vertical reference component, CI design, release readiness, an extensible architecture for composed portal components such as a portal header, and a browsable component catalog with consumer installation/import guidance.
 
+The approved product display name is **NMI DevOps Shared Components** and the consumer package ID is `nmi-devops-shared-components`. The repository slug remains `gno-shared-components-v2`.
+
 Excluded from the current foundation implementation: the actual portal header and broader portal-component implementation set, application-specific business rules, authentication implementation, backend APIs, deployment of the catalog site, publishing to a registry, and changes to consumer repositories. These composed components require their own requirements and contracts before implementation; the catalog page itself is required in the repository.
 
 ## Affected repositories and current context
@@ -30,4 +32,4 @@ Validated and independently reviewed local foundation, followed by a separate co
 
 ## Approval status
 
-Requirements and development approval are pending in `approvals.md`.
+Foundation requirements and development were previously approved in `approvals.md`. The 2026-10-13 package-name amendment is recorded there; publication remains separately gated.
