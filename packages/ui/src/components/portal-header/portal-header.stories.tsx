@@ -6,7 +6,14 @@ const meta = {
   title: "Components/PortalHeader",
   component: PortalHeader,
   tags: ["autodocs"],
-  parameters: { layout: "fullscreen" },
+  parameters: {
+    layout: "fullscreen",
+    docs: {
+      description: {
+        component: "A responsive, accessible portal header with branding, navigation, social links, search, and a mobile menu.",
+      },
+    },
+  },
   args: {
     brand: { sectionLabel: "News" },
     primaryNavigation: [{ id: "news", current: true }],
@@ -14,9 +21,19 @@ const meta = {
     search: { action: "/search", queryParam: "q", placeholder: "Search GMA Network" },
   },
   argTypes: {
-    navigationPreset: { control: "select", options: ["gma", "none"] },
-    socialPreset: { control: "select", options: ["entertainment", "news", "none"] },
-    renderLink: { control: false },
+    brand: { description: "Configure the logo, home link, accessible labels, and section label." },
+    navigationPreset: { control: "select", options: ["gma", "none"], description: "Choose the built-in GMA navigation or start with no preset links." },
+    primaryNavigation: { description: "Patch or extend primary navigation items by stable ID." },
+    networkNavigation: { description: "Patch or extend network navigation items by stable ID." },
+    socialPreset: { control: "select", options: ["entertainment", "news", "none"], description: "Choose a built-in social-link set." },
+    socialLinks: { description: "Provide custom social links, icons, labels, targets, or hidden items." },
+    search: { description: "Configure the native GET search action, query parameter, labels, and placeholder." },
+    renderLink: { control: false, description: "Adapt links to a consumer router such as Next.js Link." },
+    theme: { description: "Set the theme mode, accent color, class name, or inline styles." },
+    menuLabel: { description: "Accessible label for the closed mobile-menu button." },
+    closeMenuLabel: { description: "Accessible label for the open mobile-menu button." },
+    searchToggleLabel: { description: "Accessible label for opening search." },
+    closeSearchLabel: { description: "Accessible label for closing search." },
   },
 } satisfies Meta<typeof PortalHeader>;
 
