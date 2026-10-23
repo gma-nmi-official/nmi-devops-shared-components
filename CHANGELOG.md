@@ -6,10 +6,29 @@ The project follows [Semantic Versioning](https://semver.org/). The repository p
 
 ## [Unreleased]
 
-- Add the standalone `CookieAgreement` component with explicit acceptance
-  persistence, configurable temporary Reject dismissal, privacy destinations,
-  repository-local NPC seal artwork, Storybook coverage, and no analytics or
-  Portal Header coupling. Validation and release evidence are pending.
+No unreleased changes.
+
+## [1.2.0] - 2026-10-24
+
+### Added
+
+- Added the standalone `CookieAgreement` component with explicit acceptance
+  persistence, configurable temporary Reject dismissal, configurable scroll
+  reveal and slide-up animation, separate privacy destinations, repository-local
+  NPC seal artwork, Storybook/catalog coverage, and no analytics or Portal Header
+  coupling.
+
+**Consumer impact / SemVer: Minor.** This is a backward-compatible new named
+component export. Existing consumers do not need to change. New consumers can
+import `CookieAgreement` and the existing package stylesheet.
+
+**Migration:** No existing package API migration is required. Consumers should
+review the default privacy destinations and provide an approved `policyVersion`.
+
+**Validation evidence:** `npm run check`, `npm run pack:check`, 28 Playwright
+tests, user-confirmed manual QA (MT-01 through MT-11), and independent Argus
+review passed on the merged feature revision. The release workflow will rerun
+the full quality gate for the approved `v1.2.0` tag.
 
 ## [1.1.0] - 2026-10-23
 
