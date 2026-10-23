@@ -43,7 +43,7 @@ async function focusWithKeyboard(page: Page, accessibleName: string) {
   return link;
 }
 
-test("navigates through the documentation home and Portal Header catalog with keyboard focus", async ({ page }) => {
+test("navigates through the documentation home and component catalog with keyboard focus", async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveTitle("NMI DevOps Shared Components");
   await expect(page.getByText("NMI DevOps Shared Components", { exact: true })).toBeVisible();
@@ -57,11 +57,13 @@ test("navigates through the documentation home and Portal Header catalog with ke
   await catalogLink.press("Enter");
 
   await expect(page).toHaveURL(/\/catalog\/?$/);
-  await expect(page).toHaveTitle("Portal Header documentation | NMI DevOps Shared Components");
+  await expect(page).toHaveTitle("Component catalog | NMI DevOps Shared Components");
   await expect(
-    page.getByRole("heading", { level: 1, name: "Build a portal header in minutes." }),
+    page.getByRole("heading", { level: 1, name: "Build consistent portal experiences in minutes." }),
   ).toBeVisible();
   await expect(page.getByRole("heading", { level: 2, name: "What is Portal Header?" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "What is Cookie Agreement?" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Cookie notice" })).toBeVisible();
   await expect(page.getByText("Primary and network navigation", { exact: true })).toBeVisible();
   await expect(page.getByText('import { PortalHeader } from "nmi-devops-shared-components";', { exact: false })).toBeVisible();
 
