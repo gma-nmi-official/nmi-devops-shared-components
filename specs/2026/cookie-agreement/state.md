@@ -6,7 +6,7 @@
 - Last updated: 2026-10-23 Asia/Shanghai.
 - Approval: `approvals.md`; CA-A01-CA-A22 approve the current planning/development scope and user-confirmed manual QA. Commit, push, PR, release, and deployment remain separately gated.
 - Blockers: consumer cookie/service inventory and Accept scope; NPC seal redistribution rights and final repository path; compatibility; privacy/legal acceptance before release. Persistent rejected policy is deferred. GA is explicitly outside this project.
-- Next action: Orion presents the commit `07b6330` result and requests explicit push approval. PR, release, and deployment remain separately gated.
+- Next action: Orion presents the commit `fd9fc14` result and requests explicit push approval. PR, release, and deployment remain separately gated.
 
 ## Baseline
 
