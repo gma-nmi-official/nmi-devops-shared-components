@@ -43,35 +43,35 @@ async function focusWithKeyboard(page: Page, accessibleName: string) {
   return link;
 }
 
-test("navigates through the showcase and Portal Header catalog with keyboard focus", async ({ page }) => {
+test("navigates through the documentation home and Portal Header catalog with keyboard focus", async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveTitle("NMI DevOps Shared Components");
   await expect(page.getByText("NMI DevOps Shared Components", { exact: true })).toBeVisible();
 
   await expect(
-    page.getByRole("heading", { level: 1, name: "A dedicated foundation for GNO portal interfaces." }),
+    page.getByRole("heading", { level: 1, name: "Build consistent portal experiences with shared components." }),
   ).toBeVisible();
-  await expect(page.getByRole("heading", { level: 2, name: "Portal Header available" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Everything you need to use the package." })).toBeVisible();
 
-  const catalogLink = await focusWithKeyboard(page, "Open the component catalog");
+  const catalogLink = await focusWithKeyboard(page, "Read the package guide");
   await catalogLink.press("Enter");
 
-  await expect(page).toHaveURL(/\/catalog$/);
-  await expect(page).toHaveTitle("Component catalog | NMI DevOps Shared Components");
+  await expect(page).toHaveURL(/\/catalog\/?$/);
+  await expect(page).toHaveTitle("Portal Header documentation | NMI DevOps Shared Components");
   await expect(
-    page.getByRole("heading", { level: 1, name: "Importable building blocks for GNO portal products." }),
+    page.getByRole("heading", { level: 1, name: "Build a portal header in minutes." }),
   ).toBeVisible();
-  await expect(page.getByRole("heading", { level: 2, name: "Portal Header" })).toBeVisible();
-  await expect(page.getByText("complete ordered GMA navigation preset", { exact: false })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "What is Portal Header?" })).toBeVisible();
+  await expect(page.getByText("Primary and network navigation", { exact: true })).toBeVisible();
   await expect(page.getByText('import { PortalHeader } from "nmi-devops-shared-components";', { exact: false })).toBeVisible();
 
   await page.goBack();
   await expect(page).toHaveURL(/\/$/);
-  await expect(page.getByRole("heading", { level: 1, name: "A dedicated foundation for GNO portal interfaces." })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Build consistent portal experiences with shared components." })).toBeVisible();
 
   await page.goForward();
-  await expect(page).toHaveURL(/\/catalog$/);
-  await expect(page.getByRole("link", { name: "Showcase home" })).toBeVisible();
+  await expect(page).toHaveURL(/\/catalog\/?$/);
+  await expect(page.getByRole("link", { name: "Documentation home" })).toBeVisible();
 });
 
 for (const path of ["/", "/catalog"] as const) {
@@ -109,11 +109,11 @@ test("Portal Header exposes safe social links and a working native GET search", 
   }
   await search.fill("   ");
   await search.press("Enter");
-  await expect(page).toHaveURL(/\/catalog$/);
+  await expect(page).toHaveURL(/\/catalog\/?$/);
 
   await search.fill("  sample query  ");
   await search.press("Enter");
-  await expect(page).toHaveURL(/\/catalog\?q=sample(\+|%20)query$/);
+  await expect(page).toHaveURL(/\/catalog\/?\?q=sample(\+|%20)query$/);
 });
 
 test("mobile dropdown closes with Escape and restores trigger focus", async ({ page }) => {

@@ -6,6 +6,8 @@ The project follows [Semantic Versioning](https://semver.org/). The repository p
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-23
+
 ### Added
 
 - Added the `PortalHeader` component and public TypeScript contracts with
@@ -38,6 +40,13 @@ The project follows [Semantic Versioning](https://semver.org/). The repository p
 - Added the public documentation landing page, consumer catalog, and embedded
   Storybook at `/docs`, with GitHub Pages deployment configuration.
 
+### Changed
+
+- Updated release validation dependencies to patched Next.js `16.4.2`,
+  Storybook `10.6.3`, Vite `7.3.7`, and Vitest `4.1.12` versions.
+- Contained catalog documentation link styles so they cannot override Portal
+  Header tokens, and corrected mobile documentation-home overflow.
+
 **Consumer impact / SemVer: Minor.** This is a backward-compatible new named
 component export. Existing consumers do not need to change. New consumers import
 `PortalHeader` and the existing package stylesheet, then optionally patch the
@@ -49,9 +58,13 @@ mapping and intentionally unsupported behavior are documented in
 [`docs/portal-header-migration.md`](docs/portal-header-migration.md).
 
 **Validation evidence:** Typecheck, lint, 13/13 unit/accessibility tests, two
-JavaScript/TypeScript consumer fixtures, Storybook, Next.js 16.3.8, the 28/28
+JavaScript/TypeScript consumer fixtures, Storybook, Next.js 16.4.2, the 28/28
 configured Playwright suite, 52/52 installed Windows Chrome/Edge cases, and the
-37-file package dry-run pass. PH-A20 waives unexecuted real screen-reader QA and
+37-file package dry-run pass. The shipped-runtime dependency audit has zero
+findings; the full audit retains five high findings in the development-only
+`eslint-config-next` → `@next/eslint-plugin-next` → `fast-glob` → `micromatch`
+→ `braces` chain under the existing A-006 exception.
+PH-A20 waives unexecuted real screen-reader QA and
 PH-A21 accepts the configured Chromium plus installed Chrome/Edge delivery
 matrix; Firefox, Safari, and second-version coverage remain explicit residual
 risk. Exact-revision GitHub Actions release evidence remains pending until an

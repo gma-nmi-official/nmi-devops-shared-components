@@ -116,7 +116,7 @@ When multiple components change, use the highest-impact bump. Keep the root and 
 Create an annotated tag only after validation and approval:
 
 ```bash
-git tag -a v1.0.0 -m "release: nmi-devops-shared-components v1.0.0"
+git tag -a v1.1.0 -m "release: nmi-devops-shared-components v1.1.0"
 ```
 
 GitHub tag builds produce a versioned `.tgz` asset attached to a GitHub Release. Do not publish, push a tag, create a pull request, or create a release without the separate approval required for that action.
