@@ -19,3 +19,11 @@ icons identify their respective services and do not imply endorsement.
 The repository-local GMA header logo is supplied by GMA Network for use in this
 private GNO component package. It remains GMA Network trademark artwork and may
 not be used to imply third-party endorsement.
+
+## GNO NPC seal
+
+Cookie Agreement includes a repository-local copy of the GNO NPC seal referenced
+from `https://images.gmanetwork.com/res/img/gno-npc-seal.webp` (230×400 px,
+SHA-256 `e1a103d1b30eabc11bb52af59571920046e0277fac1a70c8c5ee4ccb7f7a2238`).
+Redistribution and trademark permission remain pending owner confirmation before
+release; the component does not load the remote source at runtime.

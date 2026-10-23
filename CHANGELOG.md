@@ -6,6 +6,11 @@ The project follows [Semantic Versioning](https://semver.org/). The repository p
 
 ## [Unreleased]
 
+- Add the standalone `CookieAgreement` component with explicit acceptance
+  persistence, configurable temporary Reject dismissal, privacy destinations,
+  repository-local NPC seal artwork, Storybook coverage, and no analytics or
+  Portal Header coupling. Validation and release evidence are pending.
+
 ## [1.1.0] - 2026-10-23
 
 ### Added

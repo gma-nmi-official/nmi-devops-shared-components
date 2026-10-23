@@ -4,6 +4,29 @@
   [data-gno-theme="dark"] { --gno-color-primary:#51a2ff; --gno-color-primary-hover:#8ec5ff; --gno-color-on-primary:#0f172a; --gno-color-surface:#172033; --gno-color-surface-hover:#25324a; --gno-color-text:#f8fafc; --gno-color-border:#526077; --gno-color-danger:#ff6467; --gno-color-danger-hover:#ff8a8d; --gno-focus-ring:#8ec5ff; }
 }
 @layer gno-components {
+  .gno-cookie-agreement { --gno-cookie-agreement-bg:rgb(41 41 41 / .88); --gno-cookie-agreement-accent:#c50000; --gno-cookie-agreement-text:#fff; background:var(--gno-cookie-agreement-bg); border-block-start:.3125rem solid var(--gno-cookie-agreement-accent); bottom:0; box-shadow:0 -0.5rem 1.5rem rgb(0 0 0 / .2); color:var(--gno-cookie-agreement-text); font-family:"Ubuntu","Arial Narrow",Calibri,Arial,sans-serif; inline-size:100%; inset-inline:0; min-block-size:4.375rem; opacity:0; pointer-events:none; position:fixed; transform:translateY(100%); transition:opacity .25s ease,transform .25s ease,visibility .25s ease; visibility:hidden; z-index:6001; }
+  .gno-cookie-agreement--visible { opacity:1; pointer-events:auto; transform:translateY(0); visibility:visible; }
+  .gno-cookie-agreement *, .gno-cookie-agreement *::before, .gno-cookie-agreement *::after { box-sizing:border-box; }
+  .gno-cookie-agreement__inner { align-items:center; display:grid; grid-template-columns:5% 65% 30%; margin-inline:auto; max-inline-size:85rem; padding:.625rem; }
+  .gno-cookie-agreement__seal-link { align-items:center; display:inline-flex; justify-content:center; }
+  .gno-cookie-agreement__seal { block-size:auto; inline-size:37px; max-block-size:4rem; object-fit:contain; }
+  .gno-cookie-agreement__body { font-family:"Ubuntu","Arial Narrow",Calibri,Arial,sans-serif; font-size:.875rem; line-height:1.43; margin:0; padding-inline: .625rem .3125rem; }
+  .gno-cookie-agreement__actions { align-items:center; display:flex; flex-wrap:wrap; gap: .5rem; justify-content:center; padding-block-start:.3125rem; }
+  .gno-cookie-agreement__actions a, .gno-cookie-agreement__actions button { align-items:center; background:var(--gno-cookie-agreement-accent); border:0; border-radius:4px; color:#fff; cursor:pointer; display:inline-flex; flex:1 1 47%; font:inherit; font-size:.875rem; font-weight:400; justify-content:center; max-inline-size:12.5rem; min-block-size:2.75rem; min-inline-size:6.25rem; padding:.5625rem .375rem; text-align:center; text-decoration:none; }
+  .gno-cookie-agreement__privacy-link { color:var(--gno-cookie-agreement-text); }
+  .gno-cookie-agreement__accept, .gno-cookie-agreement__reject { background:var(--gno-cookie-agreement-accent); color:#fff; }
+  .gno-cookie-agreement__accept:hover, .gno-cookie-agreement__reject:hover { filter:brightness(1.15); }
+  .gno-cookie-agreement__accept:disabled { cursor:wait; opacity:.7; }
+  .gno-cookie-agreement :where(a,button):focus-visible { outline:3px solid var(--gno-focus-ring); outline-offset:3px; }
+  @media (max-width:47.99rem) {
+    .gno-cookie-agreement__inner { grid-template-columns:20% 80%; max-inline-size:40.625rem; padding:.625rem; }
+    .gno-cookie-agreement__seal { inline-size:auto; max-block-size:3.125rem; max-inline-size:76%; }
+    .gno-cookie-agreement__body { font-size:.8125rem; line-height:1.54; padding-inline:0; }
+    .gno-cookie-agreement__actions { grid-column:1 / -1; justify-content:stretch; margin-block-start:.3125rem; padding-block-start:0; }
+    .gno-cookie-agreement__actions a, .gno-cookie-agreement__actions button { flex:1 1 47%; }
+  }
+  @media (prefers-reduced-motion:reduce) { .gno-cookie-agreement *, .gno-cookie-agreement *::before, .gno-cookie-agreement *::after { scroll-behavior:auto !important; transition-duration:0.01ms !important; } }
+
   .gno-portal-header {
     --gno-portal-header-background:#2e2e2e;
     --gno-portal-header-panel:rgb(46 46 46 / .95);

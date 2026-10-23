@@ -116,3 +116,28 @@ is embedded locally and performs no runtime asset request.
 
 See the repository's `docs/consumer-setup.md`, `docs/portal-header-migration.md`,
 catalog, and dedicated Storybook stories for complete integration guidance.
+
+## Cookie Agreement
+
+`CookieAgreement` is a standalone fixed-bottom privacy notice. It stays hidden
+until the configurable scroll threshold is reached, then slides up into view;
+it persists only an explicit `I AGREE` acceptance,
+and has no Google Analytics or generic analytics integration. Reject is hidden
+by default; when enabled it only dismisses the notice for the current page
+session and the notice returns after refresh.
+
+```tsx
+import { CookieAgreement } from "nmi-devops-shared-components";
+import "nmi-devops-shared-components/styles.css";
+
+<CookieAgreement policyVersion="2026-01" scrollRevealThreshold={0.1} />;
+```
+
+The default `FIND OUT MORE` URL is
+`https://www.gmanetwork.com/privacypolicy/`. The optional repository-local NPC
+seal links to `https://www.gmanetwork.com/news/privacy-notice/`. Both HTTPS
+destinations are independently configurable. Provide a typed `ConsentStore` to
+persist acceptance with the approved host-only `gno_cookie_consent` adapter
+defaults. The component does not classify or enforce consumer cookies/services;
+that remains the consumer application's responsibility. Remote seal asset URLs
+are rejected; artwork must be packaged locally by the consumer.

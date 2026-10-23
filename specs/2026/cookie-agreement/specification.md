@@ -10,13 +10,13 @@
 
 ## Scope and exclusions
 
-In scope: a standalone controlled consent UI, approved explicit actions, policy/version model, optional preference categories, privacy link, repository-local trust/seal and visual assets, persistence adapter, responsive/accessibility behavior, docs, tests, and migration mapping.
+In scope: a standalone controlled consent UI fixed to the viewport bottom and revealed with a slide-up animation after the configurable scroll threshold when a decision is required; default visible text controls `I AGREE` and `FIND OUT MORE`, with an opt-in configurable Reject action hidden by default; a versioned acceptance record; a session-only Reject dismissal that returns after refresh; privacy link; repository-local trust/seal and visual assets; persistence adapter; responsive/accessibility behavior; docs, tests, and migration mapping.
 
-Excluded: Google Analytics, generic analytics callbacks/events, tag management, GA consent mode, and analytics loading. Those belong to a separate future component/specification which may consume the approved consent record at the application boundary. Portal Header composition, imports, props, rendering, styling, lifecycle, and runtime state are excluded. Legal advice/compliance certification, privacy-policy authorship, a full consent-management backend, remote runtime loading, publication, rollout, and deployment are also excluded.
+Excluded: category-preference/customized consent UI; Cookie Agreement enforcement that loads, blocks, enables, disables, or configures consumer cookies/services; Google Analytics, generic analytics callbacks/events, tag management, GA consent mode, and analytics loading. Consumers enforce the record at their service boundary, and analytics belongs to a separate future component/specification which may consume the approved consent record there. Portal Header composition, imports, props, rendering, styling, lifecycle, and runtime state are excluded. Legal advice/compliance certification, privacy-policy authorship, a full consent-management backend, remote runtime loading, publication, rollout, and deployment are also excluded.
 
 ## Repository/context
 
-`D:\gno-node-projects\gno-shared-components-v2`, `master`, base `c580e408`. The package currently has no public component exports. Existing foundation changes and Portal Header planning are separate scopes.
+`D:\gno-node-projects\gno-shared-components-v2`, `feature/cookie-agreement`, HEAD `c30306bc`, based on `master` `eeba893d`. The package already exports Portal Header; Cookie Agreement will add an independent export without runtime or presentation coupling to it.
 
 ## Endpoint and approval
 

@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { CookieAgreementPreview } from "./cookie-agreement-preview";
 import { PortalHeaderPreview } from "./portal-header-preview";
 
 export const metadata = {
-  title: "Portal Header documentation | NMI DevOps Shared Components",
-  description: "A clear setup and configuration guide for the Portal Header component.",
+  title: "Component catalog | NMI DevOps Shared Components",
+  description: "Setup, previews, and configuration guidance for shared GNO components.",
 };
 
 export default function CatalogPage() {
@@ -11,16 +12,18 @@ export default function CatalogPage() {
     <main className="catalog">
       <header className="catalog__header">
         <Link className="catalog__back" href="/">← Documentation home</Link>
-        <p className="showcase__eyebrow">Package guide · Portal Header</p>
-        <h1>Build a portal header in minutes.</h1>
-        <p>Use this guide to understand the component, preview its default state, install it, and configure the parts your application needs.</p>
+        <p className="showcase__eyebrow">Package guide · Shared Components</p>
+        <h1>Build consistent portal experiences in minutes.</h1>
+        <p>Use this guide to understand each component, preview its default state, install it, and configure the parts your application needs.</p>
       </header>
 
       <nav aria-label="Page sections" className="catalog__index">
         <a href="#overview">Overview</a>
         <a href="#preview">Preview</a>
+        <a href="#cookie-agreement">Cookie Agreement</a>
         <a href="#setup">Install</a>
-        <a href="#parameters">Configure</a>
+        <a href="#parameters">Portal Header</a>
+        <a href="#cookie-configuration">Cookie Agreement config</a>
       </nav>
 
       <section aria-labelledby="overview-title" className="catalog__section" id="overview">
@@ -42,8 +45,23 @@ export default function CatalogPage() {
         <div className="catalog__preview"><PortalHeaderPreview /></div>
       </section>
 
+      <section aria-labelledby="cookie-agreement-title" className="catalog__section" id="cookie-agreement">
+        <p className="showcase__eyebrow">03 · Cookie Agreement</p>
+        <h2 id="cookie-agreement-title">What is Cookie Agreement?</h2>
+        <p>Cookie Agreement is a standalone fixed-bottom privacy notice. In production it remains hidden until the configurable scroll threshold is reached, then slides up; it persists only explicit <code>I AGREE</code> acceptance and contains no GA or generic analytics functionality.</p>
+        <div className="catalog__cookie-preview">
+          <p>Live preview: threshold is set to 0 here so the fixed-bottom slide-up surface is visible while browsing the catalog.</p>
+          <CookieAgreementPreview />
+        </div>
+        <ul className="catalog__list">
+          <li><code>FIND OUT MORE</code> links to the configurable privacy policy destination.</li>
+          <li>Reject is hidden by default; when enabled it dismisses only for the current session.</li>
+          <li>The repository-local NPC seal and all visual assets load without remote runtime assets.</li>
+        </ul>
+      </section>
+
       <section aria-labelledby="setup-title" className="catalog__section" id="setup">
-        <p className="showcase__eyebrow">03 · Install</p>
+        <p className="showcase__eyebrow">04 · Install</p>
         <h2 id="setup-title">Add it to your application</h2>
         <p>Install the package, import the component, and load the shared stylesheet once.</p>
         <pre><code>{`npm install nmi-devops-shared-components
@@ -56,8 +74,31 @@ export function SiteHeader() {
 }`}</code></pre>
       </section>
 
+      <section aria-labelledby="cookie-configuration-title" className="catalog__section" id="cookie-configuration">
+        <p className="showcase__eyebrow">05 · Configure Cookie Agreement</p>
+        <h2 id="cookie-configuration-title">Keep consent explicit and consumer-owned</h2>
+        <p>Pass a policy version and optionally inject a typed <code>ConsentStore</code>. The default adapter uses a host-only <code>gno_cookie_consent</code> cookie with a 365-day expiry.</p>
+        <div className="catalog__parameters">
+          <div><code>policyVersion</code><span>Required version used to invalidate older acceptance records.</span></div>
+          <div><code>store</code><span>Optional typed read/write/clear adapter; storage failures remain observable.</span></div>
+          <div><code>rejectEnabled</code><span>Opt-in temporary dismissal; hidden by default and not persisted.</span></div>
+          <div><code>scrollRevealThreshold</code><span>Viewport-height fraction scrolled before the notice slides up; defaults to <code>0.1</code>.</span></div>
+          <div><code>copy</code><span>Configure plain-text accessible name, body, and action labels.</span></div>
+          <div><code>findOutMoreHref</code><span>Independent absolute HTTPS privacy-policy destination.</span></div>
+          <div><code>seal</code><span>Optional repository-local NPC seal source, alt text, and independent HTTPS destination.</span></div>
+        </div>
+        <pre><code>{`import { CookieAgreement } from "nmi-devops-shared-components";
+import "nmi-devops-shared-components/styles.css";
+
+<CookieAgreement
+  policyVersion="2026-01"
+  rejectEnabled
+  findOutMoreHref="https://www.gmanetwork.com/privacypolicy/"
+/>`}</code></pre>
+      </section>
+
       <section aria-labelledby="parameters-title" className="catalog__section" id="parameters">
-        <p className="showcase__eyebrow">04 · Configure</p>
+        <p className="showcase__eyebrow">06 · Configure Portal Header</p>
         <h2 id="parameters-title">Choose what your header needs</h2>
         <p>All props are optional. Start with the defaults, then add only the options your product uses.</p>
         <div className="catalog__parameters">
