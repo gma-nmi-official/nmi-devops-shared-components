@@ -1,5 +1,47 @@
 # Current state: gno-shared-components-v2 foundation
 
+## Portal Header minor release preparation — 2026-10-23
+
+- Objective: prepare `nmi-devops-shared-components` version `1.1.0` after the
+  owner-confirmed merges of Portal Header PR #2 and public documentation PR #3.
+- Active unit / stage: U-REL-002 independent review closed with PROCEED. A-028
+  corrections are validated and reports 22–24 record closure. Commit approval
+  is the next separate gate.
+- Repository / branch / base: isolated worktree on `feature/release-v1.1.0`,
+  based on merged `master` revision
+  `d91ac862dda90073875d16c70bb24886d334ff98`.
+- Approval: A-022 authorizes local release preparation and checks only.
+- Scope: align root, package, and lockfile versions at `1.1.0`; date the completed
+  changelog entry; update active tag/download/version examples and the current
+  GitHub repository URL; record QA and release-preparation evidence.
+- Merge evidence: reviewed Portal Header commit `661ba9c` is an ancestor of
+  `master`; PR #2 merged as `eb16f1c` with 1/1 quality checks, and PR #3 merged
+  as current `master` `d91ac86` with 1/1 quality checks.
+- Validation: metadata, active examples, changelog, `npm ci`, `npm run check`,
+  package dry run, and `git diff --check` pass. The shipped-runtime audit is
+  clean; the full audit retains five high development-only findings under the
+  A-006 exception. GitHub Pages run `39879895039` passed on remote `master`
+  `d91ac862`.
+- F-REL-110 validation: the blocked-term scan is clean; the retained example
+  matches the exported Portal Header props; `npm run docs:check`, the full
+  `npm run check`, and `git diff --check` pass after the A-026 correction.
+- F-REL-111 validation: private-download guidance is aligned across consumer
+  docs and both presentation formats. The complete gate passes: 13/13 tests,
+  two consumer fixtures, 28/28 browser cases, 37-file package dry run, zero
+  shipped-runtime findings, the five-high A-006 development-only full-audit
+  exception, four-way `1.1.0` alignment, and clean whitespace.
+- Browser correction: A-025 approved plan 19. The current documentation journey,
+  configured trailing slash, 375 px landing-page overflow, and catalog CSS
+  leakage into Portal Header were corrected; all 28 browser cases now pass.
+- Risks: PH-A20 screen-reader waiver and PH-A21 deferred Firefox/Safari/second-
+  version coverage remain disclosed in the `1.1.0` changelog. A real release,
+  authenticated consumer-asset download, and release-workflow result remain
+  pending.
+- Independent review: Argus returned PROCEED after closing F-REL-110, F-REL-111,
+  and F-REL-112. See `execution/24_v1_1_0_final_review_closure_2026-10-23.md`.
+- Next action: prepare the exact commit-approval artifact. Push, PR, merge, tag,
+  and publication remain separately gated.
+
 ## Initial stable release preparation — 2026-10-19
 
 - Objective: prepare the initial `1.0.0` package metadata and release documentation after the foundation was confirmed merged to `master` at `b0c0aba`.
@@ -15,7 +57,7 @@
 
 ## Previous GitHub hosting and package-release update — 2026-10-19
 
-The current delivery target is GitHub `origin`, not the historical Bitbucket target documented below. The user approved updating the active package release guidance and adding `.github/workflows/release.yml`. The workflow runs for `v*` tags, verifies the tag against root and package versions, runs `npm run check`, packages the `.tgz`, and creates a GitHub Release with the package asset. Active consumer/setup guidance now uses GitHub Release assets and explains authenticated download for this private repository. A-014 records this local workflow-change approval.
+The current delivery target is GitHub `origin`, not the historical Bitbucket target documented below. The user approved updating the active package release guidance and adding `.github/workflows/release.yml`. The workflow runs for `v*` tags, verifies the tag against root and package versions, runs `npm run check`, packages the `.tgz`, and creates a GitHub Release with the package asset. At the time of A-014, consumer/setup guidance described authenticated downloads for a private repository; A-027 later replaced that active guidance after the repository became public.
 
 No tag was pushed and no GitHub Release was created. Commit, push, and release-tag push remain separately gated. Manual cases MT-REL-002 and MT-REL-003 are BLOCKED until an approved release tag and authorized consumer credentials are available. Historical Bitbucket approvals and execution records below are retained as history.
 

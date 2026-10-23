@@ -4,16 +4,16 @@ This guide explains how a JavaScript or TypeScript application consumes the publ
 
 ## 1. Install the package
 
-Download the approved `.tgz` asset from the GitHub Release, then install it in the consumer application. Set `GH_TOKEN` in the environment to a GitHub token authorized to read this private repository:
+Download the approved `.tgz` asset from the private GitHub Release, then install it in the consumer application. Set `GH_TOKEN` to a token authorized to read the repository and keep it in the consumer's CI secret store:
 
 ```bash
-gh release download v1.0.0 \
+gh release download v1.1.0 \
   --repo gma-nmi-official/nmi-devops-shared-components \
-  --pattern 'nmi-devops-shared-components-1.0.0.tgz'
-npm install ./nmi-devops-shared-components-1.0.0.tgz
+  --pattern 'nmi-devops-shared-components-1.1.0.tgz'
+npm install ./nmi-devops-shared-components-1.1.0.tgz
 ```
 
-The example uses the initial stable release, `v1.0.0`. Keep the token in the consumer's CI secret store; do not commit it. The installed package and import name remain `nmi-devops-shared-components`.
+The example uses the current minor release, `v1.1.0`. Do not commit the token. The installed package and import name remain `nmi-devops-shared-components`.
 
 ## 2. Import the component and styles
 
