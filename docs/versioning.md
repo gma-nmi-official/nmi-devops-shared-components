@@ -48,8 +48,8 @@ Include the release version and changelog entry in the reviewed PR. After the us
 Once release-ready, Orion presents the exact annotated tag, target commit, remote, and push command. Explicit approval is required because pushing the tag triggers GitHub Actions to create the release and publish its asset. Then create and push the annotated tag:
 
 ```bash
-git tag -a v1.0.0 -m "release: nmi-devops-shared-components v1.0.0"
-git push origin v1.0.0
+git tag -a v1.1.0 -m "release: nmi-devops-shared-components v1.1.0"
+git push origin v1.1.0
 ```
 
 GitHub Actions runs [`.github/workflows/release.yml`](../.github/workflows/release.yml) for tags matching `v*`. It verifies that the tag matches both package versions, runs the full quality gate, and writes the installable artifact to `release-artifacts/`:
@@ -59,7 +59,7 @@ npm run check
 npm run pack:release
 ```
 
-The workflow attaches `nmi-devops-shared-components-<version>.tgz` to the matching GitHub Release using the workflow's `GITHUB_TOKEN`. The package is not published to the public npm registry. Consumers install the release asset using the URL pattern documented in [`consumer-setup.md`](consumer-setup.md). This repository is private, so consumer developers and build environments must have repository access and authenticate to download private release assets. The former package ID was `gno-shared-components`; consumers of that artifact must migrate to the new package and import name.
+The workflow attaches `nmi-devops-shared-components-<version>.tgz` to the matching GitHub Release using the workflow's `GITHUB_TOKEN`. The package is not published to the public npm registry. Consumers install the private release asset using the URL pattern documented in [`consumer-setup.md`](consumer-setup.md); repository access and a `GH_TOKEN` authorized to read the repository are required. Keep the token in a CI secret store. The former package ID was `gno-shared-components`; consumers of that artifact must migrate to the new package and import name.
 
 Pushing the tag starts the workflow and creates the release; it does not replace the separate approval required before pushing a tag. Do not reuse a tag for a different package version or artifact.
 

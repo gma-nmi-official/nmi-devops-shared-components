@@ -95,8 +95,8 @@ The workflow files are available under [`.codex/`](.codex/), [`.agents/`](.agent
 Consumers install the package and import a named export:
 
 ```bash
-  gh release download v1.0.0 --repo gma-nmi-official/nmi-devops-shared-components --pattern 'nmi-devops-shared-components-1.0.0.tgz'
-npm install ./nmi-devops-shared-components-1.0.0.tgz
+gh release download v1.1.0 --repo gma-nmi-official/nmi-devops-shared-components --pattern 'nmi-devops-shared-components-1.1.0.tgz'
+npm install ./nmi-devops-shared-components-1.1.0.tgz
 ```
 
 ```tsx
@@ -108,7 +108,7 @@ export function SiteHeader() {
 }
 ```
 
-Set `GH_TOKEN` to a token with repository read access before downloading; keep it in the consumer's CI secret store. `nmi-devops-shared-components` remains the package and import name. See `/catalog` while running the showcase for the current public inventory and copyable JavaScript/TypeScript examples.
+The repository and its release assets are private. Consumers need repository access and a `GH_TOKEN` authorized to download the release asset; keep it in the consumer's CI secret store and never commit it. `nmi-devops-shared-components` remains the package and import name. See `/catalog` while running the showcase for the current inventory and copyable JavaScript/TypeScript examples.
 
 For complete setup guidance, see [`docs/consumer-setup.md`](docs/consumer-setup.md).
 
