@@ -6,6 +6,8 @@ node_modules
 next-env.d.ts
 packages/*/dist/
 storybook-static/
+/public/storybook/
+/public/docs/
 coverage/
 /playwright-report/
 /test-results/

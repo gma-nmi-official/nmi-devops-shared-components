@@ -35,6 +35,8 @@ The project follows [Semantic Versioning](https://semver.org/). The repository p
   restored trigger focus after outside-pointer closure.
 - Corrected the public Portal Header text token so root-level overrides drive
   visible section, navigation, action-button, and social-link colors.
+- Added the public documentation landing page, consumer catalog, and embedded
+  Storybook at `/docs`, with GitHub Pages deployment configuration.
 
 **Consumer impact / SemVer: Minor.** This is a backward-compatible new named
 component export. Existing consumers do not need to change. New consumers import

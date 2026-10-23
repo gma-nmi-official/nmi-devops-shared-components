@@ -101,9 +101,10 @@ columns in a scrollable panel. Override `--gno-portal-header-background`,
 `.gno-portal-header` component root after importing the package stylesheet. These
 defaults are declared on the component root, so an ancestor-only custom property
 does not override them. The text token controls the section label, navigation
-links, action buttons, and social links. The font stack starts with `Open Sans` but the package
-does not load it remotely; consumers may provide it, otherwise local fallbacks
-are used. Preserve meaningful link labels and the visible focus styles. Manual
+links, action buttons, and social links. The font stack uses
+`Arial, Helvetica, sans-serif`, and the package does not load fonts remotely.
+Consumers may provide a different font through their own styles. Preserve
+meaningful link labels and the visible focus styles. Manual
 verification at supported viewports, 200% zoom, and with a screen reader remains
 part of consumer acceptance.
 
