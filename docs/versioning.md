@@ -32,7 +32,8 @@ Component scope determines what changed; package impact determines the version b
 
 ## Required changelog entry
 
-Before a release:
+Complete the release-impacting tracked files before final verification and
+independent review. For the normal one-PR path:
 
 1. Move completed items from `Unreleased` into a dated version section.
 2. Identify the affected component(s) and public package surface.
@@ -41,9 +42,20 @@ Before a release:
 5. Record validation evidence: typecheck, lint, tests, Storybook build, Next.js build, and `npm pack --dry-run` as applicable.
 6. Align the root and `packages/ui` versions and update the lockfile.
 
+Vera verifies this release-complete candidate and Argus reviews its complete
+local diff. Adding or correcting a release-impacting tracked file after Argus
+requires affected verification and refreshed independent review before commit.
+
 ## Tagged GitHub release
 
-Include the release version and changelog entry in the reviewed PR. After the user or authorized repository owner merges the PR to `master`, Orion begins release readiness for that merged revision. Verify required checks, changelog, and matching root and package versions. If preparation is missing, complete it in a follow-up PR rather than tagging an incomplete release.
+Include the release version, changelog, applicable migration notes, and consumer
+documentation in the single reviewed PR. After the user or authorized repository
+owner merges the PR to `master`, Orion begins release readiness for that merged
+revision. Readiness verifies required checks, changelog, documentation, and
+matching root/package/lockfile versions; it does not normally create tracked
+changes. If preparation is missing or incorrect, complete the correction in a
+new validated and reviewed PR, merge it, and repeat readiness rather than tagging
+an incomplete release.
 
 Once release-ready, Orion presents the exact annotated tag, target commit, remote, and push command. Explicit approval is required because pushing the tag triggers GitHub Actions to create the release and publish its asset. Then create and push the annotated tag:
 
@@ -62,6 +74,8 @@ npm run pack:release
 The workflow attaches `nmi-devops-shared-components-<version>.tgz` to the matching GitHub Release using the workflow's `GITHUB_TOKEN`. The package is not published to the public npm registry. Consumers install the private release asset using the URL pattern documented in [`consumer-setup.md`](consumer-setup.md); repository access and a `GH_TOKEN` authorized to read the repository are required. Keep the token in a CI secret store. The former package ID was `gno-shared-components`; consumers of that artifact must migrate to the new package and import name.
 
 Pushing the tag starts the workflow and creates the release; it does not replace the separate approval required before pushing a tag. Do not reuse a tag for a different package version or artifact.
+For the normal one-PR path, the approved tag push is the final agent-executed
+release action, followed by verification of the workflow run and release asset.
 
 ## Future option: independent component packages
 

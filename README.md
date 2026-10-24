@@ -83,10 +83,14 @@ The repository includes the GNO workflow so developers and agents use the same p
 2. Adopt the repository and run the baseline checks.
 3. Define requirements, user stories, acceptance criteria, and the component design before implementation.
 4. Implement the complete delivery unit: source, exports, styles, tests, Storybook story, catalog entry, and documentation.
-5. Run automated and manual verification.
-6. Obtain independent review before commit.
-7. Update the changelog and package version according to [`docs/versioning.md`](docs/versioning.md).
-8. After an owner-confirmed merge to `master`, Orion starts release readiness; push the version tag only after its exact target and publication effect receive separate approval.
+5. For an intended package release, finalize the aligned root/package/lockfile versions, changelog, migration notes, and consumer documentation in that same candidate.
+6. Run automated and manual verification against the release-complete candidate.
+7. Obtain independent review of the complete local diff before commit.
+8. Commit, push, and open the separately approved PR; the user or authorized repository owner performs the merge to `master`.
+9. Orion verifies release readiness on the merged revision without routine tracked changes; push the version tag only after its exact target and publication effect receive separate approval.
+
+The normal release path uses one release-complete PR. A second PR is required
+only when post-merge readiness discovers a missing or incorrect tracked file.
 
 The workflow files are available under [`.codex/`](.codex/), [`.agents/`](.agents/), and [`specs/`](specs/).
 

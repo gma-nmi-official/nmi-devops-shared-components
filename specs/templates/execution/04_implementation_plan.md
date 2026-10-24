@@ -15,3 +15,5 @@ in approvals.md before implementation.
 - QA manual testing reference destination, required cases, and recipient:
 - Detected languages/runtimes/frameworks and selected guidance skill for each:
 - Missing stack guidance, proposed skill or human-owned convention, and approval:
+- Intended package release / proposed SemVer impact, or N/A reason:
+- Release-impacting files to complete before final verification and review:

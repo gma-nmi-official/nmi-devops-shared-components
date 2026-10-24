@@ -11,16 +11,19 @@ Push approval must follow presentation of the commit and exact target.
 After the user or authorized repository owner confirms a PR has merged to
 master, begin release readiness for that merged revision without waiting for a
 separate reminder. Do not merge the PR. Verify master contains the reviewed
-commit, required checks passed, root and publishable package versions match,
-and the changelog describes the release. If version/changelog preparation is
-missing, report the blocker and route the needed PR through normal review; do not
-create a tag for an incomplete release.
+commit, required checks passed, root, publishable package, and lockfile versions
+match, and the changelog and release documentation describe the release. Treat this as
+verification of the single release-complete PR, not as a routine editing stage.
+If a tracked version, changelog, migration, Storybook/catalog, or consumer-doc
+correction is needed, report the blocker and route a new PR through validation
+and independent review; do not create a tag for an incomplete release.
 When release-ready, present the exact annotated version tag, target commit,
 remote, command, and the fact that pushing the tag will trigger GitHub Actions
 to create a GitHub Release and upload the package tarball. Wait for explicit
 approval of that concrete tag push before creating/pushing the tag. Verify the
 workflow run and release asset after the push; a merged PR alone does not
-authorize tagging or release publication.
+authorize tagging or release publication. The approved tag push is the final
+agent-executed release action for the normal one-PR path.
 Do not change application code to resolve release blockers; return to Atlas.
 Document deployment ownership, rollback, smoke checks, monitoring, and feedback.
 An operations handoff does not mean software was deployed or production verified.

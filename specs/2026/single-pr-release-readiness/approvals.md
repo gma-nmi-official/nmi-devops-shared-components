@@ -1,0 +1,7 @@
+# Approval log: Single-PR release readiness
+
+| ID | Gate/action | Artifact/target | User decision | Actor | Timestamp/timezone | Conditions | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| SRR-A01 | Enhancement direction | One release-complete PR, owner merge, post-merge readiness check, then separately approved tag push | "Proceed with that." | User | 2026-10-24, time unavailable, Asia/Shanghai | Records agreement with the direction discussed in chat. Exact affected files and validation plan had not yet been presented, so this is not treated as workflow-change approval. | Direction approved; workflow-change gate pending |
+| SRR-A02 | Workflow change | `execution/01_enhancement_proposal_2026-10-24.md` exact affected-file set, proposed behavior, compatibility decisions, and validation plan | "Proceed" | User | 2026-10-24, time unavailable, Asia/Shanghai | Authorizes only the proposed workflow/document/template changes and project execution records. Commit, push, PR, merge, tag, release, and deployment remain separately gated. | Approved |
+| SRR-A03 | Branch creation and commit | Create `chore/single-pr-release-readiness` from `master` at `c45377477bd3d654b85d2c70feceebf68254d876`, stage the exact 22 files in `execution/04_commit_preparation_2026-10-24.md`, and commit as `docs: clarify single-pr release readiness` | "Proceed" | User | 2026-10-24, time unavailable, Asia/Shanghai | Exclude unrelated `.playwright-mcp/`. Push, PR, merge, tag, release, and deployment remain separately gated. | Approved |

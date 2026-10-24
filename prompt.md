@@ -42,6 +42,12 @@ the applicable decision after its artifact is ready to review.
 Follow the lifecycle's implementation/test/review loop. Review local changes;
 a PR is not required before review. Failed pre-review tests return to scoped
 implementation. Post-review corrections require adjustment approval.
+When a package release is intended, complete aligned versions, changelog,
+Storybook/catalog guidance, consumer documentation, and migration notes before
+final verification and independent review. Use one release-complete PR by
+default. After its owner-operated merge, treat release readiness as verification;
+tracked corrections require a new validated and reviewed PR. The exact tag push
+remains a separate final approval and action.
 During verification, create the standalone manual_testing.md reference for QA
 from its template, link it in the report and state, and record the recipient and
 handoff status. Unrun required manual checks remain BLOCKED.
