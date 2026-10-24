@@ -24,16 +24,20 @@ current required CI/review evidence.
 After the user or authorized repository owner confirms the PR has merged to
 `master`, begin release readiness for that merged revision without waiting for
 another reminder. Never merge on the user's behalf. Verify that the reviewed
-commit is on `master`, required checks passed, root and publishable package
-versions match, and the changelog entry is ready. If versioning or changelog
-work is missing, report the blocker and route it through a reviewed PR; do not
-tag an incomplete release.
+commit is on `master`, required checks passed, root, publishable package, and
+lockfile versions match, and the changelog and release documentation are ready. Treat
+readiness as verification of the single release-complete PR, not as a routine
+editing stage. If a tracked version, changelog, migration, Storybook/catalog, or
+consumer-document correction is needed, report the blocker and route it through
+a new validated and reviewed PR; do not tag an incomplete release.
 
 For a ready release, prepare the exact annotated tag, target commit, remote, push
 command, and explain that pushing the tag triggers the repository's GitHub
 Actions release workflow. Obtain explicit approval for that concrete tag push
 before creating/pushing it. Then verify the Actions run and uploaded release
 asset. A PR merge does not itself authorize a tag push or release publication.
+The approved tag push is the final agent-executed release action for the normal
+one-PR path.
 
 Prepare environment/artifact, deployment order, migrations, compatibility,
 backup needs, smoke checks, monitoring, owner, rollback triggers and commands.
