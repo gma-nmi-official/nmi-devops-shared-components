@@ -115,6 +115,15 @@ PR approval before creating it. Record the real PR URL or a preparation-only sta
 
 If merge/deployment is in scope, validate required CI and approved revision,
 obtain the corresponding approvals, and record merge/deployment results.
+The user or authorized repository owner performs the final merge. Once that
+owner confirms a PR has merged to `master`, Orion begins release readiness for
+the merged revision: verify the target commit and required checks, aligned root
+and package versions, and changelog entry. Missing release preparation returns
+as a blocker to Atlas and must be completed through a reviewed PR. Orion then
+presents the exact version tag, target commit, remote, command, and resulting
+GitHub Actions release behavior. The tag push requires its own explicit
+approval; a PR merge alone never authorizes tagging or package publication.
+After the approved push, Orion verifies the workflow run and release asset.
 Plan release order for dependent repositories, database compatibility, backups
 where needed, rollback triggers/commands, responsible owners, and environments.
 

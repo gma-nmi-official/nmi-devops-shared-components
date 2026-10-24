@@ -24,7 +24,7 @@ The Portal_Header is the GNO revamp header displayed at the top of the GMA porta
 
 - **Font_Fallback**: The system sans-serif font stack (e.g., Arial, Helvetica, sans-serif) used to render the News_Text if Inter fails to load.
 - **Default_Navigation_Menu**: The default GNO menu data represented by the reference `secondary` menu: Home, News, Entertainment, Lifestyle, Sparkle, Radio, Music, Pictures, GMA Pinoy TV, Kapuso Foundation, Regional TV, Corporate, GMA Play, GTV, GMA Affordabox, and GMA Now. External-target behavior for GMA Affordabox and GMA Now is preserved.
-- **Component_Scoped_Font_Asset**: The Inter 600 WOFF2 asset shipped by `gno-shared-components` and used only by Portal_Header through a component-scoped font-family/token or class boundary.
+- **Component_Scoped_Font_Asset**: The Inter 600 WOFF2 asset shipped by `nmi-devops-shared-components` and used only by Portal_Header through a component-scoped font-family/token or class boundary.
 - **CookieNotification**: The separate cookie-consent banner and privacy-policy interaction found in the legacy `header.js`; it is not part of Portal_Header.
 
 ---
@@ -45,7 +45,7 @@ The GMA logo SHALL link to the configured GMA home URL. Default navigation SHALL
 
 ### Requirement 0.2: Component-scoped bundled font
 
-The Inter 600 asset SHALL be bundled inside `gno-shared-components`, scoped to Portal_Header, and SHALL NOT become a global font rule for consuming applications. Consumers SHALL receive the required font behavior by importing the Portal_Header package/style contract; they SHALL NOT need to host or preload the asset themselves. The component SHALL use `font-display: swap` and a system fallback.
+The Inter 600 asset SHALL be bundled inside `nmi-devops-shared-components`, scoped to Portal_Header, and SHALL NOT become a global font rule for consuming applications. Consumers SHALL receive the required font behavior by importing the Portal_Header package/style contract; they SHALL NOT need to host or preload the asset themselves. The component SHALL use `font-display: swap` and a system fallback.
 
 ### Requirement 1: Update News Text Font to Inter Semi Bold
 
