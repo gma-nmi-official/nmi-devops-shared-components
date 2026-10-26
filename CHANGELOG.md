@@ -8,6 +8,26 @@ The project follows [Semantic Versioning](https://semver.org/). The repository p
 
 No unreleased changes.
 
+## [1.4.0] - 2026-10-26
+
+### Added
+
+- Added the consent-aware `createGoogleAnalytics` GA4 integration with direct
+  `gtag.js` and GTM `dataLayer` transports, explicit page views, semantic event
+  helpers, validated dimensions, bounded callbacks, and FIFO consent queuing.
+- Added Storybook, catalog, JavaScript/TypeScript fixtures, SSR-safe import
+  coverage, browser checks, and a 16 KiB compiled-module budget.
+
+**Consumer impact / SemVer: Minor.** This is a backward-compatible named export;
+existing consumers do not need to change.
+
+**Migration:** No existing package API migration is required. Consumers adopting
+analytics must load the approved provider, own consent policy, call route page
+views explicitly, and avoid sensitive identifiers in event dimensions.
+
+**Validation evidence:** Pending Vera verification and independent Argus review
+for this candidate revision.
+
 ## [1.3.0] - 2026-10-24
 
 ### Added

@@ -21,6 +21,13 @@ none exists, stop the unit at planning and propose a focused skill or human-owne
 convention for approval. Skills are loaded by the active role; do not invent a
 standard or assume PHP-FIG applies broadly.
 
+Use readable, reviewable code formatting: prefer one operation or decision per
+line, multiline conditionals/object literals/calls when they carry behavior,
+and named helpers for non-trivial branches. Avoid compressed semicolon blocks,
+nested one-line control flow, and dense destructuring that hides side effects.
+Keep formatting changes behavior-neutral and follow any repository formatter or
+linter already in use.
+
 Correct pre-review test failures within approved scope and rerun affected checks.
 Scope or material design changes require renewed approval. After review, obtain
 approval before implementing findings. Do not weaken tests, invent requirements,

@@ -145,6 +145,24 @@ test("Ad Slot catalog preview uses consumer configuration without a live ad-netw
   expect(adNetworkRequests).toEqual([]);
 });
 
+test("Google Analytics catalog preview stays consent-aware and makes no provider request", async ({ page }) => {
+  const analyticsRequests: string[] = [];
+  page.on("request", (request) => {
+    if (/google-analytics|googletagmanager|google-analytics\.com/i.test(request.url())) analyticsRequests.push(request.url());
+  });
+
+  await page.goto("/catalog#google-analytics");
+  await expect(page.getByRole("heading", { level: 2, name: "Consent-aware GA4 delivery" })).toBeVisible();
+  const preview = page.getByRole("region", { name: "Google Analytics preview" });
+  await expect(preview).toBeVisible();
+  await expect(preview.getByText("Waiting for consent")).toBeVisible();
+  await preview.getByRole("button", { name: "Track click" }).click();
+  await expect(preview.getByText("queued")).toBeVisible();
+  await preview.getByLabel("Consent state").selectOption("granted");
+  await expect(preview.getByText("GTM queued page_view")).toBeVisible();
+  expect(analyticsRequests).toEqual([]);
+});
+
 for (const width of [375, 1440]) {
   test(`Portal Header traps visible menu focus and restores it after outside close at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: width < 768 ? 812 : 900 });
