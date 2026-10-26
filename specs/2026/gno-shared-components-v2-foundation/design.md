@@ -8,9 +8,11 @@
 
 Convert the app-shaped scaffold into a private npm-workspaces root containing a publishable `packages/ui` library and an `apps/showcase` Next.js integration application. Storybook operates from the repository as the component workshop.
 
-The public `gno-shared-components` library contract consists of documented package exports, React component props, peer dependencies, and one explicit stylesheet export. Tokens are CSS custom properties. Components use complete, statically detectable Tailwind class names internally; consumers import compiled CSS and need no Tailwind configuration for the library.
+The public `nmi-devops-shared-components` library contract consists of documented package exports, React component props, peer dependencies, and one explicit stylesheet export. Tokens are CSS custom properties. Components use complete, statically detectable Tailwind class names internally; consumers import compiled CSS and need no Tailwind configuration for the library.
 
-Framework-neutral components do not import Next.js. If adapters become necessary, they use an explicit `gno-shared-components/next` boundary. Components are server-compatible unless interaction requires a narrow client entry point.
+The human-facing product name is **NMI DevOps Shared Components**. The private workspace root is `nmi-devops-shared-components-workspace`; the consumer package ID is `nmi-devops-shared-components`.
+
+Framework-neutral components do not import Next.js. If adapters become necessary, they use an explicit `nmi-devops-shared-components/next` boundary. Components are server-compatible unless interaction requires a narrow client entry point.
 
 The catalog has three intended layers:
 
@@ -37,7 +39,7 @@ The exact package builder is intentionally selected during U-002 by a small dire
 
 ## Migration and recovery
 
-There is no consumer or published API to migrate. Work proceeds in reviewable units. Recovery is Git reversion of the approved unit; no data migration is involved. The existing starter application remains recoverable from the baseline commit, and unrelated dirty files must not be overwritten.
+The package-ID rename is a consumer-facing breaking migration: consumers of `gno-shared-components` must install `nmi-devops-shared-components`, update JavaScript/TypeScript imports and the stylesheet path, and use the versioned GitHub Release tarball. No data migration is involved. Recovery is Git reversion of the approved unit; unrelated dirty files must not be overwritten. Current GitHub release automation and authenticated private-asset guidance are documented in [`docs/versioning.md`](../../../docs/versioning.md) and [`docs/consumer-setup.md`](../../../docs/consumer-setup.md).
 
 ## Delivery units and dependencies
 

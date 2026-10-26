@@ -3,8 +3,10 @@
 ## Scope
 
 Foundation verification for the shared-components repository, including the
-catalog, Storybook setup, consumer documentation, vendored workflow, and
-Bitbucket release-artifact flow.
+catalog, Storybook setup, consumer documentation, vendored workflow, and the
+release-artifact flow. The original 2026-10-08 release checks were for the then
+planned Bitbucket process; current release guidance uses GitHub Releases, with
+its workflow QA recorded below.
 
 ## Environment
 
@@ -125,3 +127,90 @@ historical evidence of the agent-runner and Windows-permission issue.
 | `npm run pack:check` | Local writable environment | PASS | Version `0.1.0`, 7 package files |
 | `npm run pack:release` | Local writable environment | PASS | `gno-shared-components-0.1.0.tgz` created without `DEP0190` |
 | Generated-output ignore checks | Repository working tree | PASS | Generated output patterns are ignored |
+
+## Package identity rename QA — 2026-10-13
+
+- Requirement / acceptance criterion: R-014 / AC-019
+- QA owner: Vera
+- Repository / branch / revision: `gno-shared-components-v2`, `feature/foundation-package-rename`, `6c1a403f334a7d07fea8665d27e7f55e53526839` (uncommitted rename change set)
+- Environment: Windows PowerShell, Node.js/npm workspace, local Next.js 16.3.8 dev server, Playwright browser.
+- Setup: `npm run dev -- --hostname 0.0.0.0`; server built the package and became ready at `http://localhost:3000`.
+
+| ID | Action | Expected result | Actual result | Status |
+| --- | --- | --- | --- | --- |
+| MT-NAME-001 | Inspect root and `packages/ui` manifests plus lockfile workspace entries. | Root is `nmi-devops-shared-components-workspace`; published package and workspace dependency are `nmi-devops-shared-components`. | PowerShell JSON inspection confirmed root and lock root names are `nmi-devops-shared-components-workspace`, package and lock workspace names are `nmi-devops-shared-components`, version is `0.1.0`, and lock dependency resolves to `packages/ui`. | PASS |
+| MT-NAME-002 | Open `/` and `/catalog` in the browser and inspect page title and heading. | Product is identified as NMI DevOps Shared Components; catalog imports and examples use the new package ID. | Playwright opened `http://localhost:3000/` (title `NMI DevOps Shared Components`; page heading `A dedicated foundation for GNO portal interfaces.`) and `/catalog` (title `Component catalog | NMI DevOps Shared Components`; visible package ID and install/import/style examples use `nmi-devops-shared-components`). | PASS |
+| MT-NAME-003 | Run package dry-run and inspect generated artifact metadata/name. | Tarball uses `nmi-devops-shared-components-<version>.tgz` and package metadata reports the new ID. | `npm run pack:check` exited 0; npm reported `nmi-devops-shared-components@0.1.0`, filename `nmi-devops-shared-components-0.1.0.tgz`, and 7 files. | PASS |
+| MT-NAME-004 | Follow consumer setup example using the new package ID and stylesheet path. | Example installation/import guidance is internally consistent; migration note identifies the old ID only as the previous package. | Read `docs/consumer-setup.md`, `packages/ui/README.md`, and root `README.md`: install URL, JS/TS import, and `styles.css` path consistently use the renamed ID; versioning guidance and changelog explain the old ID as a migration source. | PASS |
+
+These cases supplement, and do not rewrite, the completed historical checks below. Browser inspection was performed manually with Playwright; the separate automated E2E run remains recorded in the execution report.
+
+## GitHub Release workflow QA — 2026-10-19
+
+- Requirement: release the versioned package from GitHub Actions as a GitHub Release asset.
+- Workflow: `.github/workflows/release.yml`
+- QA owner: Vera / release owner
+- Execution status: Pending a separately approved tag push. No release tag was pushed as part of this change.
+- Local automated validation: `npm run check` PASS and `npm run pack:check` PASS on Node.js `v26.10.0` / npm `11.19.1` (2026-10-19). The check reports no Vitest test files, an expected empty Storybook story pattern, and a non-blocking chunk-size warning.
+
+| ID | Setup / steps | Expected result | Actual result | Status |
+| --- | --- | --- | --- | --- |
+| MT-REL-001 | Inspect the workflow trigger, permissions, version check, package steps, and release command. | A `v*` tag starts the workflow; only the required `contents: write` permission is granted; the tag must match both package versions; the workflow runs checks, packs one `.tgz`, and attaches it to the release. | Static inspection confirms those configured steps and permissions. | PASS |
+| MT-REL-002 | Push an approved tag matching the root and package versions; inspect the GitHub Actions run and release assets. | Workflow completes and attaches the matching `.tgz` to the GitHub Release. | Requires an approved tag push and GitHub Actions run. | BLOCKED |
+| MT-REL-003 | From an authorized consumer CI environment, authenticate, download the release asset with the documented command, then install the local tarball. | The expected package version installs and its package imports resolve. | Requires a created private GitHub Release and authorized consumer credentials. | BLOCKED |
+| MT-REL-004 | Simulate Orion receiving confirmation that a PR has merged to `master`, with matching versions/changelog and passing checks. | Orion verifies the merged commit and release readiness, then presents the exact tag push and requests separate approval; it does not merge or tag automatically. | This handoff behavior is documented but has not been exercised in a live release handoff. | BLOCKED |
+| MT-REL-005 | Repeat the handoff with a missing version bump or changelog entry. | Orion reports a blocker and routes the missing work through a reviewed PR; it does not tag the incomplete release. | This blocker path is documented but has not been exercised in a live release handoff. | BLOCKED |
+
+## Initial stable release preparation QA — 2026-10-19
+
+- Requirement / acceptance criterion: R-009 / AC-013
+- Repository / branch / base: `gno-shared-components-v2`, `feature/foundation-release-v1.0.0`, `b0c0aba`
+- Environment: Windows PowerShell, Node.js `v26.10.0`, npm `11.19.1`
+- Setup: repository root with the committed npm lockfile and installed workspace dependencies; no secrets, service, or production data required.
+- QA owner: Vera (handoff pending); MT-REL-006 was executed by Forge as a metadata acceptance check.
+- Handoff: Prepared; execution evidence recorded by Forge, independent review pending.
+
+| ID | Action / exact command | Expected result | Actual result | Status |
+| --- | --- | --- | --- | --- |
+| MT-REL-006 | Inspect `package.json`, `packages/ui/package.json`, and `package-lock.json`; run `npm run pack:check`; inspect `README.md`, `CONTRIBUTING.md`, `docs/versioning.md`, `docs/consumer-setup.md`, `/catalog`, the foundation presentation, and `CHANGELOG.md`. | Root, package, and lock versions all equal `1.0.0`; dry-run names `nmi-devops-shared-components@1.0.0`; all current tag/download examples use `v1.0.0` and the matching tarball; changelog lists every former Unreleased item, major SemVer rationale, migration notes, and validation evidence. | Node/npm JSON inspection confirmed all workspace/package/lock versions equal `1.0.0`; `npm run pack:check` reported `nmi-devops-shared-components@1.0.0`, `nmi-devops-shared-components-1.0.0.tgz`, and 7 package files. Inspected README, CONTRIBUTING, versioning and consumer setup guides, catalog example, both presentation formats, and changelog: all current release examples use `v1.0.0`; no current-surface `v0.1.0` examples remain. Dated manual/execution evidence and the old changelog entry remain unchanged. | PASS |
+
+This release-metadata check supplements automated quality validation. It does not push a tag, create a GitHub Release, or test authenticated consumer download; MT-REL-002 and MT-REL-003 remain separately blocked pending those operations and credentials.
+
+## Initial stable release preparation — Vera validation — 2026-10-19
+
+- Requirement / acceptance criterion: R-009 / AC-013; release-preparation checks in `specs/2026/gno-shared-components-v2-foundation/execution/14_release_preparation_2026-10-19.md`.
+- Repository / branch / base: `gno-shared-components-v2`, `feature/foundation-release-v1.0.0`, HEAD `b0c0aba1ced6b0f91dc37e7890044c83b984a801` with the approved, uncommitted release-preparation diff (15 files including this QA record).
+- Environment: Windows PowerShell, Node.js `v26.10.0`, npm `11.19.1`; installed dependencies from the repository lockfile.
+- Setup and safety: run from repository root; no production credentials, external services, or production data used. A sandbox permission restriction required retrying the local build/test and npm-cache commands with local process/cache access enabled.
+- QA owner: Vera.
+- QA recipient: Atlas for handoff to Argus independent review.
+- Handoff: Prepared; validation evidence completed and reported to Atlas. No external message sent. Independent review remains pending.
+
+| ID | Action / exact command | Expected result | Actual result | Status |
+| --- | --- | --- | --- | --- |
+| MT-REL-007 | Run `npm run check` from the repository root. | Typecheck, lint, tests, package build, Storybook static build, and Next.js production build complete successfully. | First sandbox attempt stopped at Vitest/esbuild with Windows `spawn EPERM`; retry with local process access exited 0. Typecheck and lint passed; Vitest exited 0 with no test files; package build, Storybook build, and Next.js 16.3.8 production build passed. Storybook emitted the expected no-stories notice, a non-blocking chunk-size warning, and a Node deprecation warning. | PASS |
+| MT-REL-008 | Run `npm run pack:check` from the repository root. | Dry-run reports `nmi-devops-shared-components@1.0.0`, the matching tarball name, and only intended package files. | First sandbox attempt could not write npm's local cache (`EPERM`); retry with cache access exited 0 and reported `nmi-devops-shared-components@1.0.0`, `nmi-devops-shared-components-1.0.0.tgz`, and 7 files. | PASS |
+| MT-REL-009 | Run `git diff --check`; parse root/package/lock metadata; inspect active README, contributor, consumer setup, versioning, catalog, and presentation examples, then inspect historical QA/review evidence. | No whitespace errors; all four version metadata locations equal `1.0.0`; current examples use `v1.0.0`; prior release evidence remains intact. | `git diff --check` exited 0. PowerShell JSON inspection confirmed root, publishable package, lock root, and `packages/ui` lock version are all `1.0.0`. Scanned all 7 active example surfaces: none contains a `v0.1.0` tag/download example. The `0.1.0` changelog section and former package/artifact references remain in dated historical QA/review evidence. | PASS |
+
+These checks validate only the local metadata candidate. A real GitHub Release, authenticated consumer download, and tag-triggered workflow remain unexecuted; see MT-REL-002/003. No commit, push, PR, or tag was created by this QA run.
+
+## Minor v1.1.0 release preparation QA — 2026-10-23
+
+- Requirement / acceptance criterion: repository release policy in
+  `docs/versioning.md`; Portal Header PH-R12 / PH-AC18.
+- Repository / branch / base: isolated worktree,
+  `feature/release-v1.1.0`, `d91ac862dda90073875d16c70bb24886d334ff98`.
+- QA owner: Vera after Forge implementation checks.
+- Handoff: prepared; results are recorded only after execution.
+
+| ID | Action / exact command | Expected result | Actual result | Status |
+| --- | --- | --- | --- | --- |
+| MT-REL-010 | Parse `package.json`, `packages/ui/package.json`, and both workspace entries in `package-lock.json`. | All release metadata equals `1.1.0`. | Node JSON inspection confirmed root, publishable package, lock root, and `packages/ui` lock workspace all equal `1.1.0`. | PASS |
+| MT-REL-011 | Inspect `CHANGELOG.md` and active README, contributor, consumer-setup, versioning, documentation-home, and foundation-presentation examples. | Completed Portal Header/public-docs work is dated under `1.1.0`; active examples use `v1.1.0`, its matching tarball, and the current GitHub repository. | Static inspection confirmed the dated `1.1.0` entry and aligned active release examples. | PASS |
+| MT-REL-012 | Run `npm run check`, `npm run test:e2e`, `npm run pack:check`, and `git diff --check`. | All configured quality, browser, package, and whitespace checks pass; package dry run reports `1.1.0`. | Initial browser validation completed with 21 passing and seven failing tests due to public-documentation integration drift described in correction plan 19. After the A-025 corrections, `npm run check`, all 28 browser cases, the 37-file `1.1.0` package dry run, and `git diff --check` passed. | PASS |
+| MT-REL-013 | After a separately approved tag push, inspect the GitHub Actions release and install the private `.tgz` from an authorized consumer environment. | `v1.1.0` workflow succeeds, publishes the matching private asset, and authenticated consumer installation resolves public imports. | Requires later tag-push approval, the resulting release asset, repository access, and an authorized `GH_TOKEN`. | BLOCKED |
+| MT-REL-014 | Run `npm ci` and `npm audit --json` against the committed dependency graph. | Installation succeeds and no high or critical advisories remain before release qualification. | `npm ci` installed 567 packages. Audit reported 11 vulnerabilities: 3 moderate, 6 high, and 2 critical, directly affecting Next.js, Storybook, Vite, Vitest, `@vitest/coverage-v8`, and `eslint-config-next`. | FAIL |
+| MT-REL-015 | Apply A-023 dependency remediation; rerun clean install, full and shipped-runtime audits, and the configured quality gate. | Critical/runtime findings are cleared; the existing development-only ESLint chain is unchanged and explicitly assessed; all non-browser quality checks pass. | Upgraded Next.js/ESLint config to `16.4.2`, Storybook to `10.6.3`, Vite to `7.3.7`, and Vitest packages to `4.1.12`. `npm ci` and `npm run check` passed; shipped-runtime audit reports zero findings. Full audit retains only the five-item development ESLint globbing chain covered by A-006. | PASS |
+| MT-REL-016 | Inspect the GitHub Pages workflow result on remote `master`. | The documentation deployment completes for the merged release base. | Public GitHub API reports workflow run `39879895039` completed successfully at `d91ac862dda90073875d16c70bb24886d334ff98`. | PASS |
+| MT-REL-017 | Validate the A-025 browser regression corrections at desktop and mobile project settings. | Current documentation navigation and trailing-slash URLs pass; the 375 px home page does not overflow; catalog styles do not override Portal Header link tokens; existing Portal Header interaction and responsive coverage remains green. | `npm run test:e2e` completed 28/28 PASS. The suite covered both navigation journeys, home/catalog page overflow, native GET search, focus restoration/trapping, production visual structure, root token overrides, and Portal Header overflow at 320/375/768/1024/1440 px. | PASS |
+| MT-REL-018 | Validate approved F-REL-110/F-REL-111 documentation corrections and rerun the complete release gate. | Obsolete Portal Footer/API/state claims are absent; private-download guidance is accurate; quality, browser, package, audit, version, and whitespace checks pass. | Both blocked-term scans passed. `npm run check` passed with 13/13 tests and two consumer fixtures; `npm run test:e2e` passed 28/28; `npm run pack:check` reported the 37-file `1.1.0` package; shipped-runtime audit reported zero findings and full audit retained five high development-only findings under A-006; all four version locations equal `1.1.0`; `git diff --check` passed. | PASS |

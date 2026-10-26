@@ -1,6 +1,6 @@
 # Project specifications and execution records
 
-This directory contains repository-local requirements, designs, test plans, approval records, and execution evidence for GNO shared components.
+This directory contains repository-local requirements, designs, test plans, approval records, and execution evidence for NMI DevOps Shared Components.
 
 Use a project folder such as:
 
@@ -23,6 +23,7 @@ Reusable workflow templates are available under [`templates/`](templates/), incl
 
 The project history previously maintained in the external `PERSONAL_WORKFLOW` checkout is stored locally under [`2026/`](2026/):
 
+- [`copilot-agent-profiles/`](2026/copilot-agent-profiles/) — GitHub Copilot profiles for the six GNO roles
 - [`gno-shared-components-v2-adoption/`](2026/gno-shared-components-v2-adoption/) — repository adoption
 - [`gno-shared-components-v2-registration/`](2026/gno-shared-components-v2-registration/) — repository registration
 - [`gno-shared-components-v2-foundation/`](2026/gno-shared-components-v2-foundation/) — foundation requirements, `portal_header` specifications, execution evidence, and presentation

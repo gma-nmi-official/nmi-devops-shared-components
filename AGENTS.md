@@ -55,6 +55,13 @@ Preserve approvals already granted for the same scope and action.
 17. Feature work must merge to `master` through an approved pull request. The user
     or authorized repository owner performs the final merge after review approval;
     agents and developers must not merge on the user's behalf.
+18. When a package release is intended, complete the release-impacting tracked
+    files before final verification and independent review: aligned root, package,
+    and lockfile versions, changelog, Storybook/catalog guidance, consumer documents,
+    and migration notes as applicable. The default delivery uses one reviewed PR.
+    Post-merge release readiness verifies the merged candidate and does not
+    normally create tracked changes. A missing or incorrect tracked file requires
+    a new validated and reviewed PR before the separately approved tag push.
 
 ## Repository structure
 

@@ -2,11 +2,11 @@
 
 ## One package, one release version
 
-`gno-shared-components` is currently distributed as one Bitbucket-hosted `.tgz` package. Components are organized and documented independently, but they do not have independent package versions. The private workspace root is `gno-shared-components-workspace`; only `packages/ui` owns the consumer package identity.
+`nmi-devops-shared-components` is distributed as one `.tgz` package attached to a GitHub Release. Components are organized and documented independently, but they do not have independent package versions. The private workspace root is `nmi-devops-shared-components-workspace`; only `packages/ui` owns the consumer package identity.
 
 For example, a `PortalHeader` enhancement is released by updating the package from `0.2.0` to `0.3.0`. A consumer installs the package version, not a component-specific version.
 
-The root workspace version and `packages/ui/package.json` version must remain aligned. The lockfile must be updated when package metadata changes.
+The root workspace version and `packages/ui/package.json` version must remain aligned. The lockfile must be updated when package metadata changes. The initial stable package release is `1.0.0`; its major bump records the package-identity migration described in the changelog.
 
 ## How to select the version bump
 
@@ -16,7 +16,7 @@ Select the highest-impact public change in the release:
 | --- | --- | --- |
 | Bug, accessibility, documentation, or non-breaking style fix | Patch | `0.2.0` → `0.2.1` |
 | New component or backward-compatible capability | Minor | `0.2.1` → `0.3.0` |
-| Removed export, renamed prop, breaking event, token, or behavior change | Major | `0.3.0` → `1.0.0` |
+| Removed export, renamed prop, breaking event, token, behavior change, or consumer package-ID rename | Major | `0.3.0` → `1.0.0` |
 | Consumer validation before stable release | Pre-release | `0.3.0-rc.1` |
 
 Component scope determines what changed; package impact determines the version bump.
@@ -26,12 +26,14 @@ Component scope determines what changed; package impact determines the version b
 - Add optional `PortalHeader` navigation configuration: **minor**.
 - Fix mobile menu keyboard focus in `PortalHeader`: **patch**.
 - Rename `PortalHeader`'s `navigation` prop: **major**.
+- Rename the package ID: **major**; consumers must install the new artifact and update package and stylesheet imports.
 - Add `PortalFooter` and fix a `PortalHeader` bug in one release: **minor**, because minor is the highest required bump.
 - Update internal build scripts without changing `dist`, exports, styles, or consumer behavior: **no package release**.
 
 ## Required changelog entry
 
-Before a release:
+Complete the release-impacting tracked files before final verification and
+independent review. For the normal one-PR path:
 
 1. Move completed items from `Unreleased` into a dated version section.
 2. Identify the affected component(s) and public package surface.
@@ -40,23 +42,40 @@ Before a release:
 5. Record validation evidence: typecheck, lint, tests, Storybook build, Next.js build, and `npm pack --dry-run` as applicable.
 6. Align the root and `packages/ui` versions and update the lockfile.
 
-## Tagged Bitbucket release
+Vera verifies this release-complete candidate and Argus reviews its complete
+local diff. Adding or correcting a release-impacting tracked file after Argus
+requires affected verification and refreshed independent review before commit.
 
-Create an annotated Git tag only after validation and changelog approval:
+## Tagged GitHub release
+
+Include the release version, changelog, applicable migration notes, and consumer
+documentation in the single reviewed PR. After the user or authorized repository
+owner merges the PR to `master`, Orion begins release readiness for that merged
+revision. Readiness verifies required checks, changelog, documentation, and
+matching root/package/lockfile versions; it does not normally create tracked
+changes. If preparation is missing or incorrect, complete the correction in a
+new validated and reviewed PR, merge it, and repeat readiness rather than tagging
+an incomplete release.
+
+Once release-ready, Orion presents the exact annotated tag, target commit, remote, and push command. Explicit approval is required because pushing the tag triggers GitHub Actions to create the release and publish its asset. Then create and push the annotated tag:
 
 ```bash
-git tag -a v0.1.0 -m "release: gno-shared-components v0.1.0"
-git push origin v0.1.0
+git tag -a v1.1.0 -m "release: nmi-devops-shared-components v1.1.0"
+git push origin v1.1.0
 ```
 
-The Bitbucket pipeline runs for tags matching `v*`. It executes the full quality gate and writes the installable artifact to `release-artifacts/`:
+GitHub Actions runs [`.github/workflows/release.yml`](../.github/workflows/release.yml) for tags matching `v*`. It verifies that the tag matches both package versions, runs the full quality gate, and writes the installable artifact to `release-artifacts/`:
 
 ```bash
 npm run check
 npm run pack:release
 ```
 
-The resulting `gno-shared-components-<version>.tgz` is a pipeline artifact. The release owner must attach it to the corresponding Bitbucket release/downloads entry before consumers receive the install URL. The package is not published to the public npm registry by this workflow.
+The workflow attaches `nmi-devops-shared-components-<version>.tgz` to the matching GitHub Release using the workflow's `GITHUB_TOKEN`. The package is not published to the public npm registry. Consumers install the private release asset using the URL pattern documented in [`consumer-setup.md`](consumer-setup.md); repository access and a `GH_TOKEN` authorized to read the repository are required. Keep the token in a CI secret store. The former package ID was `gno-shared-components`; consumers of that artifact must migrate to the new package and import name.
+
+Pushing the tag starts the workflow and creates the release; it does not replace the separate approval required before pushing a tag. Do not reuse a tag for a different package version or artifact.
+For the normal one-PR path, the approved tag push is the final agent-executed
+release action, followed by verification of the workflow run and release asset.
 
 ## Future option: independent component packages
 

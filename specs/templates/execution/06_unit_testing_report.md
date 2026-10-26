@@ -8,6 +8,8 @@ build, integration, regression, acceptance, and browser checks from unit tests.
 - Commands and exit results:
 - Standalone manual_testing.md reference, QA recipient, and handoff status:
 - Required manual case results or N/A reasons; unrun cases are BLOCKED:
+- Release-candidate completeness: aligned versions/lockfile, changelog,
+  Storybook/catalog, consumer docs, migration notes, and package dry-run, or N/A:
 
 | Requirement | Test level / scenario | Expected | Actual | Status | Evidence |
 | --- | --- | --- | --- | --- | --- |
@@ -20,4 +22,6 @@ implementation; changes to requirements or material design require approval.
 
 ## Recommendation and next action
 
-Proceed to independent review only after applicable required checks pass.
+Proceed to independent review only after applicable required checks pass and an
+intended package-release candidate is complete. Do not defer routine
+release-impacting tracked files until post-merge readiness.

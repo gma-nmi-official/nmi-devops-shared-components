@@ -1,22 +1,47 @@
 {
-  "name": "gno-shared-components",
-  "version": "0.1.0",
-  "description": "Configurable shared React components for Next.js applications.",
+  "name": "nmi-devops-shared-components",
+  "version": "1.3.0",
+  "description": "NMI DevOps Shared Components: configurable shared React components for Next.js applications.",
   "type": "module",
-  "sideEffects": ["**/*.css"],
-  "files": ["dist", "README.md"],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "THIRD_PARTY_NOTICES.md"
+  ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
-    "./styles.css": "./dist/styles.css"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./assets/gma-header-logo.svg": "./dist/assets/gma-header-logo.svg"
   },
   "scripts": {
     "build": "node scripts/clean.mjs && tsc -p tsconfig.build.json && node scripts/copy-styles.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
-  "peerDependencies": { "react": ">=19.0.0 <20.0.0", "react-dom": ">=19.0.0 <20.0.0" },
-  "devDependencies": { "@types/react": "^19", "@types/react-dom": "^19", "react": "19.2.8", "react-dom": "19.2.8", "typescript": "^5" },
-  "engines": { "node": ">=20.9.0" },
-  "license": "UNLICENSED"
+  "peerDependencies": {
+    "react": ">=19.0.0 <20.0.0",
+    "react-dom": ">=19.0.0 <20.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "^7.3.1",
+    "@fortawesome/free-solid-svg-icons": "^7.3.1"
+  }
 }
