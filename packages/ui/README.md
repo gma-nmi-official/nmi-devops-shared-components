@@ -8,6 +8,34 @@ import { PortalHeader } from "nmi-devops-shared-components";
 import "nmi-devops-shared-components/styles.css";
 ```
 
+## Ad Slot
+
+`AdSlot` provides a small provider-agnostic lifecycle for rectangular display
+ads (`mrec`, `leaderboard`, or `custom`). Consumers own consent, eligibility,
+GPT initialization, service-wide lazy loading, targeting, full ad unit paths,
+and every permitted size. A format label never supplies inventory defaults.
+
+```tsx
+import { AdSlot, createGptAdProvider, type AdPlacementConfig } from "nmi-devops-shared-components";
+
+const config: AdPlacementConfig = {
+  key: "sidebar-mrec",
+  format: "mrec",
+  reservedSize: [300, 250],
+  rules: [{ minWidth: 0, adUnitPath: "/123/news/sidebar", sizes: [[300, 250]] }],
+};
+
+<AdSlot config={config} enabled={hasAdConsent} provider={provider} />;
+```
+
+Create `provider` once with `createGptAdProvider({ googletag })` after the host
+has initialized GPT. `enabled={false}` and rules with `enabled: false` make no
+provider call. Active rules must cover their declared viewport range without
+gaps or overlaps and must contain a full `adUnitPath` plus non-empty `sizes`.
+Space is reserved by default; opt into `emptyBehavior: "collapse"` when empty
+or error results may collapse. Never put sensitive or directly identifying data
+in `targeting`.
+
 ## Portal Header
 
 `PortalHeader` is an interactive client entry point that can be rendered from a

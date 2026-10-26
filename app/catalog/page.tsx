@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AdSlotPreview } from "./ad-slot-preview";
 import { CookieAgreementPreview } from "./cookie-agreement-preview";
 import { PortalHeaderPreview } from "./portal-header-preview";
 
@@ -21,6 +22,7 @@ export default function CatalogPage() {
         <a href="#overview">Overview</a>
         <a href="#preview">Preview</a>
         <a href="#cookie-agreement">Cookie Agreement</a>
+        <a href="#ad-slot">Ad Slot</a>
         <a href="#setup">Install</a>
         <a href="#parameters">Portal Header</a>
         <a href="#cookie-configuration">Cookie Agreement config</a>
@@ -60,8 +62,32 @@ export default function CatalogPage() {
         </ul>
       </section>
 
+      <section aria-labelledby="ad-slot-title" className="catalog__section" id="ad-slot">
+        <p className="showcase__eyebrow">04 · Ad Slot</p>
+        <h2 id="ad-slot-title">Configurable display ads without hidden inventory defaults</h2>
+        <p><code>AdSlot</code> owns one slot lifecycle while the consumer owns GPT setup, consent, eligibility, full ad unit paths, and every allowed size for each active breakpoint.</p>
+        <div className="catalog__ad-preview"><AdSlotPreview /></div>
+        <div className="catalog__parameters">
+          <div><code>config.rules</code><span>Contiguous responsive rules; active rules require a full ad unit path and non-empty sizes.</span></div>
+          <div><code>enabled</code><span>Set from consumer consent and eligibility. False guarantees no provider slot is created.</span></div>
+          <div><code>provider</code><span>Inject a provider such as <code>createGptAdProvider</code>; the catalog uses a local fake.</span></div>
+          <div><code>emptyBehavior</code><span>Reserve space by default; select collapse explicitly when layout movement is acceptable.</span></div>
+        </div>
+        <pre><code>{`const config = {
+  key: "article-mrec",
+  format: "mrec",
+  reservedSize: [300, 250],
+  rules: [
+    { minWidth: 0, maxWidth: 767, enabled: false },
+    { minWidth: 768, adUnitPath: "/123/news/article-mrec", sizes: [[300, 250], [300, 600]] }
+  ]
+};
+
+<AdSlot config={config} enabled={hasAdConsent} provider={provider} />`}</code></pre>
+      </section>
+
       <section aria-labelledby="setup-title" className="catalog__section" id="setup">
-        <p className="showcase__eyebrow">04 · Install</p>
+        <p className="showcase__eyebrow">05 · Install</p>
         <h2 id="setup-title">Add it to your application</h2>
         <p>Install the package, import the component, and load the shared stylesheet once.</p>
         <pre><code>{`npm install nmi-devops-shared-components
@@ -75,7 +101,7 @@ export function SiteHeader() {
       </section>
 
       <section aria-labelledby="cookie-configuration-title" className="catalog__section" id="cookie-configuration">
-        <p className="showcase__eyebrow">05 · Configure Cookie Agreement</p>
+        <p className="showcase__eyebrow">06 · Configure Cookie Agreement</p>
         <h2 id="cookie-configuration-title">Keep consent explicit and consumer-owned</h2>
         <p>Pass a policy version and optionally inject a typed <code>ConsentStore</code>. The default adapter uses a host-only <code>gno_cookie_consent</code> cookie with a 365-day expiry.</p>
         <div className="catalog__parameters">
@@ -98,7 +124,7 @@ import "nmi-devops-shared-components/styles.css";
       </section>
 
       <section aria-labelledby="parameters-title" className="catalog__section" id="parameters">
-        <p className="showcase__eyebrow">06 · Configure Portal Header</p>
+        <p className="showcase__eyebrow">07 · Configure Portal Header</p>
         <h2 id="parameters-title">Choose what your header needs</h2>
         <p>All props are optional. Start with the defaults, then add only the options your product uses.</p>
         <div className="catalog__parameters">

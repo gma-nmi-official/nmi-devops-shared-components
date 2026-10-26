@@ -8,6 +8,38 @@ The project follows [Semantic Versioning](https://semver.org/). The repository p
 
 No unreleased changes.
 
+## [1.3.0] - 2026-10-24
+
+### Added
+
+- Added the configurable, provider-agnostic `AdSlot` component for MREC,
+  leaderboard, and custom rectangular display placements, plus a GPT adapter.
+- Added consumer-owned responsive rules that require a complete ad unit path
+  and non-empty size list for every active rule; disabled rules create no slot.
+- Added reserve-by-default and explicit collapse behavior, targeting, lifecycle
+  state callbacks, 100 ms responsive switching, Storybook/catalog guidance,
+  JavaScript/TypeScript fixtures, and fake-provider unit and browser coverage.
+- Serialized asynchronous slot replacement across React effect generations,
+  stabilized state callbacks against parent rerenders, and made GPT cleanup
+  failures observable and retryable.
+
+**Consumer impact / SemVer: Minor.** This is a backward-compatible named export.
+Existing consumers do not need to change. Ad consumers must continue to own GPT
+loading and initialization, consent and eligibility, service-wide lazy loading,
+inventory paths, sizes, and targeting policy.
+
+**Migration:** No existing package API migration is required. Legacy DFP/GPT
+wrappers should map each active breakpoint to an explicit full ad unit path and
+size list; unsupported native, video, out-of-page, refresh, and page-insertion
+behavior remains in the consuming application.
+
+**Validation evidence:** after ADS-ADJ01–ADS-ADJ05, `npm run check`, 56/56
+Vitest tests, four JavaScript/TypeScript consumer fixtures, Storybook and Next.js
+production builds, the 17,747-byte ads-module budget check, package dry run,
+30/30 configured Chromium desktop/mobile Playwright cases, and manual QA
+ADS-MT01–ADS-MT10 pass. ADS-REV01–ADS-REV06 are closed by independent Argus;
+commit and release operations remain separately gated.
+
 ## [1.2.0] - 2026-10-24
 
 ### Added

@@ -7,13 +7,13 @@ This guide explains how a JavaScript or TypeScript application consumes the publ
 Download the approved `.tgz` asset from the private GitHub Release, then install it in the consumer application. Set `GH_TOKEN` to a token authorized to read the repository and keep it in the consumer's CI secret store:
 
 ```bash
-gh release download v1.1.0 \
+gh release download v1.3.0 \
   --repo gma-nmi-official/nmi-devops-shared-components \
-  --pattern 'nmi-devops-shared-components-1.1.0.tgz'
-npm install ./nmi-devops-shared-components-1.1.0.tgz
+  --pattern 'nmi-devops-shared-components-1.3.0.tgz'
+npm install ./nmi-devops-shared-components-1.3.0.tgz
 ```
 
-The example uses the current minor release, `v1.1.0`. Do not commit the token. The installed package and import name remain `nmi-devops-shared-components`.
+The example uses the proposed current minor release, `v1.3.0`. Do not commit the token. The installed package and import name remain `nmi-devops-shared-components`.
 
 ## 2. Import the component and styles
 
@@ -65,6 +65,42 @@ export function SiteHeader() {
 ```
 
 Keep application routes, data fetching, authentication, analytics, and other integrations in the consuming application unless the component contract explicitly says otherwise.
+
+### Configure display ads
+
+`AdSlot` is a client component with an injected provider. The consumer must load
+and initialize GPT, configure service-wide lazy loading, decide consent and
+eligibility, and supply the complete ad unit path and non-empty size list for
+every active responsive rule. The component does not infer inventory from
+`format`.
+
+```tsx
+"use client";
+
+import { AdSlot, createGptAdProvider, type AdPlacementConfig } from "nmi-devops-shared-components";
+
+const config: AdPlacementConfig = {
+  key: "article-leaderboard",
+  format: "leaderboard",
+  reservedSize: [970, 250],
+  rules: [
+    { minWidth: 0, maxWidth: 767, enabled: false },
+    { minWidth: 768, maxWidth: 1199, adUnitPath: "/123/news/tablet", sizes: [[728, 90]] },
+    { minWidth: 1200, adUnitPath: "/123/news/desktop", sizes: [[970, 250], [970, 90]] },
+  ],
+};
+
+const provider = createGptAdProvider({ googletag: window.googletag });
+
+export function ArticleAd({ hasAdConsent }: { hasAdConsent: boolean }) {
+  return <AdSlot config={config} enabled={hasAdConsent} provider={provider} />;
+}
+```
+
+Use `emptyBehavior: "collapse"` only when layout movement is acceptable. The
+default reserve behavior requires `reservedSize`. Keep user IDs and other
+sensitive values out of targeting. Tests and documentation should use a fake
+provider and must not request the live GPT script.
 
 ## 4. Find component-specific guidance
 

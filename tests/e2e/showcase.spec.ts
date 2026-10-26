@@ -131,6 +131,20 @@ test("mobile dropdown closes with Escape and restores trigger focus", async ({ p
   await expect(page.getByRole("dialog", { name: "Navigation menu" })).toBeHidden();
 });
 
+test("Ad Slot catalog preview uses consumer configuration without a live ad-network request", async ({ page }) => {
+  const adNetworkRequests: string[] = [];
+  page.on("request", (request) => {
+    if (/doubleclick|googlesyndication|googletagservices/i.test(request.url())) adNetworkRequests.push(request.url());
+  });
+
+  await page.goto("/catalog");
+  await expect(page.getByRole("heading", { level: 2, name: "Configurable display ads without hidden inventory defaults" })).toBeVisible();
+  const slot = page.getByRole("complementary", { name: "Example advertisement" });
+  await expect(slot).toHaveAttribute("data-ad-format", "mrec");
+  await expect(slot).toHaveAttribute("data-ad-state", "filled");
+  expect(adNetworkRequests).toEqual([]);
+});
+
 for (const width of [375, 1440]) {
   test(`Portal Header traps visible menu focus and restores it after outside close at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: width < 768 ? 812 : 900 });
