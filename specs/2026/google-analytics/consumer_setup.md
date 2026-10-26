@@ -2,27 +2,29 @@
 
 ## Status
 
-This guide records the agreed consumer integration flow before implementation. Each analytics instance selects one transport: direct `gtag.js` or GTM. Public export/configuration names and the exact browser support matrix remain subject to requirements and compatibility review. Scroll behavior is configurable by each consumer.
+This guide records the GA-A10-approved consumer integration contract before implementation. Each analytics instance selects one transport: direct `gtag.js` or GTM. Required automation covers the repository's Chromium desktop/mobile projects plus Next.js 16.4.2 package/SSR fixtures. Scroll behavior is configurable by each consumer.
 
-The installed package name is `gno-shared-components`. The analytics service is standalone and requires no Portal Header, Cookie Agreement, framework UI rendering, or stylesheet.
+The installed package name is `nmi-devops-shared-components`. The analytics service is standalone and requires no Portal Header, Cookie Agreement, framework UI rendering, or stylesheet.
 
 ## Shared setup rules
 
-1. Supply the GA4 measurement ID at runtime. Never compile a production ID into the package.
+1. In direct-gtag mode, supply the GA4 measurement ID at runtime. GTM mode resolves its destination in the consumer-owned container and does not pass a measurement ID to the package. Never compile a production or container ID into the package.
 2. The consumer selects and loads either direct `gtag.js` or its GTM container. Direct mode supplies the `gtag` transport; GTM mode supplies a `dataLayer` transport and configures the container to send GA4 events.
 3. Pass consent state from application-owned privacy logic. Events wait in a bounded queue while consent is unknown; denied consent drops events and clears that queue.
 4. Set the initial page/custom-dimension context.
-5. Send page views explicitly with `trackPageView()`; the consumer's gtag configuration disables automatic page views.
+5. Send page views explicitly with `trackPageView()`; the consumer disables the tag's default page view and, for Next.js navigation ownership, Enhanced Measurement history-change page views.
 6. Use partial context updates for scroll milestones or dynamic content; do not rebuild or mutate the complete context object.
 
 ## End-to-end consumer flow
 
-The following is the agreed integration flow. The shared analytics package is not implemented or published yet, so the example export and configuration names remain subject to API design approval.
+The following is the approved integration flow for the `1.4.0` candidate. The
+analytics export is opt-in and remains subject to verification, independent
+review, and the separate release gates.
 
 ### 1. Install the shared package
 
 ```bash
-npm install gno-shared-components
+npm install nmi-devops-shared-components
 ```
 
 ### 2. Configure the consumer environment (direct gtag mode)
@@ -37,7 +39,7 @@ The consumer maps its environment variable to `measurementId`. The shared packag
 
 ### 3. Load GA4 in the consumer
 
-The application loads and initializes `gtag.js`, making a `gtag`-compatible function available before delivery. The agreed setup uses explicit page views to prevent duplicates.
+The application loads and initializes `gtag.js`, making a `gtag`-compatible function available before event delivery. The agreed setup gives this component sole ownership of explicit page views.
 
 The consumer initializes GA with automatic page views disabled:
 
@@ -45,12 +47,14 @@ The consumer initializes GA with automatic page views disabled:
 gtag("config", measurementId, { send_page_view: false });
 ```
 
+For a Next.js single-page application, the consumer also disables **Page changes based on browser history events** in the GA4 web stream's Enhanced Measurement settings. `send_page_view: false` disables the tag's default page view but does not by itself disable history-change page views. The browser fixture must prove one page view for the initial load and one for each client-side navigation.
+
 ### 4. Create one analytics instance
 
 Create the instance in the consumer's browser entry or client-only analytics module:
 
 ```ts
-import { createGoogleAnalytics } from "gno-shared-components";
+import { createGoogleAnalytics } from "nmi-devops-shared-components";
 
 const measurementId = process.env.NEXT_PUBLIC_GA4_ID;
 
@@ -79,7 +83,7 @@ export const analytics = createGoogleAnalytics({
 analytics.initialize();
 ```
 
-The `gtag` transport selects the direct Google tag adapter. Page and feature code calls analytics methods instead of calling the transport. The consumer has already loaded/configured `gtag.js` with automatic page views disabled.
+The `gtag` transport selects the direct Google tag adapter. Page and feature code calls analytics methods instead of calling the transport. The consumer has already loaded/configured `gtag.js` with its default page view disabled and has disabled Enhanced Measurement history-change page views when this component owns navigation tracking.
 
 ### 5. Set the initial page dimensions
 
@@ -132,7 +136,8 @@ analytics.trackEvent("click", {
   event_value: 1,
   event_action: "open_related_story",
   campaign_name: "spring_launch",
-  event_callback: () => console.log("GA event delivered"),
+  callback: () => console.log("Google tag event processed"),
+  callbackTimeoutMs: 2000,
 });
 
 analytics.trackSearch({ event_label: "weather" });
@@ -163,7 +168,7 @@ Replacing the complete context prevents dimensions from the previous page from l
 Install the approved package artifact according to the repository consumer guide, then import the public factory:
 
 ```ts
-import { createGoogleAnalytics } from "gno-shared-components";
+import { createGoogleAnalytics } from "nmi-devops-shared-components";
 ```
 
 Create one analytics instance for the consumer application:
@@ -183,7 +188,7 @@ const analytics = createGoogleAnalytics({
 });
 ```
 
-The exact configuration names remain proposed. In direct mode the consumer owns the real measurement ID and transport initialization. In GTM mode, the container owns the GA4 destination configuration.
+The configuration names are approved by GA-A10. In direct mode the consumer owns the real measurement ID and transport initialization. In GTM mode, the container owns the GA4 destination configuration.
 
 ## Alternative GTM consumer setup
 
@@ -199,7 +204,7 @@ window.dataLayer = window.dataLayer || [];
 Configure the consumer-owned container to:
 
 1. Create a Custom Event trigger for `gno_analytics_event`.
-2. Configure a Google tag for the consumer's GA4 measurement ID and disable its automatic page view.
+2. Configure a Google tag for the consumer's GA4 measurement ID, disable its automatic page view, and disable Enhanced Measurement history-change page views when this component owns Next.js navigation tracking.
 3. Configure a GA4 Event tag using the data-layer variable `event_name` as the event name and map the needed keys from `event_params`.
 4. Publish/test the container in the consumer's environment; package fixtures use a spy data layer and make no GA request.
 
@@ -218,6 +223,7 @@ window.dataLayer.push({
   },
   // Optional; GTM calls this after processing tags for this data-layer event.
   eventCallback: () => console.log("GTM event processed"),
+  eventTimeout: 2000,
 });
 ```
 
@@ -231,7 +237,7 @@ const analytics = createGoogleAnalytics({
 });
 ```
 
-The `event` key is the GTM trigger name; `event_name` is the GA4 event name. The user event payload remains in `event_params`, where the consumer maps any extra event parameters it needs in GTM. Callbacks use the GTM data-layer `eventCallback` contract; direct `gtag` callbacks use `event_callback`. Each callback reports completion at its transport's processing point, not confirmed receipt by GA, and the API must document that distinction.
+The `event` key is the GTM trigger name; `event_name` is the GA4 event name. The user event payload remains in `event_params`, where the consumer maps any approved extra event parameters it needs in GTM. The public API accepts adapter-neutral `callback` and `callbackTimeoutMs`; the GTM adapter maps them to `eventCallback`/`eventTimeout`, and the direct adapter maps them to `event_callback`/`event_timeout`. Each callback reports completion or timeout at its transport's processing point, not confirmed receipt by GA, and fires at most once.
 
 Consent remains owned by the consuming application. It configures GTM consent defaults and updates through GTM's consent APIs before relevant tags process data-layer events. When permission changes to granted, the consumer applies the GTM consent update first, then calls `analytics.setConsent("granted")` so the component flushes only after GTM has the current state. The component's bounded unknown-consent queue and denied-drop policy apply before data is sent to the data layer; the consumer's GTM consent configuration remains an additional tag-firing control.
 
@@ -311,7 +317,7 @@ analytics.trackVideoPlayed({
 });
 ```
 
-These helpers must send the exact event names `loaded_a_video` and `played_a_video` and include the latest current parameters.
+These helpers send the exact event names `loaded_a_video` and `played_a_video`, include the latest current parameters, and default `event_value` to numeric `0`. A consumer may configure a different per-instance default or pass a call-specific numeric override when preserving a legacy `1` path.
 
 ### Update context and send a scroll event
 
@@ -364,7 +370,7 @@ For local, staging, and production environments, direct-gtag consumers map their
 | Staging | The approved staging GA4 measurement ID or staging GTM container/destination |
 | Production | The approved production GA4 measurement ID or production GTM container/destination |
 
-Two instances may use different measurement IDs and transports. Instance configuration, current parameters, consent, queues, and events must remain isolated.
+Two instances may use different direct measurement IDs or GTM data layers/destinations and transports. Instance configuration, current parameters, consent, queues, and events must remain isolated.
 
 The `news/res/js/custom_analytics.js` file is algorithm reference material only. This delivery does not add a `news` script-registry entry, global compatibility API, migration bridge, or source change.
 
@@ -379,8 +385,11 @@ var analytics = createGoogleAnalytics({
     measurementId: 'G-TEST',
     portalSection: 'News',
     consent: 'granted',
-    transport: function () {
-        sent.push(Array.prototype.slice.call(arguments));
+    transport: {
+        type: 'gtag',
+        gtag: function () {
+            sent.push(Array.prototype.slice.call(arguments));
+        }
     }
 });
 
@@ -392,6 +401,8 @@ console.log(sent);
 
 Verification must confirm exact event names and payloads, one approved send per call, partial-update preservation, consent/readiness behavior, no production network request, and no non-GA side effect.
 
-## Remaining compatibility details before implementation
+## Approved compatibility contract
 
-1. Confirm the exact browser support matrix during development planning. The required framework fixture is Next.js using the shared repository's installed version.
+1. Required browser automation is Chromium desktop `1440×900` and Chromium mobile `375×812`; Firefox/WebKit are outside the approved matrix.
+2. The required framework/package fixtures use Next.js 16.4.2 and include SSR-safe imports.
+3. GA-D01-GA-D09 define video values, callback/timeout names, reserved fields, GTM envelope, page-view ownership, schema validation, and readiness/queue behavior.

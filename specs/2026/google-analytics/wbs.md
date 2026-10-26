@@ -20,10 +20,10 @@ Create a configurable standalone Google Analytics service with required page, cl
 | ID | Task | Expected result | Owner |
 | --- | --- | --- | --- |
 | GA-01.1 | Finalize the optimized public API: `setCurrentParams`, `getCurrentParams`, `updateCurrentParams`, one page-view function, one named-event function, and thin search/scroll/video/click helpers. | Approved optimized API | Analytics/product and architecture owners |
-| GA-01.2 | Verify the consumer environment supplies the measurement ID, `portal_section` is a default dimension, and explicit page views disable automatic gtag page views. | Destination and duplicate-prevention contract evidence | Analytics owner |
-| GA-01.3 | Define event fields and parameter limits; confirm the reference default dimensions, empty-string behavior, consumer dimension-registration hook, and configurable scroll contract. | Approved event/configuration schema | Analytics/data owner |
-| GA-01.4 | Specify and verify consumer-owned direct-gtag and GTM container/dataLayer transport boundaries plus bounded unknown-consent queue; denied consent drops and clears; grant flushes valid events once. | Consent and both transport contract evidence | Privacy, analytics, and architecture owners |
-| GA-01.5 | Confirm the supported browser matrix, installed Next.js fixture version, CI owner, and exclusion of non-GA trackers. | Compatibility and ownership checklist | Consumer and repository owners |
+| GA-01.2 | Verify direct consumers supply a runtime measurement ID, GTM consumers own destination configuration, `portal_section` is a default dimension, and explicit page-view ownership disables both tag-default and history-change automatic page views. | Destination and duplicate-prevention contract evidence | Analytics owner |
+| GA-01.3 | Define event fields and parameter limits; select the canonical video value policy; confirm the reference default dimensions, empty-string behavior, consumer dimension-registration hook, and configurable scroll contract. | Approved event/configuration schema | Analytics/data owner |
+| GA-01.4 | Specify and verify consumer-owned direct-gtag and GTM container/dataLayer boundaries, callback/timeout mapping, reserved fields, and the readiness/consent state table. Approve bounded queue capacity/lifetime/overflow/expiry/retry behavior. | Consent, readiness, and both transport contract evidence | Privacy, analytics, and architecture owners |
+| GA-01.5 | Confirm the supported browser matrix, Next.js 16.4.2 fixture, CI owner, Enhanced Measurement history-change configuration, and exclusion of non-GA trackers. | Compatibility and ownership checklist | Consumer and repository owners |
 
 **Phase complete when:** questions in `requirements.md` are resolved and privacy, requirements, and development approvals are recorded.
 
@@ -47,8 +47,8 @@ Create a configurable standalone Google Analytics service with required page, cl
 | GA-03.2 | Implement generic named-event tracking with validation and configured extra fields. | Exact generic event payload | Forge and Vera |
 | GA-03.3 | Implement click tracking with approved name/category/label/value/action/location/callback behavior. | Exact click payload | Forge and Vera |
 | GA-03.4 | Implement search tracking with the approved `search` event schema. | Exact search payload | Forge and Vera |
-| GA-03.5 | Implement `trackVideoLoaded` using exact `loaded_a_video` naming and approved context. | Exact video-loaded payload | Forge and Vera |
-| GA-03.6 | Implement `trackVideoPlayed` using exact `played_a_video` naming and approved context. | Exact video-played payload | Forge and Vera |
+| GA-03.5 | Implement `trackVideoLoaded` using exact `loaded_a_video` naming and the approved category/value/context schema. | Exact video-loaded payload | Forge and Vera |
+| GA-03.6 | Implement `trackVideoPlayed` using exact `played_a_video` naming and the approved category/value/context schema. | Exact video-played payload | Forge and Vera |
 | GA-03.7 | Implement the configurable scroll helper for event name, triggers/milestones, repeat/deduplication, fields, and partial dimension updates. | Configured scroll payload | Forge and Vera |
 
 **Phase complete when:** transport-spy tests prove exact payloads, one send per call, no input mutation, and approved consent/readiness behavior for every helper.
@@ -82,7 +82,7 @@ Create a configurable standalone Google Analytics service with required page, cl
 | ID | Task | Expected result | Owner |
 | --- | --- | --- | --- |
 | GA-06.1 | Run typecheck, lint, unit/contract/privacy-negative tests, package build, package inspection, Storybook build, and Next.js/SSR fixtures. | Automated verification report | Vera |
-| GA-06.2 | Run Playwright for page, generic, click, search, loaded-video, played-video, consent/readiness, duplicate, error, and compatibility scenarios. | Browser verification evidence | Vera |
+| GA-06.2 | Run Playwright for initial and Next.js navigation page views, generic, click, search, loaded-video, played-video, consent/readiness, callback/timeout, duplicate, error, and compatibility scenarios. | Browser verification evidence | Vera |
 | GA-06.3 | Execute manual harness and generic consumer checks using a spy transport and no production GA requests. | Completed `manual_testing.md` | Assigned QA and analytics owner |
 | GA-06.4 | Run the approved Bitbucket pipeline at the exact candidate revision. | CI evidence | Repository owner and Vera |
 | GA-06.5 | Independently review the complete change set against approved requirements, privacy boundaries, and reference compatibility. | Independent review decision | Argus |

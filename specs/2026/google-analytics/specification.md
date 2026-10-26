@@ -32,8 +32,8 @@ In scope:
 
 1. Resolved: the consumer owns tag loading and supplies the selected transport: direct `gtag.js` or GTM through its `dataLayer`. The shared component does not load either script.
 2. Resolved: queue events in a bounded queue while consent is unknown; drop events and clear the queue when consent is denied; flush valid queued events once when consent is granted.
-3. Resolved: each consumer reads its GA4 measurement ID from its own environment and passes it at initialization; IDs are never package constants.
-4. Resolved: consumers call `trackPageView()` for initial loads and client-side navigation, and configure gtag with automatic page views disabled.
+3. Resolved: each direct-gtag consumer reads its GA4 measurement ID from its own environment and passes it at initialization. GTM consumers configure the GA4 destination in their container and pass no measurement ID to the package. Measurement and container IDs are never package constants.
+4. Resolved direction: consumers call `trackPageView()` for initial loads and client-side navigation. To make the component the single page-view owner, consumers disable the tag's default page view and Enhanced Measurement history-change page views; an alternative ownership model requires renewed approval.
 5. Resolved scope: non-GA trackers and DOM behavior remain outside this component.
 6. Resolved: Next.js is the required framework integration; use the shared repository's installed Next.js version for the fixture.
 7. Resolved: proceed with package, browser, and Next.js/SSR fixtures using spy transports.
@@ -52,6 +52,8 @@ The new public API will optimize the reference instead of copying its redundant 
 
 Generic event payloads support `event_action`, `event_label`, `event_value`, and callback handling. Consumers may add further GA event parameters in the event payload; the component forwards supplied event fields while merging current dimensions, subject to documented validation and reserved-field rules.
 
+The exact video event names and categories are stable. GA-A10 resolves the inconsistent legacy values by defaulting `event_value` to numeric `0` while allowing a configured per-instance default or call-specific numeric override.
+
 ## Endpoint and approval
 
-This project currently produces reviewable specifications only. Requirements and development approval are pending. No source implementation is authorized, and the `news` repository remains read-only reference material.
+GA-A10 approves GA-D01-GA-D09 and requirements GA-R01-GA-R13 / GA-AC01-GA-AC26. Development approval remains pending. No source implementation is authorized, and the `news` repository remains read-only reference material.

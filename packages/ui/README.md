@@ -3,6 +3,27 @@
 Reusable React 19 components for GNO portal applications. Import the required
 stylesheet once at the application root.
 
+## Google Analytics
+
+`createGoogleAnalytics` is a consent-aware GA4 integration supporting direct
+`gtag.js` and GTM `dataLayer` transports. It queues events only while consent
+is unknown, never loads provider scripts, and does not retry failed sends.
+
+```tsx
+import { createGoogleAnalytics } from "nmi-devops-shared-components";
+
+const analytics = createGoogleAnalytics({
+  transport: { type: "gtag", gtag }, measurementId: "G-EXAMPLE",
+  consent: "unknown", portalSection: "News",
+});
+analytics.setConsent("granted");
+analytics.trackPageView({ page_title: document.title });
+analytics.trackClick({ content_id: "story-card" });
+```
+
+The consumer owns provider loading, consent policy, route page views, and data
+classification. See `docs/consumer-setup.md` for GTM, SSR, and dimension guidance.
+
 ```tsx
 import { PortalHeader } from "nmi-devops-shared-components";
 import "nmi-devops-shared-components/styles.css";

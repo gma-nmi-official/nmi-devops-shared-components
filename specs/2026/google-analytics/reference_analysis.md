@@ -4,10 +4,10 @@
 
 | Repository | Revision inspected | Relevant source |
 | --- | --- | --- |
-| `C:\laragon\www\news` | `feature/api-connectivity-checker` / `16c98484aeecdec2ba4552e5f5f834d029d7a7b4` | `res/js/custom_analytics.js`, loader/consent files, call sites |
-| `D:\gno-node-projects\gno-shared-components-v2` | `master` / `c580e40819842932fe9430cefddca92bf6525867` | Target shared package and project specifications |
+| `C:\laragon\www\news` | Originally inspected at `feature/api-connectivity-checker` / `16c98484aeecdec2ba4552e5f5f834d029d7a7b4`; refreshed at `hotfix/GNO-21329` / `28d3312872ac7dee53215939faeeda50b0d37e87` on 2026-10-26 | `res/js/custom_analytics.js`, loader/consent files, call sites |
+| `D:\gno-node-projects\gno-shared-components-v2` | `feature/google-analytics` / `43dd02552014506b81600783cb0dcff3ab9d8791`; base `master` / `e8132b6f227a8453dc07abf0d06710b876770805` | Target shared package and project specifications |
 
-The `news` worktree already contains untracked `.codex/` and `AGENTS.md`; they are unrelated and must be preserved. The reference file has 322 lines and is read-only evidence.
+The `news` worktree already contains untracked `.codex/` and `AGENTS.md`; they are unrelated and must be preserved. The current reference file has 320 content lines and is read-only evidence. The reference file and inspected video evidence have no Git diff between the original adoption revision and the refreshed revision, so the algorithm observations remain current.
 
 ## Reference API
 
@@ -42,7 +42,7 @@ Repository search found extensive coupling: approximately 335 `ga_click_event`, 
 
 - `loaded_a_video` is sent after a player load callback.
 - `played_a_video` is sent after a player playing callback.
-- Observed fields include `event_category` (`Video Load` or `Video Play`), `event_label` (video URL/path), `event_value` (`0`), and the current content context.
+- Observed fields include `event_category` (`Video Load` or `Video Play`), `event_label` (video URL/path), `event_value`, and the current content context. The reference is inconsistent: `res/js/video_player.js` uses `1`, while representative modern video and livestream call sites use `0`. The shared contract must not claim one value is preserved until the analytics owner selects `0`, `1`, or a caller/configuration-supplied value.
 - AMP controller data builds the same names and adds content metadata, but AMP transport/parity requires an explicit decision.
 
 ### Click and search
@@ -71,7 +71,7 @@ The source reference does not itself implement a GTM transport. The user has req
 
 The proposed GTM envelope still needs formal requirements/design review. A fixed custom event key with a separate `event_name` and event-parameter object avoids conflating GTM's trigger event with the GA4 event name. Google documents `dataLayer.push()` as the GTM event/data interface and requires the consumer container's tags/triggers to interpret that data.
 
-Official references: [Google Tag Manager data layer](https://developers.google.com/tag-platform/tag-manager/datalayer), [Google Tag Manager consent ordering](https://developers.google.com/tag-platform/tag-manager/datalayer), [Google Tag Manager GA4 event setup](https://developers.google.com/tag-platform/tag-manager/server-side/send-data), and [Google tag event parameters](https://developers.google.com/tag-platform/gtagjs/reference/parameters).
+Official references: [Google Tag Manager data layer](https://developers.google.com/tag-platform/tag-manager/datalayer), [Google consent-mode setup](https://developers.google.com/tag-platform/security/guides/consent), [Google Analytics event setup](https://developers.google.com/analytics/devguides/collection/ga4/events), [manual and automatic page views](https://developers.google.com/analytics/devguides/collection/ga4/views), and [Google tag event parameters](https://developers.google.com/tag-platform/gtagjs/reference/parameters).
 
 ## Problems to remove from the shared design
 

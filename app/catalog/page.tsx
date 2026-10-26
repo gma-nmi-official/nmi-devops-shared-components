@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AdSlotPreview } from "./ad-slot-preview";
 import { CookieAgreementPreview } from "./cookie-agreement-preview";
 import { PortalHeaderPreview } from "./portal-header-preview";
+import { GoogleAnalyticsPreview } from "./google-analytics-preview";
 
 export const metadata = {
   title: "Component catalog | NMI DevOps Shared Components",
@@ -23,6 +24,7 @@ export default function CatalogPage() {
         <a href="#preview">Preview</a>
         <a href="#cookie-agreement">Cookie Agreement</a>
         <a href="#ad-slot">Ad Slot</a>
+        <a href="#google-analytics">Google Analytics</a>
         <a href="#setup">Install</a>
         <a href="#parameters">Portal Header</a>
         <a href="#cookie-configuration">Cookie Agreement config</a>
@@ -100,8 +102,21 @@ export function SiteHeader() {
 }`}</code></pre>
       </section>
 
+      <section aria-labelledby="google-analytics-title" className="catalog__section" id="google-analytics">
+        <p className="showcase__eyebrow">06 · Google Analytics</p>
+        <h2 id="google-analytics-title">Consent-aware GA4 delivery</h2>
+        <p>The opt-in integration provides explicit page views, semantic click/search/scroll/video helpers, configurable content dimensions, and direct <code>gtag.js</code> or GTM transports. It never loads a provider script or retries failed sends.</p>
+        <GoogleAnalyticsPreview />
+        <pre><code>{`const analytics = createGoogleAnalytics({
+  transport: { type: "gtag", gtag },
+  measurementId: "G-EXAMPLE",
+  consent: "unknown",
+  portalSection: "News",
+});`}</code></pre>
+      </section>
+
       <section aria-labelledby="cookie-configuration-title" className="catalog__section" id="cookie-configuration">
-        <p className="showcase__eyebrow">06 · Configure Cookie Agreement</p>
+        <p className="showcase__eyebrow">07 · Configure Cookie Agreement</p>
         <h2 id="cookie-configuration-title">Keep consent explicit and consumer-owned</h2>
         <p>Pass a policy version and optionally inject a typed <code>ConsentStore</code>. The default adapter uses a host-only <code>gno_cookie_consent</code> cookie with a 365-day expiry.</p>
         <div className="catalog__parameters">
@@ -124,7 +139,7 @@ import "nmi-devops-shared-components/styles.css";
       </section>
 
       <section aria-labelledby="parameters-title" className="catalog__section" id="parameters">
-        <p className="showcase__eyebrow">07 · Configure Portal Header</p>
+        <p className="showcase__eyebrow">08 · Configure Portal Header</p>
         <h2 id="parameters-title">Choose what your header needs</h2>
         <p>All props are optional. Start with the defaults, then add only the options your product uses.</p>
         <div className="catalog__parameters">

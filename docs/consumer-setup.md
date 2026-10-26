@@ -7,13 +7,13 @@ This guide explains how a JavaScript or TypeScript application consumes the publ
 Download the approved `.tgz` asset from the private GitHub Release, then install it in the consumer application. Set `GH_TOKEN` to a token authorized to read the repository and keep it in the consumer's CI secret store:
 
 ```bash
-gh release download v1.3.0 \
+  gh release download v1.4.0 \
   --repo gma-nmi-official/nmi-devops-shared-components \
-  --pattern 'nmi-devops-shared-components-1.3.0.tgz'
-npm install ./nmi-devops-shared-components-1.3.0.tgz
+  --pattern 'nmi-devops-shared-components-1.4.0.tgz'
+npm install ./nmi-devops-shared-components-1.4.0.tgz
 ```
 
-The example uses the proposed current minor release, `v1.3.0`. Do not commit the token. The installed package and import name remain `nmi-devops-shared-components`.
+The example uses the proposed current minor release, `v1.4.0`. Do not commit the token. The installed package and import name remain `nmi-devops-shared-components`.
 
 ## 2. Import the component and styles
 
@@ -65,6 +65,28 @@ export function SiteHeader() {
 ```
 
 Keep application routes, data fetching, authentication, analytics, and other integrations in the consuming application unless the component contract explicitly says otherwise.
+
+### Configure Google Analytics
+
+`createGoogleAnalytics` supports direct `gtag.js` and GTM `dataLayer` adapters;
+the package does not inject provider scripts. Consumers own consent policy,
+route page views, and sensitive-data classification.
+
+```tsx
+"use client";
+import { createGoogleAnalytics } from "nmi-devops-shared-components";
+
+const analytics = createGoogleAnalytics({
+  transport: { type: "gtag", gtag: window.gtag }, measurementId: "G-EXAMPLE",
+  consent: "unknown", portalSection: "News",
+});
+analytics.setConsent("granted");
+analytics.trackPageView({ page_title: document.title });
+```
+
+Use `{ type: "gtm", dataLayer: window.dataLayer }` for GTM. Unknown consent
+queues up to 100 events for five minutes; denied drops events and granted
+flushes them FIFO. The factory is safe to import during SSR.
 
 ### Configure display ads
 
