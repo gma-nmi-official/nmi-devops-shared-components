@@ -2,21 +2,21 @@
 
 | ID | Requirement | Criterion | Validation | Status |
 | --- | --- | --- | --- | --- |
-| ADS-AC01 | ADS-R01 | Package exports `AdSlot`, format/provider types, and documented configuration without importing consumer globals. | Package/type fixtures | Pending |
-| ADS-AC02 | ADS-R02 | `mrec` preset resolves the approved configurable sizes for each breakpoint, including the chosen MREC provider policy. | Unit/contract tests | Pending |
-| ADS-AC03 | ADS-R02 | `leaderboard` selects the configured desktop/mobile units and sizes at each agreed breakpoint; a resize does not create duplicate slots. | Unit/browser tests | Pending |
-| ADS-AC04 | ADS-R03 | Provider script loading and one-time initialization remain consumer-owned; package contains no live GPT or AllAccess loader. | Static/package inspection | Pending |
-| ADS-AC05 | ADS-R03 | GPT/GAM adapter receives slot path, container element, size mapping, and approved targeting and calls provider APIs through its readiness queue. | Fake GPT adapter contract test | Pending |
-| ADS-AC06 | ADS-R04, ADS-R07 | Mount, ready, fill, no-fill, provider failure, config replacement, and unmount produce deterministic state and only one owned slot. | Lifecycle tests | Pending |
-| ADS-AC07 | ADS-R04 | Unmount destroys only the slot created by that component instance; other instances remain registered. | Multi-slot isolation test | Pending |
-| ADS-AC08 | ADS-R05 | Consumer unit path, targeting, keywords, sizing, and lazy-load settings reach the adapter without mutation or package defaults containing production inventory data. | Contract/static tests | Pending |
-| ADS-AC09 | ADS-R06 | Slot exposes an accessible, configurable ad label and has a reserved layout size derived from configured sizes. | Accessibility/render tests | Pending |
-| ADS-AC10 | ADS-R06, ADS-R07 | No-fill follows explicit collapse/reserve configuration and does not leave a broken frame, console error, or unexpected layout jump. | Browser test | Pending |
-| ADS-AC11 | ADS-R07, ADS-R12 | Provider not-ready/error/no-fill states are observable through documented state/callbacks and remain isolated to their slot. | Unit/component tests | Pending |
-| ADS-AC12 | ADS-R08 | Server import/render performs no access to `window`, `document`, or provider globals and makes no ad request. | SSR/build tests | Pending |
-| ADS-AC13 | ADS-R08 | Unit, Storybook, and Playwright fixtures use fake provider data and produce no production ad network traffic. | Network trace | Pending |
-| ADS-AC14 | ADS-R09 | Component uses consumer-provided privacy/eligibility input and does not access user data or consent storage. | Static/privacy-negative tests | Pending |
-| ADS-AC15 | ADS-R10 | Source and output do not depend on Portal Header, Cookie Agreement, Google Analytics, GTM, or news globals. | Static/package inspection | Pending |
-| ADS-AC16 | ADS-R11 | Dedicated Storybook stories cover MREC and leaderboard formats, breakpoints, label, loading, filled, empty, and error states. | Storybook review | Pending |
-| ADS-AC17 | ADS-R11 | Catalog and consumer guide document provider ownership, slot config, responsive sizing, targeting boundary, privacy input, SSR, and no-fill behavior. | Documentation review | Pending |
-| ADS-AC18 | ADS-R12 | Typecheck, lint, unit/component, SSR, Storybook, build, pack, and Playwright checks pass at one revision before review. | Verification report | Pending |
+| ADS-AC01 | ADS-R01 | Package exports `AdSlot`, format/provider types, and documented configuration without importing consumer globals. | Package/type fixtures | PASS — automated |
+| ADS-AC02 | ADS-R02 | `mrec`, `leaderboard`, and approved `custom` standard display configurations resolve exactly one validated responsive rule at every supported width; each active rule is rejected unless the consumer supplies a non-empty valid size list and unit path. | Unit/contract tests | PASS — automated |
+| ADS-AC03 | ADS-R02 | A responsive rule selects the configured unit path and sizes at each agreed breakpoint; rule replacement destroys the prior owned slot before creating one replacement and repeated resize events do not duplicate slots. | Unit/browser tests | PASS — cleanup-failure retry, ordering, and peak-one ownership tests |
+| ADS-AC04 | ADS-R03 | Provider script loading and application-wide GPT configuration remain consumer-owned; package contains no live GPT or AllAccess loader and does not initialize GPT services per slot. | Static/package inspection | PASS — automated/static |
+| ADS-AC05 | ADS-R03 | GPT/GAM adapter receives slot path, element ID, resolved sizes, and approved targeting; it queues provider calls and cleans up owned event listeners/slot handles. | Fake GPT adapter contract test | PASS — adapter and component cleanup-failure integration tests |
+| ADS-AC06 | ADS-R04, ADS-R07 | Mount, ready, fill, no-fill, provider failure, config replacement, and unmount produce deterministic state and only one owned slot. | Lifecycle tests | PASS — persistent ownership, bounded retry, blocked replacement, and unmount retry tests |
+| ADS-AC07 | ADS-R04 | Unmount destroys only the slot created by that component instance; other instances remain registered. | Multi-slot isolation test | PASS — automated isolation plus corrected ADS-MT08 rerun |
+| ADS-AC08 | ADS-R05 | Consumer unit paths, complete size lists, targeting, keywords, and reservation settings reach the adapter without mutation; package defaults contain no ad sizes or production inventory data, and provider-wide lazy loading is not exposed as a slot prop. | Contract/static tests | PASS — automated/static |
+| ADS-AC09 | ADS-R06 | Slot exposes an accessible, configurable ad label and has a reserved layout size derived from configured sizes. | Accessibility/render tests | PASS — automated |
+| ADS-AC10 | ADS-R06, ADS-R07 | No-fill follows explicit collapse/reserve configuration and does not leave a broken frame, console error, or unexpected layout jump. | Browser test | PASS — automated state tests and ADS-MT06 manual layout QA |
+| ADS-AC11 | ADS-R07, ADS-R12 | Provider not-ready/error/no-fill states are observable through documented state/callbacks and remain isolated to their slot. | Unit/component tests | PASS — automated |
+| ADS-AC12 | ADS-R08 | Server import/render performs no access to `window`, `document`, or provider globals and makes no ad request. | SSR/build tests | PASS — automated/build |
+| ADS-AC13 | ADS-R08 | Unit, Storybook, and Playwright fixtures use fake provider data and produce no production ad network traffic. | Network trace | PASS — automated |
+| ADS-AC14 | ADS-R09 | With eligibility false, the component makes no provider call; it does not access user data or consent storage, and only the consumer can enable requests. | Static/privacy-negative tests | PASS — automated/static |
+| ADS-AC15 | ADS-R10 | Source and output do not depend on Portal Header, Cookie Agreement, Google Analytics, GTM, or news globals. | Static/package inspection | PASS — static |
+| ADS-AC16 | ADS-R11 | Dedicated Storybook stories cover MREC, leaderboard, approved custom display, breakpoints, eligibility, label, loading, filled, empty, and error states. | Storybook review | PASS — corrected Storybook build and ADS-MT08 manual rerun |
+| ADS-AC17 | ADS-R11 | Catalog and consumer guide document provider ownership, slot config, responsive sizing, targeting boundary, privacy input, SSR, and no-fill behavior. | Documentation review | PASS — implementation verification |
+| ADS-AC18 | ADS-R12 | Typecheck, lint, unit/component, SSR, Storybook, build, pack, and Playwright checks pass at one revision before review. | Verification report | PASS — corrected-candidate reports 10 and 13 |

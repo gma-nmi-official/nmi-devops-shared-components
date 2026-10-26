@@ -16,7 +16,7 @@ export default function Home() {
 
       <section className="docs-home__hero" aria-labelledby="page-title">
         <div className="docs-home__hero-copy">
-          <p className="docs-home__eyebrow">NMI DevOps Shared Components · v1.1.0</p>
+          <p className="docs-home__eyebrow">NMI DevOps Shared Components · v1.3.0</p>
           <h1 id="page-title">Build consistent portal experiences with shared components.</h1>
           <p className="docs-home__lede">
             A maintained React component package for accessible, configurable portal interfaces.

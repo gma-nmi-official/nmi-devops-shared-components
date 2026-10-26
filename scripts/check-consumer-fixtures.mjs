@@ -4,6 +4,8 @@ import { build } from "vite";
 const entries = [
   "tests/consumers/portal-header-javascript/main.jsx",
   "tests/consumers/portal-header-typescript/main.tsx",
+  "tests/consumers/ad-slot-javascript/main.jsx",
+  "tests/consumers/ad-slot-typescript/main.tsx",
 ];
 
 for (const entry of entries) {
@@ -18,4 +20,4 @@ for (const entry of entries) {
   });
 }
 
-console.log(`Built ${entries.length} Portal Header consumer fixtures.`);
+console.log(`Built ${entries.length} JavaScript and TypeScript consumer fixtures.`);

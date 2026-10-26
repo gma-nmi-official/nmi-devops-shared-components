@@ -2,8 +2,8 @@
 
 This repository contains configurable, reusable GNO portal components for
 JavaScript and TypeScript consumer applications. The publishable package is
-`nmi-devops-shared-components` and currently exports the `PortalHeader`
-component.
+`nmi-devops-shared-components` and currently exports `PortalHeader`,
+`CookieAgreement`, and `AdSlot`.
 
 The project includes two documentation surfaces:
 
@@ -95,8 +95,8 @@ The workflow files are available under [`.codex/`](.codex/), [`.agents/`](.agent
 Consumers install the package and import a named export:
 
 ```bash
-gh release download v1.1.0 --repo gma-nmi-official/nmi-devops-shared-components --pattern 'nmi-devops-shared-components-1.1.0.tgz'
-npm install ./nmi-devops-shared-components-1.1.0.tgz
+gh release download v1.3.0 --repo gma-nmi-official/nmi-devops-shared-components --pattern 'nmi-devops-shared-components-1.3.0.tgz'
+npm install ./nmi-devops-shared-components-1.3.0.tgz
 ```
 
 ```tsx
