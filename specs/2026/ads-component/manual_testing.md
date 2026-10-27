@@ -8,7 +8,9 @@
 - Target: `feature/ads-component`, baseline `a546c6858312b4d3a168009efad37da276afe9b1` plus the current ads-component working-tree diff.
 - Recipient: repository owner and monetization/ad-operations QA; named tester pending.
 - Environment: local production build and Storybook, current supported Chromium desktop (1440 × 900) and mobile (375 × 812).
-- Safety: use only the catalog/Storybook fake provider. Do not add a live GPT script, production inventory path, or real targeting data.
+- Safety: normal catalog/Storybook checks use the fake provider and make no ad request. The
+  `LiveNewsArticle` Storybook story is an explicit local-only GPT test path and must be
+  used only with Ad Operations-approved test/staging inventory.
 
 Manual checks supplement the automated suite. `BLOCKED` cases remain release blockers even when related automated coverage passes.
 
@@ -19,6 +21,22 @@ Manual checks supplement the automated suite. `BLOCKED` cases remain release blo
 3. Open `http://127.0.0.1:3100/catalog` and browser developer tools.
 4. Keep the Network panel recording with cache disabled; filter for `doubleclick`, `googlesyndication`, `googletagservices`, `gpt`, and `allaccess`.
 5. For supported-state inspection, run `npm run build-storybook` and serve the generated Storybook, or use the existing repository Storybook workflow.
+
+### Optional live Storybook ad check
+
+Set the following in a local, ignored `.env.local` before starting Storybook, then restart it:
+
+```text
+VITE_STORYBOOK_LIVE_ADS=true
+VITE_STORYBOOK_AD_UNIT_PATH=/344684475/GNO_TEST_Desktop_Mrec1
+```
+
+Open `Components/AdSlot/LiveNewsArticle`. This loads GPT from
+`securepubads.g.doubleclick.net`, defines the configured test unit, and should
+produce a request under the `/344684475/` network path. The `LiveLeaderboard`
+and `LiveCustom` stories exercise the responsive leaderboard and custom
+rectangular test units as well. Do not use production unit paths or commit
+local environment files.
 
 ## Reference-derived sample values
 
