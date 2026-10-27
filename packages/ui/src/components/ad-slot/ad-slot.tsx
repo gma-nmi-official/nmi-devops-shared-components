@@ -37,7 +37,10 @@ export function AdSlot({
   const lifecycleQueueRef = useRef<Promise<void>>(Promise.resolve());
   const configRef = useRef(config);
   const onStateChangeRef = useRef(onStateChange);
-  const ownedSlotRef = useRef<{ provider: AdProvider; slot: AdProviderSlot } | undefined>(undefined);
+  const ownedSlotRef = useRef<{
+    provider: AdProvider;
+    slot: AdProviderSlot;
+  } | undefined>(undefined);
 
   let configSignature: string;
   try {
@@ -69,12 +72,16 @@ export function AdSlot({
 
     const isCurrent = () => !cancelled && generationRef.current === generation;
     const emit = (nextState: AdSlotState, error?: unknown) => {
-      if (!isCurrent()) return;
+      if (!isCurrent()) {
+        return;
+      }
       setState(nextState);
       onStateChangeRef.current?.(nextState, error);
     };
     const reportCleanupError = (error: unknown) => {
-      if (isCurrent()) setState("error");
+      if (isCurrent()) {
+        setState("error");
+      }
       try {
         onStateChangeRef.current?.("error", error);
       } catch {
@@ -83,13 +90,17 @@ export function AdSlot({
     };
     const destroyOwnedSlot = async () => {
       const owned = ownedSlotRef.current;
-      if (!owned) return;
+      if (!owned) {
+        return;
+      }
 
       let lastError: unknown;
       for (let attempt = 0; attempt < 2; attempt += 1) {
         try {
           await owned.provider.destroySlot(owned.slot);
-          if (ownedSlotRef.current === owned) ownedSlotRef.current = undefined;
+          if (ownedSlotRef.current === owned) {
+            ownedSlotRef.current = undefined;
+          }
           return;
         } catch (error) {
           lastError = error;
@@ -101,11 +112,15 @@ export function AdSlot({
 
     const activate = async () => {
       try {
-        if (!isCurrent()) return;
+        if (!isCurrent()) {
+          return;
+        }
         assertValidAdPlacementConfig(activeConfig);
         if (!enabled) {
           await destroyOwnedSlot();
-          if (!isCurrent()) return;
+          if (!isCurrent()) {
+            return;
+          }
           activeSignature = "disabled-by-prop";
           emit("idle");
           return;
@@ -113,10 +128,14 @@ export function AdSlot({
 
         const rule = resolveAdResponsiveRule(activeConfig, window.innerWidth);
         const nextSignature = getAdResponsiveRuleSignature(rule);
-        if (nextSignature === activeSignature) return;
+        if (nextSignature === activeSignature) {
+          return;
+        }
 
         await destroyOwnedSlot();
-        if (!isCurrent()) return;
+        if (!isCurrent()) {
+          return;
+        }
         activeSignature = nextSignature;
 
         if (!isActiveAdResponsiveRule(rule)) {
@@ -132,7 +151,13 @@ export function AdSlot({
           sizes: rule.sizes,
           targeting: activeConfig.targeting ?? {},
           onStateChange: (nextState, error) => {
-            if (isCurrent() && requestGeneration === generationRef.current && activeSignature === nextSignature) emit(nextState, error);
+            if (
+              isCurrent()
+              && requestGeneration === generationRef.current
+              && activeSignature === nextSignature
+            ) {
+              emit(nextState, error);
+            }
           },
         });
         ownedSlotRef.current = { provider, slot: created };
@@ -142,13 +167,17 @@ export function AdSlot({
           return;
         }
       } catch (error) {
-        if (!ownedSlotRef.current) activeSignature = undefined;
+        if (!ownedSlotRef.current) {
+          activeSignature = undefined;
+        }
         emit("error", error);
       }
     };
 
     const schedule = () => {
-      if (resizeTimer) clearTimeout(resizeTimer);
+      if (resizeTimer) {
+        clearTimeout(resizeTimer);
+      }
       resizeTimer = setTimeout(() => {
         void enqueue(activate);
       }, RESIZE_DEBOUNCE_MS);
@@ -160,7 +189,9 @@ export function AdSlot({
     return () => {
       cancelled = true;
       generationRef.current += 1;
-      if (resizeTimer) clearTimeout(resizeTimer);
+      if (resizeTimer) {
+        clearTimeout(resizeTimer);
+      }
       window.removeEventListener("resize", schedule);
       void enqueue(destroyOwnedSlot).catch(() => undefined);
     };
@@ -170,19 +201,29 @@ export function AdSlot({
   const collapsed = emptyBehavior === "collapse" && (state === "empty" || state === "error");
   const reservedSize = config.reservedSize;
   const style = reservedSize && !collapsed
-    ? ({ "--gno-ad-slot-width": `${reservedSize[0]}px`, "--gno-ad-slot-height": `${reservedSize[1]}px` } as CSSProperties)
+    ? ({
+      "--gno-ad-slot-width": `${reservedSize[0]}px`,
+      "--gno-ad-slot-height": `${reservedSize[1]}px`,
+    } as CSSProperties)
     : undefined;
 
   return (
     <aside
       aria-label={label}
-      className={["gno-ad-slot", `gno-ad-slot--${config.format}`, collapsed ? "gno-ad-slot--collapsed" : "", className].filter(Boolean).join(" ")}
+      className={[
+        "gno-ad-slot",
+        `gno-ad-slot--${config.format}`,
+        collapsed ? "gno-ad-slot--collapsed" : "",
+        className,
+      ].filter(Boolean).join(" ")}
       data-ad-format={config.format}
       data-ad-state={state}
       style={style}
     >
       <span className="gno-ad-slot__label">{label}</span>
-      {state === "loading" && placeholder ? <div className="gno-ad-slot__placeholder">{placeholder}</div> : null}
+      {state === "loading" && placeholder ? (
+        <div className="gno-ad-slot__placeholder">{placeholder}</div>
+      ) : null}
       <div className="gno-ad-slot__provider" id={elementId} />
     </aside>
   );

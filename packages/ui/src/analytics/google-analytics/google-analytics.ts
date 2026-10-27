@@ -1,4 +1,10 @@
-import type { AnalyticsConfig, AnalyticsResult, EventInput, GoogleAnalytics, PageViewInput } from "./types";
+import type {
+  AnalyticsConfig,
+  AnalyticsResult,
+  EventInput,
+  GoogleAnalytics,
+  PageViewInput,
+} from "./types";
 import { cloneContext, createDefaults, replaceContext, updateContext } from "./context";
 import { DeliveryState } from "./delivery-state";
 import { dimensionEntries, stripCallback, validateConfig, validateEvent } from "./validation";
@@ -11,7 +17,7 @@ export function createGoogleAnalytics(config: AnalyticsConfig): GoogleAnalytics 
   const defaults = createDefaults(dimensions);
   let current = { ...defaults };
   let initialized = false;
-  const sentScrolls = new Set<string>();
+  const scrolls = new Set<string>();
   const delivery = new DeliveryState(
     config.queue?.capacity ?? 100,
     config.queue?.maxAgeMs ?? 300_000,
@@ -26,24 +32,24 @@ export function createGoogleAnalytics(config: AnalyticsConfig): GoogleAnalytics 
 
   const ready = () => delivery.isReady(config.ready);
 
-  const emit = (eventName: string, parameters: EventInput, fromQueue = false): AnalyticsResult => {
+  const emit = (eventName: string, params: EventInput, queued = false): AnalyticsResult => {
     try {
-      validateEvent(eventName, parameters);
+      validateEvent(eventName, params);
     } catch (error) {
       reportError(error, eventName);
       return { status: "failed", eventName, reason: "invalid_payload" };
     }
 
-    if (!fromQueue && !(config.enabled ?? true)) {
+    if (!queued && !(config.enabled ?? true)) {
       return { status: "dropped", eventName, reason: "disabled" };
     }
 
-    if (!fromQueue && delivery.getConsent() === "denied") {
+    if (!queued && delivery.getConsent() === "denied") {
       return { status: "dropped", eventName, reason: "consent_denied" };
     }
 
-    if (!fromQueue && delivery.getConsent() === "unknown") {
-      return delivery.enqueue(eventName, parameters);
+    if (!queued && delivery.getConsent() === "unknown") {
+      return delivery.enqueue(eventName, params);
     }
 
     if (!ready()) {
@@ -51,7 +57,7 @@ export function createGoogleAnalytics(config: AnalyticsConfig): GoogleAnalytics 
       return { status: "failed", eventName, reason: "not_ready" };
     }
 
-    const { eventParams, callback, callbackTimeoutMs } = stripCallback(parameters);
+    const { eventParams, callback, callbackTimeoutMs } = stripCallback(params);
     const payload = { ...current, ...eventParams };
     const sent = sendTransport(
       config.transport,
@@ -69,18 +75,18 @@ export function createGoogleAnalytics(config: AnalyticsConfig): GoogleAnalytics 
     if (delivery.getConsent() !== "granted" || !ready()) return;
 
     for (const entry of delivery.takeReady()) {
-      emit(entry.eventName, entry.parameters, true);
+      emit(entry.eventName, entry.params, true);
     }
   };
 
-  const trackVideo = (eventName: string, category: string, parameters: EventInput): AnalyticsResult => {
-    const value = parameters.event_value ?? config.video?.eventValue ?? 0;
+  const trackVideo = (eventName: string, category: string, params: EventInput): AnalyticsResult => {
+    const value = params.event_value ?? config.video?.eventValue ?? 0;
     if (typeof value !== "number" || !Number.isFinite(value)) {
       reportError(new Error("video event_value must be finite"), eventName);
       return { status: "failed", eventName, reason: "invalid_video_value" };
     }
 
-    const rest = { ...parameters };
+    const rest = { ...params };
     delete rest.event_value;
 
     return emit(eventName, { event_category: category, event_value: value, ...rest });
@@ -95,7 +101,7 @@ export function createGoogleAnalytics(config: AnalyticsConfig): GoogleAnalytics 
     },
     setCurrentParams(params) {
       current = replaceContext(dimensions, params);
-      sentScrolls.clear();
+      scrolls.clear();
     },
     getCurrentParams() {
       return cloneContext(current);
@@ -105,23 +111,23 @@ export function createGoogleAnalytics(config: AnalyticsConfig): GoogleAnalytics 
     },
     clearCurrentParams() {
       current = { ...defaults };
-      sentScrolls.clear();
+      scrolls.clear();
     },
     trackPageView(page: PageViewInput = {}) {
-      sentScrolls.clear();
+      scrolls.clear();
       return emit("page_view", page);
     },
-    trackEvent(eventName, parameters = {}) {
-      return emit(eventName, parameters);
+    trackEvent(eventName, params = {}) {
+      return emit(eventName, params);
     },
-    trackClick(parameters = {}) {
-      return emit("click", parameters);
+    trackClick(params = {}) {
+      return emit("click", params);
     },
-    trackSearch(parameters = {}) {
-      return emit("search", parameters);
+    trackSearch(params = {}) {
+      return emit("search", params);
     },
-    trackScroll(parameters = {}) {
-      const milestone = (parameters as EventInput & { milestone?: number }).milestone;
+    trackScroll(params = {}) {
+      const milestone = (params as EventInput & { milestone?: number }).milestone;
       const configured = config.scroll?.milestones;
       const eventName = config.scroll?.eventName ?? "scroll";
 
@@ -130,26 +136,34 @@ export function createGoogleAnalytics(config: AnalyticsConfig): GoogleAnalytics 
       }
 
       const key = String(milestone ?? "scroll");
-      if (config.scroll?.deduplicatePerPage && sentScrolls.has(key)) {
+      if (config.scroll?.deduplicatePerPage && scrolls.has(key)) {
         return { status: "dropped", eventName, reason: "duplicate" };
       }
 
-      const updates = milestone === undefined ? undefined : config.scroll?.dimensionUpdates?.[String(milestone)];
-      if (updates) current = updateContext(dimensions, current, updates);
+      const updates = milestone === undefined
+        ? undefined
+        : config.scroll?.dimensionUpdates?.[String(milestone)];
+      if (updates) {
+        current = updateContext(dimensions, current, updates);
+      }
 
-      const result = emit(eventName, parameters);
-      if (result.status === "sent" || result.status === "queued") sentScrolls.add(key);
+      const result = emit(eventName, params);
+      if (result.status === "sent" || result.status === "queued") {
+        scrolls.add(key);
+      }
       return result;
     },
-    trackVideoLoaded(parameters = {}) {
-      return trackVideo("loaded_a_video", "Video Load", parameters);
+    trackVideoLoaded(params = {}) {
+      return trackVideo("loaded_a_video", "Video Load", params);
     },
-    trackVideoPlayed(parameters = {}) {
-      return trackVideo("played_a_video", "Video Play", parameters);
+    trackVideoPlayed(params = {}) {
+      return trackVideo("played_a_video", "Video Play", params);
     },
     setConsent(state) {
       delivery.setConsent(state);
-      if (state === "granted") flush();
+      if (state === "granted") {
+        flush();
+      }
     },
     flush,
   };

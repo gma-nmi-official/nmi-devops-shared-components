@@ -20,7 +20,9 @@ function AnalyticsHarness({
   const dataLayer = useMemo<DataLayer>(
     () => ({
       push: (value) => {
-        if (failTransport) throw new Error("Storybook transport failure");
+        if (failTransport) {
+          throw new Error("Storybook transport failure");
+        }
         setGtmEvents((events) => [...events, value]);
       },
     }),
@@ -28,7 +30,9 @@ function AnalyticsHarness({
   );
   const gtag = useMemo<Gtag>(
     () => (_command, _name, parameters) => {
-      if (failTransport) throw new Error("Storybook transport failure");
+      if (failTransport) {
+        throw new Error("Storybook transport failure");
+      }
       const values = parameters as Record<string, unknown> | undefined;
       const contentId = values?.content_id ?? "no content id";
       setLastEvent(`${String(_name)} · ${String(contentId)}`);

@@ -1,6 +1,10 @@
 "use client";
 
-import { AdSlot, type AdPlacementConfig, type AdProvider } from "nmi-devops-shared-components";
+import {
+  AdSlot,
+  type AdPlacementConfig,
+  type AdProvider,
+} from "nmi-devops-shared-components";
 
 const provider: AdProvider = {
   createSlot(request) {
@@ -15,9 +19,22 @@ const config: AdPlacementConfig = {
   format: "mrec",
   reservedSize: [300, 250],
   targeting: { section: "component-catalog" },
-  rules: [{ minWidth: 0, adUnitPath: "/example/catalog/mrec", sizes: [[300, 250]] }],
+  rules: [
+    {
+      minWidth: 0,
+      adUnitPath: "/example/catalog/mrec",
+      sizes: [[300, 250]],
+    },
+  ],
 };
 
 export function AdSlotPreview() {
-  return <AdSlot config={config} enabled label="Example advertisement" provider={provider} />;
+  return (
+    <AdSlot
+      config={config}
+      enabled
+      label="Example advertisement"
+      provider={provider}
+    />
+  );
 }

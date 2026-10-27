@@ -21,7 +21,8 @@ export function createCookieConsentStore(cookieName = DEFAULT_COOKIE_NAME): Cons
     write: (record) => {
       const maxAge = DEFAULT_RETENTION_DAYS * 24 * 60 * 60;
       const secure = window.location.protocol === "https:" ? "; Secure" : "";
-      document.cookie = `${encodeURIComponent(cookieName)}=${encodeURIComponent(JSON.stringify(record))}; Max-Age=${maxAge}; Path=/; SameSite=Lax${secure}`;
+      const serializedRecord = encodeURIComponent(JSON.stringify(record));
+      document.cookie = `${encodeURIComponent(cookieName)}=${serializedRecord}; Max-Age=${maxAge}; Path=/; SameSite=Lax${secure}`;
     },
     clear: () => {
       document.cookie = `${encodeURIComponent(cookieName)}=; Max-Age=0; Path=/; SameSite=Lax`;

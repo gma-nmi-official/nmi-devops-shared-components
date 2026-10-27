@@ -11,7 +11,12 @@ import {
   type FormEvent,
   type ReactNode,
 } from "react";
-import { PortalHeaderIcon, PortalHeaderMenuGridGlyph, PortalHeaderSocialIcon, portalHeaderControlIcons } from "./icons";
+import {
+  PortalHeaderIcon,
+  PortalHeaderMenuGridGlyph,
+  PortalHeaderSocialIcon,
+  portalHeaderControlIcons,
+} from "./icons";
 import { defaultGmaLogoSrc } from "./logo";
 import { resolvePortalHeaderNavigation } from "./navigation-links";
 import { resolvePortalHeaderSocialLinks } from "./social-links";
@@ -24,18 +29,30 @@ import type {
 
 function safeRel(target: "_self" | "_blank" | undefined, rel: string | undefined, external = false) {
   const tokens = rel?.split(/\s+/).filter(Boolean) ?? [];
-  if (external) tokens.push("external");
-  if (target === "_blank") tokens.push("noopener", "noreferrer");
+  if (external) {
+    tokens.push("external");
+  }
+  if (target === "_blank") {
+    tokens.push("noopener", "noreferrer");
+  }
   const result = Array.from(new Set(tokens)).join(" ");
   return result || undefined;
 }
 
 function isSafeNavigationHref(href: string) {
   const value = href.trim();
-  if (!value) return false;
-  if (value.includes("\\")) return false;
-  if (value.startsWith("/")) return !value.startsWith("//");
-  if (value.startsWith("#") || value.startsWith("?")) return true;
+  if (!value) {
+    return false;
+  }
+  if (value.includes("\\")) {
+    return false;
+  }
+  if (value.startsWith("/")) {
+    return !value.startsWith("//");
+  }
+  if (value.startsWith("#") || value.startsWith("?")) {
+    return true;
+  }
   try {
     return value.toLowerCase().startsWith("https://") && new URL(value).protocol === "https:";
   } catch {
@@ -70,7 +87,9 @@ function renderSafeLink(
   if (renderLink) {
     try {
       const rendered = renderLink(props);
-      if (rendered != null) return rendered;
+      if (rendered != null) {
+        return rendered;
+      }
     } catch {
       // Consumer adapters must not make core navigation unavailable.
     }
@@ -89,7 +108,9 @@ function NavigationList({
   renderLink?: PortalHeaderRenderLink;
   onNavigate?: () => void;
 }) {
-  if (items.length === 0) return null;
+  if (items.length === 0) {
+    return null;
+  }
 
   return (
     <nav aria-label={label} className="gno-portal-header__nav">
@@ -101,7 +122,8 @@ function NavigationList({
                 {item.label}
               </span>
             ) : (
-              renderSafeLink({
+              renderSafeLink(
+                {
                   href: item.href,
                   children: item.label,
                   className: "gno-portal-header__nav-link",
@@ -109,7 +131,9 @@ function NavigationList({
                   rel: safeRel(item.target, item.rel, item.external),
                   "aria-current": item.current ? "page" : undefined,
                   onClick: onNavigate,
-                }, renderLink)
+                },
+                renderLink,
+              )
             )}
           </li>
         ))}
@@ -127,20 +151,30 @@ function SocialLinks({
   renderLink?: PortalHeaderRenderLink;
   className?: string;
 }) {
-  if (links.length === 0) return null;
+  if (links.length === 0) {
+    return null;
+  }
   return (
-    <nav aria-label="Social media" className={["gno-portal-header__socials", className].filter(Boolean).join(" ")}>
+    <nav
+      aria-label="Social media"
+      className={["gno-portal-header__socials", className]
+        .filter(Boolean)
+        .join(" ")}
+    >
       <ul>
         {links.map((item) => (
           <li key={item.id}>
-            {renderSafeLink({
-              href: item.href,
-              children: <PortalHeaderSocialIcon icon={item.icon} />,
-              className: "gno-portal-header__social-link",
-              target: item.target,
-              rel: safeRel(item.target, item.rel),
-              "aria-label": item.label,
-            }, renderLink)}
+            {renderSafeLink(
+              {
+                href: item.href,
+                children: <PortalHeaderSocialIcon icon={item.icon} />,
+                className: "gno-portal-header__social-link",
+                target: item.target,
+                rel: safeRel(item.target, item.rel),
+                "aria-label": item.label,
+              },
+              renderLink,
+            )}
           </li>
         ))}
       </ul>
@@ -220,13 +254,19 @@ export function PortalHeader({
     primaryNavigation,
     networkNavigation,
   );
-  const searchEnabled = Boolean(search?.queryParam.trim() && search.action.trim() && isSafeNavigationHref(search.action));
+  const searchEnabled = Boolean(
+    search?.queryParam.trim()
+      && search.action.trim()
+      && isSafeNavigationHref(search.action),
+  );
   const brandLabel = brand?.label ?? "GMA Network";
   const logoSrc = brand?.logoSrc ?? defaultGmaLogoSrc;
 
   useEffect(() => {
     if (!menuOpen) {
-      if (wasMenuOpen.current) menuButtonRef.current?.focus();
+      if (wasMenuOpen.current) {
+        menuButtonRef.current?.focus();
+      }
       wasMenuOpen.current = false;
       return;
     }
@@ -234,16 +274,22 @@ export function PortalHeader({
     wasMenuOpen.current = true;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    if (menuPanelRef.current) getVisibleFocusableElements(menuPanelRef.current)[0]?.focus();
+    if (menuPanelRef.current) {
+      getVisibleFocusableElements(menuPanelRef.current)[0]?.focus();
+    }
 
     const handleKeydown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setMenuOpen(false);
         return;
       }
-      if (event.key !== "Tab" || !menuPanelRef.current) return;
+      if (event.key !== "Tab" || !menuPanelRef.current) {
+        return;
+      }
       const focusable = getVisibleFocusableElements(menuPanelRef.current);
-      if (focusable.length === 0) return;
+      if (focusable.length === 0) {
+        return;
+      }
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
       if (event.shiftKey && document.activeElement === first) {
@@ -255,7 +301,9 @@ export function PortalHeader({
       }
     };
     const closeOutside = (event: PointerEvent) => {
-      if (event.target instanceof Node && !headerRef.current?.contains(event.target)) setMenuOpen(false);
+      if (event.target instanceof Node && !headerRef.current?.contains(event.target)) {
+        setMenuOpen(false);
+      }
     };
     document.addEventListener("keydown", handleKeydown);
     document.addEventListener("click", closeOutside);
@@ -268,7 +316,9 @@ export function PortalHeader({
   }, [menuOpen]);
 
   useEffect(() => {
-    if (searchOpen) searchInputRef.current?.focus();
+    if (searchOpen) {
+      searchInputRef.current?.focus();
+    }
   }, [searchOpen]);
 
   const toggleMenu = () => {
@@ -283,7 +333,9 @@ export function PortalHeader({
 
   const submitSearch = (event: FormEvent<HTMLFormElement>) => {
     const input = search ? event.currentTarget.elements.namedItem(search.queryParam) : null;
-    if (!(input instanceof HTMLInputElement)) return;
+    if (!(input instanceof HTMLInputElement)) {
+      return;
+    }
     const query = input.value.trim();
     if (!query) {
       event.preventDefault();
@@ -306,8 +358,14 @@ export function PortalHeader({
           src={logoSrc}
           width="66"
         />
-      ) : <span className="gno-portal-header__brand-fallback">{brandLabel}</span>}
-      {brand?.sectionLabel ? <span className="gno-portal-header__section-label">{brand.sectionLabel}</span> : null}
+      ) : (
+        <span className="gno-portal-header__brand-fallback">{brandLabel}</span>
+      )}
+      {brand?.sectionLabel ? (
+        <span className="gno-portal-header__section-label">
+          {brand.sectionLabel}
+        </span>
+      ) : null}
     </span>
   );
 
@@ -326,11 +384,24 @@ export function PortalHeader({
       <div className="gno-portal-header__bar">
         <div className="gno-portal-header__inner">
           <div className="gno-portal-header__brand">
-            {renderSafeLink({ href: brand?.href && isSafeNavigationHref(brand.href) ? brand.href : "/", children: brandContent, className: "gno-portal-header__brand-link" }, renderLink)}
+            {renderSafeLink(
+              {
+                href: brand?.href && isSafeNavigationHref(brand.href)
+                  ? brand.href
+                  : "/",
+                children: brandContent,
+                className: "gno-portal-header__brand-link",
+              },
+              renderLink,
+            )}
           </div>
 
           <div className="gno-portal-header__actions">
-            <SocialLinks className="gno-portal-header__desktop-socials" links={resolvedSocialLinks} renderLink={renderLink} />
+            <SocialLinks
+              className="gno-portal-header__desktop-socials"
+              links={resolvedSocialLinks}
+              renderLink={renderLink}
+            />
             {searchEnabled ? (
               <button
                 aria-controls={searchId}
@@ -340,7 +411,11 @@ export function PortalHeader({
                 onClick={toggleSearch}
                 type="button"
               >
-                <PortalHeaderIcon icon={searchOpen ? portalHeaderControlIcons.close : portalHeaderControlIcons.search} />
+                <PortalHeaderIcon
+                  icon={searchOpen
+                    ? portalHeaderControlIcons.close
+                    : portalHeaderControlIcons.search}
+                />
               </button>
             ) : null}
             <button
@@ -360,7 +435,12 @@ export function PortalHeader({
 
       {searchEnabled && search ? (
         <div className="gno-portal-header__search-panel" hidden={!searchOpen} id={searchId}>
-          <SearchForm id={`${searchId}-desktop-input`} inputRef={searchInputRef} onSubmit={submitSearch} search={search} />
+          <SearchForm
+            id={`${searchId}-desktop-input`}
+            inputRef={searchInputRef}
+            onSubmit={submitSearch}
+            search={search}
+          />
         </div>
       ) : null}
 
@@ -378,15 +458,30 @@ export function PortalHeader({
         <div className="gno-portal-header__menu-inner">
           <div className="gno-portal-header__menu-navigation">
             <div className="gno-portal-header__primary-navigation">
-              <NavigationList items={resolvedNavigation.primaryNavigation} label="Primary menu" onNavigate={() => setMenuOpen(false)} renderLink={renderLink} />
+              <NavigationList
+                items={resolvedNavigation.primaryNavigation}
+                label="Primary menu"
+                onNavigate={() => setMenuOpen(false)}
+                renderLink={renderLink}
+              />
             </div>
             <div className="gno-portal-header__network-navigation">
-              <NavigationList items={resolvedNavigation.networkNavigation} label="GMA Network" onNavigate={() => setMenuOpen(false)} renderLink={renderLink} />
+              <NavigationList
+                items={resolvedNavigation.networkNavigation}
+                label="GMA Network"
+                onNavigate={() => setMenuOpen(false)}
+                renderLink={renderLink}
+              />
             </div>
           </div>
           <div className="gno-portal-header__mobile-misc">
             {searchEnabled && search ? (
-              <SearchForm id={`${searchId}-mobile-input`} mobile onSubmit={submitSearch} search={search} />
+              <SearchForm
+                id={`${searchId}-mobile-input`}
+                mobile
+                onSubmit={submitSearch}
+                search={search}
+              />
             ) : null}
             <SocialLinks links={resolvedSocialLinks} renderLink={renderLink} />
           </div>

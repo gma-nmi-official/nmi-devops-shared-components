@@ -14,6 +14,11 @@ report BLOCKED. Verify implementation and test claims independently without
 changing source or tests. Do not invent requirements or request unrelated
 modernization.
 
+When coding format is in scope, also read
+`.agents/skills/coding-format-review/SKILL.md`. Review indentation, intentional
+line breaks, nested JSX and CSS, and behavior-bearing control flow separately
+from behavior defects.
+
 Classify findings as Critical, Major, Minor, or Suggestion. Include the
 requirement, file/line, evidence, impact, proposed correction, and validation
 criteria. Separate required corrections from optional suggestions and return a

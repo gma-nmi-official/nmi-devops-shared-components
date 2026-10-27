@@ -5,7 +5,12 @@ import "./storybook.css";
 const preview: Preview = {
   parameters: {
     a11y: { test: "error" },
-    controls: { matchers: { color: /(background|color)$/i, date: /Date$/i } },
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/i,
+      },
+    },
     options: {
       storySort: {
         order: ["Welcome", "Guides", "Components", "Releases"],
@@ -18,4 +23,5 @@ const preview: Preview = {
     },
   },
 };
+
 export default preview;

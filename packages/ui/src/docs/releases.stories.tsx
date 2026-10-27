@@ -13,8 +13,13 @@ export const Latest: Story = {
   render: () => (
     <article style={{ maxWidth: 860, lineHeight: 1.65 }}>
       <h1>Package releases</h1>
-      <p>Release notes are published from the package changelog so this page stays aligned with consumer-facing releases.</p>
-      <pre style={{ whiteSpace: "pre-wrap", fontFamily: "inherit" }}>{changelog}</pre>
+      <p>
+        Release notes are published from the package changelog so this page
+        stays aligned with consumer-facing releases.
+      </p>
+      <pre style={{ whiteSpace: "pre-wrap", fontFamily: "inherit" }}>
+        {changelog}
+      </pre>
     </article>
   ),
 };

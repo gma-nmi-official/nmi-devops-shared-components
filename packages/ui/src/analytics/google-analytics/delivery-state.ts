@@ -1,6 +1,6 @@
 import type { AnalyticsResult, ConsentState, EventInput } from "./types";
 
-type PendingEvent = { eventName: string; parameters: EventInput; queuedAt: number };
+type PendingEvent = { eventName: string; params: EventInput; queuedAt: number };
 
 export class DeliveryState {
   private consent: ConsentState;
@@ -31,7 +31,8 @@ export class DeliveryState {
     this.consent = state;
     if (state === "denied") this.queue.length = 0;
   }
-  enqueue(eventName: string, parameters: EventInput): AnalyticsResult {
+
+  enqueue(eventName: string, params: EventInput): AnalyticsResult {
     if (!this.enabled) {
       return { status: "dropped", eventName, reason: "disabled" };
     }
@@ -43,15 +44,17 @@ export class DeliveryState {
     if (this.queue.length >= this.capacity) {
       return { status: "dropped", eventName, reason: "queue_full" };
     }
-    this.queue.push({ eventName, parameters: { ...parameters }, queuedAt: now });
+    this.queue.push({ eventName, params: { ...params }, queuedAt: now });
     return { status: "queued", eventName, reason: "consent_unknown" };
   }
+
   takeReady(): PendingEvent[] {
     const now = Date.now();
     this.removeExpired(now);
     const entries = this.queue.splice(0);
     return entries.filter((entry) => now - entry.queuedAt <= this.maxAgeMs);
   }
+
   clear() {
     this.queue.length = 0;
   }

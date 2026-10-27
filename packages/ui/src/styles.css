@@ -1,122 +1,527 @@
 @layer gno-tokens, gno-components;
 @layer gno-tokens {
-  :root { --gno-color-primary:#155dfc; --gno-color-primary-hover:#1447e6; --gno-color-on-primary:#fff; --gno-color-surface:#fff; --gno-color-surface-hover:#f1f5f9; --gno-color-text:#172033; --gno-color-border:#cbd5e1; --gno-color-danger:#c81e1e; --gno-color-danger-hover:#a80f0f; --gno-focus-ring:#51a2ff; --gno-radius-control:.5rem; --gno-font-body:Arial,Helvetica,sans-serif; }
-  [data-gno-theme="dark"] { --gno-color-primary:#51a2ff; --gno-color-primary-hover:#8ec5ff; --gno-color-on-primary:#0f172a; --gno-color-surface:#172033; --gno-color-surface-hover:#25324a; --gno-color-text:#f8fafc; --gno-color-border:#526077; --gno-color-danger:#ff6467; --gno-color-danger-hover:#ff8a8d; --gno-focus-ring:#8ec5ff; }
+  :root {
+    --gno-color-primary: #155dfc;
+    --gno-color-primary-hover: #1447e6;
+    --gno-color-on-primary: #fff;
+    --gno-color-surface: #fff;
+    --gno-color-surface-hover: #f1f5f9;
+    --gno-color-text: #172033;
+    --gno-color-border: #cbd5e1;
+    --gno-color-danger: #c81e1e;
+    --gno-color-danger-hover: #a80f0f;
+    --gno-focus-ring: #51a2ff;
+    --gno-radius-control: .5rem;
+    --gno-font-body: Arial, Helvetica, sans-serif;
+  }
+  [data-gno-theme="dark"] {
+    --gno-color-primary: #51a2ff;
+    --gno-color-primary-hover: #8ec5ff;
+    --gno-color-on-primary: #0f172a;
+    --gno-color-surface: #172033;
+    --gno-color-surface-hover: #25324a;
+    --gno-color-text: #f8fafc;
+    --gno-color-border: #526077;
+    --gno-color-danger: #ff6467;
+    --gno-color-danger-hover: #ff8a8d;
+    --gno-focus-ring: #8ec5ff;
+  }
 }
 @layer gno-components {
-  .gno-ad-slot { align-items:center; background:#f1f5f9; border:1px solid #cbd5e1; color:#526077; display:flex; flex-direction:column; font-family:Arial,Helvetica,sans-serif; inline-size:min(100%,var(--gno-ad-slot-width,100%)); justify-content:center; min-block-size:var(--gno-ad-slot-height,0); overflow:hidden; position:relative; transition:min-block-size .15s ease; }
-  .gno-ad-slot--collapsed { border:0; min-block-size:0; }
-  .gno-ad-slot__label { font-size:.625rem; inset-block-start:.35rem; letter-spacing:.08em; position:absolute; text-transform:uppercase; }
-  .gno-ad-slot__provider { max-inline-size:100%; }
-  .gno-ad-slot__placeholder { color:#64748b; font-size:.8rem; padding:1rem; text-align:center; }
-  .gno-ad-slot[data-ad-state="filled"] { background:#e8eef7; }
-  .gno-cookie-agreement { --gno-cookie-agreement-bg:rgb(41 41 41 / .88); --gno-cookie-agreement-accent:#c50000; --gno-cookie-agreement-text:#fff; background:var(--gno-cookie-agreement-bg); border-block-start:.3125rem solid var(--gno-cookie-agreement-accent); bottom:0; box-shadow:0 -0.5rem 1.5rem rgb(0 0 0 / .2); color:var(--gno-cookie-agreement-text); font-family:"Ubuntu","Arial Narrow",Calibri,Arial,sans-serif; inline-size:100%; inset-inline:0; min-block-size:4.375rem; opacity:0; pointer-events:none; position:fixed; transform:translateY(100%); transition:opacity .25s ease,transform .25s ease,visibility .25s ease; visibility:hidden; z-index:6001; }
-  .gno-cookie-agreement--visible { opacity:1; pointer-events:auto; transform:translateY(0); visibility:visible; }
-  .gno-cookie-agreement *, .gno-cookie-agreement *::before, .gno-cookie-agreement *::after { box-sizing:border-box; }
-  .gno-cookie-agreement__inner { align-items:center; display:grid; grid-template-columns:5% 65% 30%; margin-inline:auto; max-inline-size:85rem; padding:.625rem; }
-  .gno-cookie-agreement__seal-link { align-items:center; display:inline-flex; justify-content:center; }
-  .gno-cookie-agreement__seal { block-size:auto; inline-size:37px; max-block-size:4rem; object-fit:contain; }
-  .gno-cookie-agreement__body { font-family:"Ubuntu","Arial Narrow",Calibri,Arial,sans-serif; font-size:.875rem; line-height:1.43; margin:0; padding-inline: .625rem .3125rem; }
-  .gno-cookie-agreement__actions { align-items:center; display:flex; flex-wrap:wrap; gap: .5rem; justify-content:center; padding-block-start:.3125rem; }
-  .gno-cookie-agreement__actions a, .gno-cookie-agreement__actions button { align-items:center; background:var(--gno-cookie-agreement-accent); border:0; border-radius:4px; color:#fff; cursor:pointer; display:inline-flex; flex:1 1 47%; font:inherit; font-size:.875rem; font-weight:400; justify-content:center; max-inline-size:12.5rem; min-block-size:2.75rem; min-inline-size:6.25rem; padding:.5625rem .375rem; text-align:center; text-decoration:none; }
-  .gno-cookie-agreement__privacy-link { color:var(--gno-cookie-agreement-text); }
-  .gno-cookie-agreement__accept, .gno-cookie-agreement__reject { background:var(--gno-cookie-agreement-accent); color:#fff; }
-  .gno-cookie-agreement__accept:hover, .gno-cookie-agreement__reject:hover { filter:brightness(1.15); }
-  .gno-cookie-agreement__accept:disabled { cursor:wait; opacity:.7; }
-  .gno-cookie-agreement :where(a,button):focus-visible { outline:3px solid var(--gno-focus-ring); outline-offset:3px; }
-  @media (max-width:47.99rem) {
-    .gno-cookie-agreement__inner { grid-template-columns:20% 80%; max-inline-size:40.625rem; padding:.625rem; }
-    .gno-cookie-agreement__seal { inline-size:auto; max-block-size:3.125rem; max-inline-size:76%; }
-    .gno-cookie-agreement__body { font-size:.8125rem; line-height:1.54; padding-inline:0; }
-    .gno-cookie-agreement__actions { grid-column:1 / -1; justify-content:stretch; margin-block-start:.3125rem; padding-block-start:0; }
-    .gno-cookie-agreement__actions a, .gno-cookie-agreement__actions button { flex:1 1 47%; }
+  .gno-ad-slot {
+    align-items: center;
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    color: #526077;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    inline-size: min(100%, var(--gno-ad-slot-width, 100%));
+    justify-content: center;
+    min-block-size: var(--gno-ad-slot-height, 0);
+    overflow: hidden;
+    position: relative;
+    transition: min-block-size .15s ease;
   }
-  @media (prefers-reduced-motion:reduce) { .gno-cookie-agreement *, .gno-cookie-agreement *::before, .gno-cookie-agreement *::after { scroll-behavior:auto !important; transition-duration:0.01ms !important; } }
-
+  .gno-ad-slot--collapsed {
+    border: 0;
+    min-block-size: 0;
+  }
+  .gno-ad-slot__label {
+    font-size: .625rem;
+    inset-block-start: .35rem;
+    letter-spacing: .08em;
+    position: absolute;
+    text-transform: uppercase;
+  }
+  .gno-ad-slot__provider {
+    max-inline-size: 100%;
+  }
+  .gno-ad-slot__placeholder {
+    color: #64748b;
+    font-size: .8rem;
+    padding: 1rem;
+    text-align: center;
+  }
+  .gno-ad-slot[data-ad-state="filled"] {
+    background: #e8eef7;
+  }
+  .gno-cookie-agreement {
+    --gno-cookie-agreement-bg: rgb(41 41 41 / .88);
+    --gno-cookie-agreement-accent: #c50000;
+    --gno-cookie-agreement-text: #fff;
+    background: var(--gno-cookie-agreement-bg);
+    border-block-start: .3125rem solid var(--gno-cookie-agreement-accent);
+    bottom: 0;
+    box-shadow: 0 -0.5rem 1.5rem rgb(0 0 0 / .2);
+    color: var(--gno-cookie-agreement-text);
+    font-family: "Ubuntu", "Arial Narrow", Calibri, Arial, sans-serif;
+    inline-size: 100%;
+    inset-inline: 0;
+    min-block-size: 4.375rem;
+    opacity: 0;
+    pointer-events: none;
+    position: fixed;
+    transform: translateY(100%);
+    transition: opacity .25s ease, transform .25s ease, visibility .25s ease;
+    visibility: hidden;
+    z-index: 6001;
+  }
+  .gno-cookie-agreement--visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+    visibility: visible;
+  }
+  .gno-cookie-agreement *, .gno-cookie-agreement *::before, .gno-cookie-agreement *::after {
+    box-sizing: border-box;
+  }
+  .gno-cookie-agreement__inner {
+    align-items: center;
+    display: grid;
+    grid-template-columns: 5% 65% 30%;
+    margin-inline: auto;
+    max-inline-size: 85rem;
+    padding: .625rem;
+  }
+  .gno-cookie-agreement__seal-link {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+  }
+  .gno-cookie-agreement__seal {
+    block-size: auto;
+    inline-size: 37px;
+    max-block-size: 4rem;
+    object-fit: contain;
+  }
+  .gno-cookie-agreement__body {
+    font-family: "Ubuntu", "Arial Narrow", Calibri, Arial, sans-serif;
+    font-size: .875rem;
+    line-height: 1.43;
+    margin: 0;
+    padding-inline: .625rem .3125rem;
+  }
+  .gno-cookie-agreement__actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    justify-content: center;
+    padding-block-start: .3125rem;
+  }
+  .gno-cookie-agreement__actions a, .gno-cookie-agreement__actions button {
+    align-items: center;
+    background: var(--gno-cookie-agreement-accent);
+    border: 0;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    flex: 1 1 47%;
+    font: inherit;
+    font-size: .875rem;
+    font-weight: 400;
+    justify-content: center;
+    max-inline-size: 12.5rem;
+    min-block-size: 2.75rem;
+    min-inline-size: 6.25rem;
+    padding: .5625rem .375rem;
+    text-align: center;
+    text-decoration: none;
+  }
+  .gno-cookie-agreement__privacy-link {
+    color: var(--gno-cookie-agreement-text);
+  }
+  .gno-cookie-agreement__accept, .gno-cookie-agreement__reject {
+    background: var(--gno-cookie-agreement-accent);
+    color: #fff;
+  }
+  .gno-cookie-agreement__accept:hover, .gno-cookie-agreement__reject:hover {
+    filter: brightness(1.15);
+  }
+  .gno-cookie-agreement__accept:disabled {
+    cursor: wait;
+    opacity: .7;
+  }
+  .gno-cookie-agreement :where(a, button):focus-visible {
+    outline: 3px solid var(--gno-focus-ring);
+    outline-offset: 3px;
+  }
+  @media (max-width: 47.99rem) {
+    .gno-cookie-agreement__inner {
+      grid-template-columns: 20% 80%;
+      max-inline-size: 40.625rem;
+      padding: .625rem;
+    }
+    .gno-cookie-agreement__seal {
+      inline-size: auto;
+      max-block-size: 3.125rem;
+      max-inline-size: 76%;
+    }
+    .gno-cookie-agreement__body {
+      font-size: .8125rem;
+      line-height: 1.54;
+      padding-inline: 0;
+    }
+    .gno-cookie-agreement__actions {
+      grid-column: 1 / -1;
+      justify-content: stretch;
+      margin-block-start: .3125rem;
+      padding-block-start: 0;
+    }
+    .gno-cookie-agreement__actions a, .gno-cookie-agreement__actions button {
+      flex: 1 1 47%;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gno-cookie-agreement *, .gno-cookie-agreement *::before, .gno-cookie-agreement *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
   .gno-portal-header {
-    --gno-portal-header-background:#2e2e2e;
-    --gno-portal-header-panel:rgb(46 46 46 / .95);
-    --gno-portal-header-text:#fff;
-    --gno-portal-header-accent:#cc0001;
-    --gno-portal-header-border:#494949;
-    --gno-portal-header-inner-width:74.6875rem;
-    --gno-portal-header-desktop-height:3.1875rem;
-    --gno-portal-header-mobile-height:2.65rem;
-    background:transparent;
-    color:var(--gno-portal-header-text);
-    font-family:var(--gno-font-body);
-    inline-size:100%;
-    inset-block-start:0;
-    max-inline-size:100%;
-    min-inline-size:0;
-    position:sticky;
-    z-index:5000;
+    --gno-portal-header-background: #2e2e2e;
+    --gno-portal-header-panel: rgb(46 46 46 / .95);
+    --gno-portal-header-text: #fff;
+    --gno-portal-header-accent: #cc0001;
+    --gno-portal-header-border: #494949;
+    --gno-portal-header-inner-width: 74.6875rem;
+    --gno-portal-header-desktop-height: 3.1875rem;
+    --gno-portal-header-mobile-height: 2.65rem;
+    background: transparent;
+    color: var(--gno-portal-header-text);
+    font-family: var(--gno-font-body);
+    inline-size: 100%;
+    inset-block-start: 0;
+    max-inline-size: 100%;
+    min-inline-size: 0;
+    position: sticky;
+    z-index: 5000;
   }
-  .gno-portal-header *, .gno-portal-header *::before, .gno-portal-header *::after { box-sizing:border-box; }
-  .gno-portal-header__bar { background:var(--gno-portal-header-background); border-bottom:.15rem solid var(--gno-portal-header-accent); block-size:var(--gno-portal-header-desktop-height); }
-  .gno-portal-header__inner { align-items:center; block-size:calc(var(--gno-portal-header-desktop-height) - .15rem); display:flex; inline-size:min(var(--gno-portal-header-inner-width),96%); margin-inline:auto; }
-  .gno-portal-header__brand { flex:0 0 auto; min-inline-size:0; }
-  .gno-portal-header__brand-link { color:inherit; display:inline-flex; text-decoration:none; }
-  .gno-portal-header__brand-content { align-items:center; display:flex; gap:1rem; min-inline-size:0; }
-  .gno-portal-header__logo { block-size:2.5rem; display:block; inline-size:4.125rem; object-fit:contain; }
-  .gno-portal-header__brand-fallback { color:#52a5e2; font-size:1rem; font-weight:700; }
-  .gno-portal-header__section-label { color:var(--gno-portal-header-text); font-size:.9375rem; font-weight:400; inset-block-start:.3125rem; line-height:1rem; max-inline-size:18rem; overflow-wrap:anywhere; position:relative; }
-  .gno-portal-header__nav-list, .gno-portal-header__socials ul { list-style:none; margin:0; padding:0; }
-  .gno-portal-header__nav-list { display:block; }
-  .gno-portal-header__nav-list li { margin-block-end:.625rem; min-inline-size:0; }
-  .gno-portal-header__nav-link { color:var(--gno-portal-header-text); display:block; font-size:.9375rem; line-height:1.5; overflow-wrap:anywhere; text-decoration:none; }
-  .gno-portal-header__nav-link:hover { opacity:.6; }
-  .gno-portal-header__nav-link[aria-current="page"] { font-weight:700; text-decoration:underline; text-underline-offset:.2em; }
-  .gno-portal-header__nav-link.is-disabled { cursor:not-allowed; opacity:.6; }
-  .gno-portal-header__actions { align-items:center; display:flex; gap:.35rem; margin-inline-start:auto; }
-  .gno-portal-header__icon-button, .gno-portal-header__social-link { align-items:center; background:transparent; border:0; color:var(--gno-portal-header-text); cursor:pointer; display:inline-flex; justify-content:center; }
-  .gno-portal-header__icon-button:hover, .gno-portal-header__social-link:hover { color:#a5a5a5; }
-  .gno-portal-header__icon-button svg { block-size:1.25rem; fill:currentColor; inline-size:1.25rem; }
-  .gno-portal-header__menu-button { block-size:2.5rem; inline-size:2.5rem; padding:.55rem; }
-  .gno-portal-header__menu-button svg { block-size:1.35rem; inline-size:1.35rem; }
-  .gno-portal-header__desktop-socials ul { align-items:center; display:flex; }
-  .gno-portal-header__desktop-socials li { margin-inline:.375rem; }
-  .gno-portal-header__social-link { block-size:1.75rem; inline-size:1.25rem; padding:.125rem; }
-  .gno-portal-header__social-icon { block-size:1rem; fill:currentColor; inline-size:1rem; }
-  .gno-portal-header__search-button { block-size:calc(var(--gno-portal-header-desktop-height) - .15rem); border-inline:1px solid var(--gno-portal-header-border); inline-size:2.55rem; margin-inline:.3rem .25rem; padding:.6rem; }
-  .gno-portal-header__search-panel { background:var(--gno-portal-header-background); inline-size:15.3125rem; inset-block-start:100%; inset-inline-end:max(2%,calc((100% - var(--gno-portal-header-inner-width))/2)); padding:.8125rem; position:absolute; }
-  .gno-portal-header__search-panel[hidden] { display:none; }
-  .gno-portal-header__search-label { block-size:1px; clip:rect(0 0 0 0); clip-path:inset(50%); inline-size:1px; overflow:hidden; position:absolute; white-space:nowrap; }
-  .gno-portal-header__search-field { position:relative; }
-  .gno-portal-header__search input { appearance:none; background:#fff; border:0; border-radius:.3125rem; color:#000; font:inherit; font-size:1rem; inline-size:100%; min-inline-size:0; padding:.625rem 2.75rem .625rem .75rem; }
-  .gno-portal-header__search button { background:transparent; border:0; color:#777; cursor:pointer; inset-block:0; inset-inline-end:0; padding:.7rem; position:absolute; }
-  .gno-portal-header__search button svg { block-size:1rem; fill:currentColor; inline-size:1rem; }
-  .gno-portal-header__menu-panel { background:var(--gno-portal-header-panel); inline-size:100%; inset-block-start:100%; inset-inline:0; max-block-size:calc(100dvh - var(--gno-portal-header-desktop-height)); overflow:auto; padding:1.875rem 0 1.25rem; position:absolute; }
-  .gno-portal-header__menu-panel:not([data-open]) { display:none; }
-  .gno-portal-header__menu-inner { inline-size:min(var(--gno-portal-header-inner-width),96%); margin-inline:auto; }
-  .gno-portal-header__menu-navigation { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,3fr); }
-  .gno-portal-header__network-navigation .gno-portal-header__nav-list { column-count:3; column-gap:1.5rem; }
-  .gno-portal-header__network-navigation .gno-portal-header__nav-list li { break-inside:avoid; }
-  .gno-portal-header__mobile-misc { display:none; }
-  .gno-portal-header :where(a,button,input):focus-visible { outline:3px solid var(--gno-focus-ring); outline-offset:3px; }
-  @media (max-width:47.99rem) {
-    .gno-portal-header__bar { block-size:var(--gno-portal-header-mobile-height); }
-    .gno-portal-header__inner { block-size:calc(var(--gno-portal-header-mobile-height) - .15rem); }
-    .gno-portal-header__brand-content { gap:1rem; }
-    .gno-portal-header__section-label { font-size:.9375rem; max-inline-size:min(40vw,10rem); }
-    .gno-portal-header__desktop-socials, .gno-portal-header__search-button, .gno-portal-header__search-panel { display:none; }
-    .gno-portal-header__actions { gap:0; }
-    .gno-portal-header__menu-button { block-size:2.5rem; inline-size:2.5rem; padding:.5rem; }
-    .gno-portal-header__menu-panel { max-block-size:calc(100dvh - var(--gno-portal-header-mobile-height)); padding:1.875rem .9375rem 1.25rem; }
-    .gno-portal-header__menu-inner { max-inline-size:none; inline-size:100%; }
-    .gno-portal-header__menu-navigation { grid-template-columns:1fr; }
+  .gno-portal-header *, .gno-portal-header *::before, .gno-portal-header *::after {
+    box-sizing: border-box;
+  }
+  .gno-portal-header__bar {
+    background: var(--gno-portal-header-background);
+    border-bottom: .15rem solid var(--gno-portal-header-accent);
+    block-size: var(--gno-portal-header-desktop-height);
+  }
+  .gno-portal-header__inner {
+    align-items: center;
+    block-size: calc(var(--gno-portal-header-desktop-height) - .15rem);
+    display: flex;
+    inline-size: min(var(--gno-portal-header-inner-width), 96%);
+    margin-inline: auto;
+  }
+  .gno-portal-header__brand {
+    flex: 0 0 auto;
+    min-inline-size: 0;
+  }
+  .gno-portal-header__brand-link {
+    color: inherit;
+    display: inline-flex;
+    text-decoration: none;
+  }
+  .gno-portal-header__brand-content {
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+    min-inline-size: 0;
+  }
+  .gno-portal-header__logo {
+    block-size: 2.5rem;
+    display: block;
+    inline-size: 4.125rem;
+    object-fit: contain;
+  }
+  .gno-portal-header__brand-fallback {
+    color: #52a5e2;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  .gno-portal-header__section-label {
+    color: var(--gno-portal-header-text);
+    font-size: .9375rem;
+    font-weight: 400;
+    inset-block-start: .3125rem;
+    line-height: 1rem;
+    max-inline-size: 18rem;
+    overflow-wrap: anywhere;
+    position: relative;
+  }
+  .gno-portal-header__nav-list, .gno-portal-header__socials ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .gno-portal-header__nav-list {
+    display: block;
+  }
+  .gno-portal-header__nav-list li {
+    margin-block-end: .625rem;
+    min-inline-size: 0;
+  }
+  .gno-portal-header__nav-link {
+    color: var(--gno-portal-header-text);
+    display: block;
+    font-size: .9375rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    text-decoration: none;
+  }
+  .gno-portal-header__nav-link:hover {
+    opacity: .6;
+  }
+  .gno-portal-header__nav-link[aria-current="page"] {
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: .2em;
+  }
+  .gno-portal-header__nav-link.is-disabled {
+    cursor: not-allowed;
+    opacity: .6;
+  }
+  .gno-portal-header__actions {
+    align-items: center;
+    display: flex;
+    gap: .35rem;
+    margin-inline-start: auto;
+  }
+  .gno-portal-header__icon-button, .gno-portal-header__social-link {
+    align-items: center;
+    background: transparent;
+    border: 0;
+    color: var(--gno-portal-header-text);
+    cursor: pointer;
+    display: inline-flex;
+    justify-content: center;
+  }
+  .gno-portal-header__icon-button:hover, .gno-portal-header__social-link:hover {
+    color: #a5a5a5;
+  }
+  .gno-portal-header__icon-button svg {
+    block-size: 1.25rem;
+    fill: currentColor;
+    inline-size: 1.25rem;
+  }
+  .gno-portal-header__menu-button {
+    block-size: 2.5rem;
+    inline-size: 2.5rem;
+    padding: .55rem;
+  }
+  .gno-portal-header__menu-button svg {
+    block-size: 1.35rem;
+    inline-size: 1.35rem;
+  }
+  .gno-portal-header__desktop-socials ul {
+    align-items: center;
+    display: flex;
+  }
+  .gno-portal-header__desktop-socials li {
+    margin-inline: .375rem;
+  }
+  .gno-portal-header__social-link {
+    block-size: 1.75rem;
+    inline-size: 1.25rem;
+    padding: .125rem;
+  }
+  .gno-portal-header__social-icon {
+    block-size: 1rem;
+    fill: currentColor;
+    inline-size: 1rem;
+  }
+  .gno-portal-header__search-button {
+    block-size: calc(var(--gno-portal-header-desktop-height) - .15rem);
+    border-inline: 1px solid var(--gno-portal-header-border);
+    inline-size: 2.55rem;
+    margin-inline: .3rem .25rem;
+    padding: .6rem;
+  }
+  .gno-portal-header__search-panel {
+    background: var(--gno-portal-header-background);
+    inline-size: 15.3125rem;
+    inset-block-start: 100%;
+    inset-inline-end: max(2%, calc((100% - var(--gno-portal-header-inner-width))/2));
+    padding: .8125rem;
+    position: absolute;
+  }
+  .gno-portal-header__search-panel[hidden] {
+    display: none;
+  }
+  .gno-portal-header__search-label {
+    block-size: 1px;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    inline-size: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+  }
+  .gno-portal-header__search-field {
+    position: relative;
+  }
+  .gno-portal-header__search input {
+    appearance: none;
+    background: #fff;
+    border: 0;
+    border-radius: .3125rem;
+    color: #000;
+    font: inherit;
+    font-size: 1rem;
+    inline-size: 100%;
+    min-inline-size: 0;
+    padding: .625rem 2.75rem .625rem .75rem;
+  }
+  .gno-portal-header__search button {
+    background: transparent;
+    border: 0;
+    color: #777;
+    cursor: pointer;
+    inset-block: 0;
+    inset-inline-end: 0;
+    padding: .7rem;
+    position: absolute;
+  }
+  .gno-portal-header__search button svg {
+    block-size: 1rem;
+    fill: currentColor;
+    inline-size: 1rem;
+  }
+  .gno-portal-header__menu-panel {
+    background: var(--gno-portal-header-panel);
+    inline-size: 100%;
+    inset-block-start: 100%;
+    inset-inline: 0;
+    max-block-size: calc(100dvh - var(--gno-portal-header-desktop-height));
+    overflow: auto;
+    padding: 1.875rem 0 1.25rem;
+    position: absolute;
+  }
+  .gno-portal-header__menu-panel:not([data-open]) {
+    display: none;
+  }
+  .gno-portal-header__menu-inner {
+    inline-size: min(var(--gno-portal-header-inner-width), 96%);
+    margin-inline: auto;
+  }
+  .gno-portal-header__menu-navigation {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+  }
+  .gno-portal-header__network-navigation .gno-portal-header__nav-list {
+    column-count: 3;
+    column-gap: 1.5rem;
+  }
+  .gno-portal-header__network-navigation .gno-portal-header__nav-list li {
+    break-inside: avoid;
+  }
+  .gno-portal-header__mobile-misc {
+    display: none;
+  }
+  .gno-portal-header :where(a, button, input):focus-visible {
+    outline: 3px solid var(--gno-focus-ring);
+    outline-offset: 3px;
+  }
+  @media (max-width: 47.99rem) {
+    .gno-portal-header__bar {
+      block-size: var(--gno-portal-header-mobile-height);
+    }
+    .gno-portal-header__inner {
+      block-size: calc(var(--gno-portal-header-mobile-height) - .15rem);
+    }
+    .gno-portal-header__brand-content {
+      gap: 1rem;
+    }
+    .gno-portal-header__section-label {
+      font-size: .9375rem;
+      max-inline-size: min(40vw, 10rem);
+    }
+    .gno-portal-header__desktop-socials, .gno-portal-header__search-button, .gno-portal-header__search-panel {
+      display: none;
+    }
+    .gno-portal-header__actions {
+      gap: 0;
+    }
+    .gno-portal-header__menu-button {
+      block-size: 2.5rem;
+      inline-size: 2.5rem;
+      padding: .5rem;
+    }
+    .gno-portal-header__menu-panel {
+      max-block-size: calc(100dvh - var(--gno-portal-header-mobile-height));
+      padding: 1.875rem .9375rem 1.25rem;
+    }
+    .gno-portal-header__menu-inner {
+      max-inline-size: none;
+      inline-size: 100%;
+    }
+    .gno-portal-header__menu-navigation {
+      grid-template-columns: 1fr;
+    }
     .gno-portal-header__primary-navigation .gno-portal-header__nav-list,
-    .gno-portal-header__network-navigation .gno-portal-header__nav-list { column-count:2; column-gap:1.5rem; }
-    .gno-portal-header__mobile-misc { border-top:1px solid var(--gno-portal-header-border); display:block; margin-block-start:.5rem; padding-block-start:1.25rem; text-align:center; }
-    .gno-portal-header__search.is-mobile { margin-inline:auto; max-inline-size:20.625rem; }
-    .gno-portal-header__search.is-mobile input { background:#484848; color:#fff; }
-    .gno-portal-header__mobile-misc .gno-portal-header__socials { margin-block:1rem .25rem; }
-    .gno-portal-header__mobile-misc .gno-portal-header__socials ul { align-items:center; display:flex; justify-content:center; }
-    .gno-portal-header__mobile-misc .gno-portal-header__socials li { margin-inline:.75rem; }
-    .gno-portal-header__mobile-misc .gno-portal-header__social-link { block-size:2rem; inline-size:2rem; }
-    .gno-portal-header__mobile-misc .gno-portal-header__social-icon { block-size:1.5rem; inline-size:1.5rem; }
+    .gno-portal-header__network-navigation .gno-portal-header__nav-list {
+      column-count: 2;
+      column-gap: 1.5rem;
+    }
+    .gno-portal-header__mobile-misc {
+      border-top: 1px solid var(--gno-portal-header-border);
+      display: block;
+      margin-block-start: .5rem;
+      padding-block-start: 1.25rem;
+      text-align: center;
+    }
+    .gno-portal-header__search.is-mobile {
+      margin-inline: auto;
+      max-inline-size: 20.625rem;
+    }
+    .gno-portal-header__search.is-mobile input {
+      background: #484848;
+      color: #fff;
+    }
+    .gno-portal-header__mobile-misc .gno-portal-header__socials {
+      margin-block: 1rem .25rem;
+    }
+    .gno-portal-header__mobile-misc .gno-portal-header__socials ul {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+    }
+    .gno-portal-header__mobile-misc .gno-portal-header__socials li {
+      margin-inline: .75rem;
+    }
+    .gno-portal-header__mobile-misc .gno-portal-header__social-link {
+      block-size: 2rem;
+      inline-size: 2rem;
+    }
+    .gno-portal-header__mobile-misc .gno-portal-header__social-icon {
+      block-size: 1.5rem;
+      inline-size: 1.5rem;
+    }
   }
-  @media (prefers-reduced-motion:reduce) {
-    .gno-portal-header * { scroll-behavior:auto !important; }
+  @media (prefers-reduced-motion: reduce) {
+    .gno-portal-header * {
+      scroll-behavior: auto !important;
+    }
   }
 }

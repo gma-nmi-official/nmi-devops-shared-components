@@ -16,7 +16,10 @@ Implement one reviewable delivery unit at a time and add appropriate tests.
 Use readable, reviewable formatting: one operation or decision per line,
 multiline behavior-bearing calls and object literals, and named helpers for
 non-trivial branches. Avoid compressed semicolon blocks and dense one-line
-control flow; preserve repository formatter/linter conventions.
+control flow. Use indentation to expose nesting, ownership, and control flow;
+add intentional line breaks and expand nested JSX, CSS rules, calls, and data
+structures when one line makes them difficult to understand. Preserve
+repository formatter/linter conventions.
 Resolve pre-review test failures within the approved plan; scope or design
 changes require renewed approval. After review, implement only approved findings.
 Report changed files, revision, requirements covered, commands, and results.

@@ -1,6 +1,9 @@
 "use client";
 
-import { CookieAgreement, type ConsentStore } from "nmi-devops-shared-components";
+import {
+  CookieAgreement,
+  type ConsentStore,
+} from "nmi-devops-shared-components";
 
 const catalogStore: ConsentStore = {
   read: () => null,
@@ -9,5 +12,11 @@ const catalogStore: ConsentStore = {
 };
 
 export function CookieAgreementPreview() {
-  return <CookieAgreement policyVersion="2026-01" scrollRevealThreshold={0} store={catalogStore} />;
+  return (
+    <CookieAgreement
+      policyVersion="2026-01"
+      scrollRevealThreshold={0}
+      store={catalogStore}
+    />
+  );
 }

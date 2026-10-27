@@ -1,4 +1,9 @@
-import type { AnalyticsConfig, AnalyticsScalar, DimensionDefinition, EventInput } from "./types";
+import type {
+  AnalyticsConfig,
+  AnalyticsScalar,
+  DimensionDefinition,
+  EventInput,
+} from "./types";
 
 export const DEFAULT_DIMENSIONS = [
   "content_type", "author", "subsection", "audience_interest", "source", "publish_date",
@@ -46,10 +51,20 @@ export function validateScalar(key: string, value: unknown): string[] {
   return [];
 }
 
-export function dimensionEntries(config: AnalyticsConfig): Readonly<Record<string, DimensionDefinition>> {
+export function dimensionEntries(
+  config: AnalyticsConfig,
+): Readonly<Record<string, DimensionDefinition>> {
   const entries: Record<string, DimensionDefinition> = {};
-  for (const key of DEFAULT_DIMENSIONS) entries[key] = { default: key === "portal_section" ? (config.portalSection ?? "News") : "" };
-  for (const [key, value] of Object.entries(config.customDimensions ?? {})) entries[key] = typeof value === "string" ? { default: value } : value;
+  for (const key of DEFAULT_DIMENSIONS) {
+    entries[key] = {
+      default: key === "portal_section"
+        ? (config.portalSection ?? "News")
+        : "",
+    };
+  }
+  for (const [key, value] of Object.entries(config.customDimensions ?? {})) {
+    entries[key] = typeof value === "string" ? { default: value } : value;
+  }
   return entries;
 }
 
@@ -68,7 +83,13 @@ export function validateConfig(config: AnalyticsConfig): void {
     if (typeof config.transport.gtag !== "function") {
       issues.push("gtag:fn");
     }
-  } else if (config?.transport?.type === "gtm" && (!config.transport.dataLayer || typeof config.transport.dataLayer.push !== "function")) {
+  } else if (
+    config?.transport?.type === "gtm"
+    && (
+      !config.transport.dataLayer
+      || typeof config.transport.dataLayer.push !== "function"
+    )
+  ) {
     issues.push("gtm:p");
   }
   const dimensions = dimensionEntries(config);
@@ -80,10 +101,19 @@ export function validateConfig(config: AnalyticsConfig): void {
   }
   const capacity = config?.queue?.capacity ?? 100;
   const maxAgeMs = config?.queue?.maxAgeMs ?? 300_000;
-  if (config?.consent !== undefined && !["unknown", "granted", "denied"].includes(config.consent)) {
+  if (
+    config?.consent !== undefined
+    && !["unknown", "granted", "denied"].includes(config.consent)
+  ) {
     issues.push("consent:bad");
   }
-  if (config?.video?.eventValue !== undefined && (!Number.isFinite(config.video.eventValue) || typeof config.video.eventValue !== "number")) {
+  if (
+    config?.video?.eventValue !== undefined
+    && (
+      !Number.isFinite(config.video.eventValue)
+      || typeof config.video.eventValue !== "number"
+    )
+  ) {
     issues.push("video");
   }
   if (!Number.isInteger(capacity) || capacity < 1) {
@@ -97,22 +127,29 @@ export function validateConfig(config: AnalyticsConfig): void {
   }
 }
 
-export function validateEvent(eventName: string, parameters: EventInput, maxParameters = 25): void {
+export function validateEvent(eventName: string, params: EventInput, limit = 25): void {
   const issues = validateName(eventName, "event name");
-  const entries = Object.entries(parameters).filter(([key]) => key !== "callback" && key !== "callbackTimeoutMs");
-  if (entries.length > maxParameters) {
-    issues.push(`event:max${maxParameters}`);
+  const entries = Object.entries(params).filter(([key]) => key !== "callback" && key !== "callbackTimeoutMs");
+  if (entries.length > limit) {
+    issues.push(`event:max${limit}`);
   }
   for (const [key, value] of entries) {
     issues.push(...validateName(key, `param ${key}`));
     issues.push(...validateScalar(key, value));
   }
-  const callback = parameters.callback;
-  const callbackTimeoutMs = parameters.callbackTimeoutMs;
+  const callback = params.callback;
+  const timeoutMs = params.callbackTimeoutMs;
   if (callback !== undefined && typeof callback !== "function") {
     issues.push("cb:f");
   }
-  if (callbackTimeoutMs !== undefined && (typeof callbackTimeoutMs !== "number" || !Number.isInteger(callbackTimeoutMs) || callbackTimeoutMs < 0)) {
+  if (
+    timeoutMs !== undefined
+    && (
+      typeof timeoutMs !== "number"
+      || !Number.isInteger(timeoutMs)
+      || timeoutMs < 0
+    )
+  ) {
     issues.push("callback:time");
   }
   if (issues.length) {
@@ -120,7 +157,11 @@ export function validateEvent(eventName: string, parameters: EventInput, maxPara
   }
 }
 
-export function normalizeValue(key: string, value: string, definition?: DimensionDefinition): string {
+export function normalizeValue(
+  key: string,
+  value: string,
+  definition?: DimensionDefinition,
+): string {
   if (definition?.normalizer) return definition.normalizer(value);
   if (key === "section" && value.toLowerCase() === "cbb") return "Community Bulletin Board";
   if (key === "section" && value.toLowerCase() === "scitech") return "SciTech";
@@ -130,15 +171,19 @@ export function normalizeValue(key: string, value: string, definition?: Dimensio
   return value;
 }
 
-export function stripCallback(parameters: EventInput): { eventParams: Record<string, AnalyticsScalar>; callback?: () => void; callbackTimeoutMs?: number } {
-  const { callback, callbackTimeoutMs, ...eventParams } = parameters;
-  const scalarParams: Record<string, AnalyticsScalar> = {};
+export function stripCallback(params: EventInput): {
+  eventParams: Record<string, AnalyticsScalar>;
+  callback?: () => void;
+  callbackTimeoutMs?: number;
+} {
+  const { callback, callbackTimeoutMs: timeoutMs, ...eventParams } = params;
+  const scalars: Record<string, AnalyticsScalar> = {};
   for (const [key, value] of Object.entries(eventParams)) {
-    if (isScalar(value)) scalarParams[key] = value;
+    if (isScalar(value)) scalars[key] = value;
   }
   return {
-    eventParams: scalarParams,
+    eventParams: scalars,
     callback: typeof callback === "function" ? callback : undefined,
-    callbackTimeoutMs: typeof callbackTimeoutMs === "number" ? callbackTimeoutMs : undefined,
+    callbackTimeoutMs: typeof timeoutMs === "number" ? timeoutMs : undefined,
   };
 }

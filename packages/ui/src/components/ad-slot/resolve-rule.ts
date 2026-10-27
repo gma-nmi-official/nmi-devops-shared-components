@@ -23,15 +23,24 @@ function isPositiveInteger(value: unknown): value is number {
 }
 
 function isValidSize(value: unknown): value is AdSize {
-  return Array.isArray(value) && value.length === 2 && isPositiveInteger(value[0]) && isPositiveInteger(value[1]);
+  return Array.isArray(value)
+    && value.length === 2
+    && isPositiveInteger(value[0])
+    && isPositiveInteger(value[1]);
 }
 
 function validateTargetingValue(key: string, value: unknown, issues: string[]) {
   if (typeof value === "string") {
-    if (!value.trim()) issues.push(`targeting.${key} must not be empty`);
+    if (!value.trim()) {
+      issues.push(`targeting.${key} must not be empty`);
+    }
     return;
   }
-  if (!Array.isArray(value) || value.length === 0 || value.some((entry) => typeof entry !== "string" || !entry.trim())) {
+  if (
+    !Array.isArray(value)
+    || value.length === 0
+    || value.some((entry) => typeof entry !== "string" || !entry.trim())
+  ) {
     issues.push(`targeting.${key} must be a non-empty string or non-empty string array`);
   }
 }
@@ -40,8 +49,12 @@ export function validateAdPlacementConfig(config: AdPlacementConfig): readonly s
   const issues: string[] = [];
   const candidate = config as unknown as Record<string, unknown>;
 
-  if (typeof candidate.key !== "string" || !candidate.key.trim()) issues.push("key must be a non-empty string");
-  if (typeof candidate.format !== "string" || !FORMATS.has(candidate.format)) issues.push("format must be mrec, leaderboard, or custom");
+  if (typeof candidate.key !== "string" || !candidate.key.trim()) {
+    issues.push("key must be a non-empty string");
+  }
+  if (typeof candidate.format !== "string" || !FORMATS.has(candidate.format)) {
+    issues.push("format must be mrec, leaderboard, or custom");
+  }
   if (!Array.isArray(candidate.rules) || candidate.rules.length === 0) {
     issues.push("rules must be a non-empty array");
   } else {
@@ -50,17 +63,31 @@ export function validateAdPlacementConfig(config: AdPlacementConfig): readonly s
     rules.forEach((rawRule, index) => {
       const rule = rawRule as Record<string, unknown>;
       const prefix = `rules[${index}]`;
-      if (!Number.isInteger(rule.minWidth) || Number(rule.minWidth) < 0) issues.push(`${prefix}.minWidth must be a non-negative integer`);
-      if (rule.minWidth !== expectedMin) issues.push(`${prefix}.minWidth must be ${expectedMin} to avoid gaps or overlaps`);
+      if (!Number.isInteger(rule.minWidth) || Number(rule.minWidth) < 0) {
+        issues.push(`${prefix}.minWidth must be a non-negative integer`);
+      }
+      if (rule.minWidth !== expectedMin) {
+        issues.push(`${prefix}.minWidth must be ${expectedMin} to avoid gaps or overlaps`);
+      }
 
-      if (rule.maxWidth !== undefined && (!Number.isInteger(rule.maxWidth) || Number(rule.maxWidth) < Number(rule.minWidth))) {
+      if (
+        rule.maxWidth !== undefined
+        && (
+          !Number.isInteger(rule.maxWidth)
+          || Number(rule.maxWidth) < Number(rule.minWidth)
+        )
+      ) {
         issues.push(`${prefix}.maxWidth must be an integer greater than or equal to minWidth`);
       }
 
       if (rule.enabled === false) {
-        if ("adUnitPath" in rule || "sizes" in rule) issues.push(`${prefix} disabled rules must omit adUnitPath and sizes`);
+        if ("adUnitPath" in rule || "sizes" in rule) {
+          issues.push(`${prefix} disabled rules must omit adUnitPath and sizes`);
+        }
       } else {
-        if (typeof rule.adUnitPath !== "string" || !rule.adUnitPath.trim()) issues.push(`${prefix}.adUnitPath must be a non-empty string`);
+        if (typeof rule.adUnitPath !== "string" || !rule.adUnitPath.trim()) {
+          issues.push(`${prefix}.adUnitPath must be a non-empty string`);
+        }
         if (!Array.isArray(rule.sizes) || rule.sizes.length === 0) {
           issues.push(`${prefix}.sizes must be a non-empty array supplied by the consumer`);
         } else if (rule.sizes.some((size) => !isValidSize(size))) {
@@ -69,28 +96,42 @@ export function validateAdPlacementConfig(config: AdPlacementConfig): readonly s
       }
 
       if (rule.maxWidth === undefined) {
-        if (index !== rules.length - 1) issues.push(`${prefix} without maxWidth must be the final rule`);
+        if (index !== rules.length - 1) {
+          issues.push(`${prefix} without maxWidth must be the final rule`);
+        }
         expectedMin = Number.POSITIVE_INFINITY;
       } else {
         expectedMin = Number(rule.maxWidth) + 1;
       }
     });
     const lastRule = rules[rules.length - 1] as Record<string, unknown>;
-    if (lastRule.maxWidth !== undefined) issues.push("the final rule must omit maxWidth so every viewport width is covered");
+    if (lastRule.maxWidth !== undefined) {
+      issues.push("the final rule must omit maxWidth so every viewport width is covered");
+    }
   }
 
   if (candidate.targeting !== undefined) {
-    if (!candidate.targeting || typeof candidate.targeting !== "object" || Array.isArray(candidate.targeting)) {
+    if (
+      !candidate.targeting
+      || typeof candidate.targeting !== "object"
+      || Array.isArray(candidate.targeting)
+    ) {
       issues.push("targeting must be an object");
     } else {
       for (const [key, value] of Object.entries(candidate.targeting)) {
-        if (!key.trim()) issues.push("targeting keys must not be empty");
+        if (!key.trim()) {
+          issues.push("targeting keys must not be empty");
+        }
         validateTargetingValue(key, value, issues);
       }
     }
   }
 
-  if (candidate.emptyBehavior !== undefined && candidate.emptyBehavior !== "reserve" && candidate.emptyBehavior !== "collapse") {
+  if (
+    candidate.emptyBehavior !== undefined
+    && candidate.emptyBehavior !== "reserve"
+    && candidate.emptyBehavior !== "collapse"
+  ) {
     issues.push("emptyBehavior must be reserve or collapse");
   }
   if (candidate.emptyBehavior !== "collapse" && !isValidSize(candidate.reservedSize)) {
@@ -105,14 +146,27 @@ export function validateAdPlacementConfig(config: AdPlacementConfig): readonly s
 
 export function assertValidAdPlacementConfig(config: AdPlacementConfig): void {
   const issues = validateAdPlacementConfig(config);
-  if (issues.length > 0) throw new AdConfigurationError(issues);
+  if (issues.length > 0) {
+    throw new AdConfigurationError(issues);
+  }
 }
 
 export function resolveAdResponsiveRule(config: AdPlacementConfig, viewportWidth: number): AdResponsiveRule {
   assertValidAdPlacementConfig(config);
-  if (!Number.isFinite(viewportWidth) || viewportWidth < 0) throw new AdConfigurationError(["viewportWidth must be a non-negative finite number"]);
-  const rule = config.rules.find((candidate) => viewportWidth >= candidate.minWidth && (candidate.maxWidth === undefined || viewportWidth <= candidate.maxWidth));
-  if (!rule) throw new AdConfigurationError([`no responsive rule covers viewport width ${viewportWidth}`]);
+  if (!Number.isFinite(viewportWidth) || viewportWidth < 0) {
+    throw new AdConfigurationError([
+      "viewportWidth must be a non-negative finite number",
+    ]);
+  }
+  const rule = config.rules.find(
+    (candidate) => viewportWidth >= candidate.minWidth
+      && (candidate.maxWidth === undefined || viewportWidth <= candidate.maxWidth),
+  );
+  if (!rule) {
+    throw new AdConfigurationError([
+      `no responsive rule covers viewport width ${viewportWidth}`,
+    ]);
+  }
   return rule;
 }
 
@@ -121,7 +175,9 @@ function targetingEntries(targeting: Readonly<Record<string, AdTargetingValue>> 
 }
 
 export function getAdResponsiveRuleSignature(rule: AdResponsiveRule): string {
-  if (rule.enabled === false) return `disabled:${rule.minWidth}:${rule.maxWidth ?? "max"}`;
+  if (rule.enabled === false) {
+    return `disabled:${rule.minWidth}:${rule.maxWidth ?? "max"}`;
+  }
   return JSON.stringify([rule.minWidth, rule.maxWidth ?? null, rule.adUnitPath, rule.sizes]);
 }
 

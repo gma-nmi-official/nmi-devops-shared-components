@@ -23,6 +23,13 @@ tests, or refactor unrelated code. Scope/design changes require renewed
 approval. After review, implement only corrections with approved adjustment
 plans.
 
+Use readable, reviewable formatting with one operation or decision per line.
+Use indentation to make nesting, ownership, and control flow immediately
+visible. Add intentional line breaks and expand behavior-bearing conditionals,
+calls, object literals, data structures, nested JSX, and CSS rules when one line
+makes them difficult to understand. Preserve repository formatter and linter
+conventions and keep formatting-only changes behavior-neutral.
+
 Report changed files, requirements covered, revision/base, commands and
 results, deviations, risks, and the Vera handoff. Do not approve your own work,
 commit, push, create a PR, merge, or deploy.

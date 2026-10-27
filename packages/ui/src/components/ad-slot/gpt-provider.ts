@@ -17,7 +17,11 @@ export type GptSlot = {
 
 export type GptCompatible = {
   cmd: { push(command: () => void): unknown };
-  defineSlot(adUnitPath: string, sizes: readonly (readonly [number, number])[], elementId: string): GptSlot | null;
+  defineSlot(
+    adUnitPath: string,
+    sizes: readonly (readonly [number, number])[],
+    elementId: string,
+  ): GptSlot | null;
   destroySlots(slots: readonly GptSlot[]): boolean;
   display(elementId: string): void;
   pubads(): GptPubAdsService;
@@ -48,7 +52,9 @@ export function createGptAdProvider({ googletag }: { googletag: GptCompatible })
           try {
             const pubads = googletag.pubads();
             const slot = googletag.defineSlot(request.adUnitPath, request.sizes, request.elementId);
-            if (!slot) throw new Error(`GPT could not define ad slot ${request.elementId}`);
+            if (!slot) {
+              throw new Error(`GPT could not define ad slot ${request.elementId}`);
+            }
 
             slot.addService(pubads);
             for (const [key, value] of Object.entries(request.targeting)) {
@@ -57,7 +63,9 @@ export function createGptAdProvider({ googletag }: { googletag: GptCompatible })
 
             handle = Object.freeze({ id: request.elementId });
             const listener = (event: GptSlotRenderEndedEvent) => {
-              if (event.slot === slot) request.onStateChange(event.isEmpty ? "empty" : "filled");
+              if (event.slot === slot) {
+                request.onStateChange(event.isEmpty ? "empty" : "filled");
+              }
             };
             pubads.addEventListener("slotRenderEnded", listener);
             internal = { destroyed: false, listener, listenerRemoved: false, pubads, slot };
@@ -82,8 +90,12 @@ export function createGptAdProvider({ googletag }: { googletag: GptCompatible })
 
     destroySlot(handle: AdProviderSlot) {
       const internal = slots.get(handle);
-      if (!internal || internal.destroyed) return Promise.resolve();
-      if (internal.destroyPromise) return internal.destroyPromise;
+      if (!internal || internal.destroyed) {
+        return Promise.resolve();
+      }
+      if (internal.destroyPromise) {
+        return internal.destroyPromise;
+      }
 
       let resolveDestroy!: () => void;
       let rejectDestroy!: (error: unknown) => void;

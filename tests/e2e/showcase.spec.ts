@@ -76,6 +76,23 @@ test("navigates through the documentation home and component catalog with keyboa
   await expect(page.getByRole("link", { name: "Documentation home" })).toBeVisible();
 });
 
+test("paired Portal Header parameters preserve separate code labels", async ({ page }) => {
+  await page.goto("/catalog#parameters");
+
+  for (const labels of [
+    ["menuLabel", "closeMenuLabel"],
+    ["searchToggleLabel", "closeSearchLabel"],
+  ]) {
+    const row = page.locator(".catalog__parameters > div").filter({
+      has: page.getByText(labels[0], { exact: true }),
+    });
+
+    await expect(row.locator("code")).toHaveText(labels);
+    await expect(row).toContainText(`${labels[0]} and ${labels[1]}`);
+    await expect(row.locator("code").filter({ hasText: "and" })).toHaveCount(0);
+  }
+});
+
 for (const path of ["/", "/catalog"] as const) {
   test(`${path} has no page-level horizontal overflow`, async ({ page }) => {
     await page.goto(path);

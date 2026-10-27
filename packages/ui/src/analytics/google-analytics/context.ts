@@ -1,7 +1,9 @@
 import type { CurrentParams, DimensionDefinition } from "./types";
 import { normalizeValue } from "./validation";
 
-export function createDefaults(definitions: Readonly<Record<string, DimensionDefinition>>): Record<string, string> {
+export function createDefaults(
+  definitions: Readonly<Record<string, DimensionDefinition>>,
+): Record<string, string> {
   return Object.fromEntries(
     Object.entries(definitions).map(([key, definition]) => [
       key,

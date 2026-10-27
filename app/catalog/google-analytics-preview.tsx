@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { createGoogleAnalytics, type ConsentState, type DataLayer } from "nmi-devops-shared-components";
+import {
+  createGoogleAnalytics,
+  type ConsentState,
+  type DataLayer,
+} from "nmi-devops-shared-components";
 
 export function GoogleAnalyticsPreview() {
   const [consent, setConsent] = useState<ConsentState>("unknown");
@@ -16,10 +20,12 @@ export function GoogleAnalyticsPreview() {
     [],
   );
   const analytics = useMemo(
-    () => createGoogleAnalytics({
-      transport: { type: "gtm", dataLayer },
-      portalSection: "News",
-    }),
+    () => createGoogleAnalytics(
+      {
+        transport: { type: "gtm", dataLayer },
+        portalSection: "News",
+      },
+    ),
     [dataLayer],
   );
 
@@ -30,7 +36,9 @@ export function GoogleAnalyticsPreview() {
   function updateConsent(next: ConsentState) {
     setConsent(next);
     analytics.setConsent(next);
-    if (next === "granted") analytics.trackPageView({ page_title: "Catalog" });
+    if (next === "granted") {
+      analytics.trackPageView({ page_title: "Catalog" });
+    }
   }
 
   return (
@@ -58,7 +66,9 @@ export function GoogleAnalyticsPreview() {
         <select
           id="analytics-consent"
           value={consent}
-          onChange={(event) => updateConsent(event.target.value as ConsentState)}
+          onChange={(event) => {
+            updateConsent(event.target.value as ConsentState);
+          }}
         >
           <option value="unknown">Unknown</option>
           <option value="granted">Granted</option>
@@ -66,7 +76,10 @@ export function GoogleAnalyticsPreview() {
         </select>
         <button
           type="button"
-          onClick={() => setStatus(analytics.trackClick({ content_id: "catalog-card" }).status)}
+          onClick={() => {
+            const result = analytics.trackClick({ content_id: "catalog-card" });
+            setStatus(result.status);
+          }}
         >
           Track click
         </button>

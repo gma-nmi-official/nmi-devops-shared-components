@@ -14,6 +14,9 @@ Check that behavior-bearing code is understandable at a glance:
 - Keep one operation or decision per line when practical.
 - Expand multiline conditionals, object literals, and function calls when they
   carry behavior or important data flow.
+- Require indentation to expose nesting, ownership, and control flow clearly.
+- Use intentional line breaks between distinct operations, and expand nested
+  JSX and CSS rules when a single line obscures their structure.
 - Use named helpers for non-trivial branches and repeated transformations.
 - Avoid compressed semicolon blocks, nested one-line control flow, and dense
   destructuring that hides side effects.

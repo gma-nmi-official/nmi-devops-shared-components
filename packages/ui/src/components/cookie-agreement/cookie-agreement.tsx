@@ -28,12 +28,19 @@ function isValidHttpsUrl(value: string) {
 
 function isLocalAssetSource(value: string) {
   const source = value.trim();
-  return source.length > 0 && !source.startsWith("//") && /^(?:\/|\.\.?\/)/.test(source) && !/^[a-z][a-z0-9+.-]*:/i.test(source);
+  return source.length > 0
+    && !source.startsWith("//")
+    && /^(?:\/|\.\.?\/)/.test(source)
+    && !/^[a-z][a-z0-9+.-]*:/i.test(source);
 }
 
 function isCurrentAcceptedRecord(record: CookieAgreementRecord | null | undefined, policyVersion: string) {
-  if (!record || record.status !== "accepted" || record.policyVersion !== policyVersion) return false;
-  if (!record.expiresAt) return true;
+  if (!record || record.status !== "accepted" || record.policyVersion !== policyVersion) {
+    return false;
+  }
+  if (!record.expiresAt) {
+    return true;
+  }
   const expiry = Date.parse(record.expiresAt);
   return Number.isFinite(expiry) && expiry > Date.now();
 }
@@ -58,18 +65,32 @@ export function CookieAgreement({
   const descriptionId = useId();
   const resolvedCopy = { ...DEFAULT_COPY, ...copy };
   const requestedSealSrc = seal?.src ?? defaultNpcSeal;
-  const resolvedSeal = seal === null ? null : { src: seal?.src === undefined || isLocalAssetSource(requestedSealSrc) ? requestedSealSrc : defaultNpcSeal, alt: seal?.alt ?? "National Privacy Commission seal", href: seal?.href ?? DEFAULT_SEAL_HREF };
+  const resolvedSeal = seal === null
+    ? null
+    : {
+      src: seal?.src === undefined || isLocalAssetSource(requestedSealSrc)
+        ? requestedSealSrc
+        : defaultNpcSeal,
+      alt: seal?.alt ?? "National Privacy Commission seal",
+      href: seal?.href ?? DEFAULT_SEAL_HREF,
+    };
   const safeFindOutMoreHref = isValidHttpsUrl(findOutMoreHref) ? findOutMoreHref : DEFAULT_FIND_OUT_MORE_HREF;
-  const safeSealHref = resolvedSeal && isValidHttpsUrl(resolvedSeal.href) ? resolvedSeal.href : DEFAULT_SEAL_HREF;
+  const safeSealHref = resolvedSeal && isValidHttpsUrl(resolvedSeal.href)
+    ? resolvedSeal.href
+    : DEFAULT_SEAL_HREF;
   const visibleRecord = record !== undefined ? record : storedRecord;
   const needsDecision = !isCurrentAcceptedRecord(visibleRecord, policyVersion);
   const activeStore = store ?? defaultConsentStore;
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (typeof window === "undefined") {
+      return;
+    }
     const threshold = Math.max(0, Math.min(1, scrollRevealThreshold));
     const reveal = () => {
-      if (window.scrollY >= window.innerHeight * threshold) setRevealed(true);
+      if (window.scrollY >= window.innerHeight * threshold) {
+        setRevealed(true);
+      }
     };
     reveal();
     window.addEventListener("scroll", reveal, { passive: true });
@@ -77,17 +98,25 @@ export function CookieAgreement({
   }, [scrollRevealThreshold]);
 
   useEffect(() => {
-    if (record !== undefined) return;
+    if (record !== undefined) {
+      return;
+    }
     let active = true;
-    Promise.resolve(activeStore.read()).then((nextRecord) => {
-      if (active) setStoredRecord(nextRecord);
-    }).catch((error: unknown) => {
-      if (active) {
-        setStoredRecord(null);
-        onStorageError?.(error);
-      }
-    });
-    return () => { active = false; };
+    Promise.resolve(activeStore.read())
+      .then((nextRecord) => {
+        if (active) {
+          setStoredRecord(nextRecord);
+        }
+      })
+      .catch((error: unknown) => {
+        if (active) {
+          setStoredRecord(null);
+          onStorageError?.(error);
+        }
+      });
+    return () => {
+      active = false;
+    };
   }, [activeStore, onStorageError, record]);
 
   const accept = async () => {
@@ -110,13 +139,19 @@ export function CookieAgreement({
     }
   };
 
-  if (!needsDecision || sessionDismissed) return null;
+  if (!needsDecision || sessionDismissed) {
+    return null;
+  }
 
   return (
     <aside
       aria-describedby={descriptionId}
       aria-label={resolvedCopy.accessibleName}
-      className={["gno-cookie-agreement", revealed ? "gno-cookie-agreement--visible" : "", className].filter(Boolean).join(" ")}
+      className={[
+        "gno-cookie-agreement",
+        revealed ? "gno-cookie-agreement--visible" : "",
+        className,
+      ].filter(Boolean).join(" ")}
       role="region"
     >
       <div className="gno-cookie-agreement__inner">
@@ -127,19 +162,39 @@ export function CookieAgreement({
             rel="noopener noreferrer"
             target="_blank"
           >
-            <img alt={resolvedSeal.alt} className="gno-cookie-agreement__seal" src={resolvedSeal.src} />
+            <img
+              alt={resolvedSeal.alt}
+              className="gno-cookie-agreement__seal"
+              src={resolvedSeal.src}
+            />
           </a>
         ) : null}
-        <p className="gno-cookie-agreement__body" id={descriptionId}>{resolvedCopy.body}</p>
+        <p className="gno-cookie-agreement__body" id={descriptionId}>
+          {resolvedCopy.body}
+        </p>
         <div className="gno-cookie-agreement__actions">
-          <a className="gno-cookie-agreement__privacy-link" href={safeFindOutMoreHref} rel="noopener noreferrer" target="_blank">
+          <a
+            className="gno-cookie-agreement__privacy-link"
+            href={safeFindOutMoreHref}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             {resolvedCopy.findOutMoreLabel}
           </a>
-          <button className="gno-cookie-agreement__accept" disabled={saving} onClick={accept} type="button">
+          <button
+            className="gno-cookie-agreement__accept"
+            disabled={saving}
+            onClick={accept}
+            type="button"
+          >
             {resolvedCopy.acceptLabel}
           </button>
           {rejectEnabled ? (
-            <button className="gno-cookie-agreement__reject" onClick={() => setSessionDismissed(true)} type="button">
+            <button
+              className="gno-cookie-agreement__reject"
+              onClick={() => setSessionDismissed(true)}
+              type="button"
+            >
               {resolvedCopy.rejectLabel}
             </button>
           ) : null}

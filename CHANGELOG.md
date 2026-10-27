@@ -6,7 +6,18 @@ The project follows [Semantic Versioning](https://semver.org/). The repository p
 
 ## [Unreleased]
 
-No unreleased changes.
+### Changed
+
+- Reformatted published component sources, Storybook stories, catalog pages,
+  and shared CSS so indentation and intentional line breaks expose nesting,
+  control flow, and data structure without changing public behavior.
+
+**Consumer impact / SemVer: None.** Public APIs, runtime behavior, CSS selectors,
+declarations, and package versions are unchanged; no migration is required.
+
+**Validation evidence:** type checking, lint, unit and consumer tests, size gates,
+Storybook and Next.js builds, GitHub Pages static export, and browser regression
+checks pass. Independent readability review remains pending.
 
 ## [1.4.0] - 2026-10-26
 
