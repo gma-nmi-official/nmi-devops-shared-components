@@ -36,6 +36,19 @@ ads (`mrec`, `leaderboard`, or `custom`). Consumers own consent, eligibility,
 GPT initialization, service-wide lazy loading, targeting, full ad unit paths,
 and every permitted size. A format label never supplies inventory defaults.
 
+Consumers must load GPT themselves before creating the provider:
+
+```html
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+<script>
+  window.googletag = window.googletag || { cmd: [] };
+</script>
+```
+
+The package does not inject this third-party script or select production
+inventory. Create `createGptAdProvider({ googletag })` from a client component
+after the host has initialized `window.googletag`.
+
 ```tsx
 import { AdSlot, createGptAdProvider, type AdPlacementConfig } from "nmi-devops-shared-components";
 
