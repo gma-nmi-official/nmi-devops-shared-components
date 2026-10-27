@@ -96,6 +96,19 @@ eligibility, and supply the complete ad unit path and non-empty size list for
 every active responsive rule. The component does not infer inventory from
 `format`.
 
+Load GPT from the consumer application. The shared package does not inject this
+third-party script or choose inventory for you:
+
+```html
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+<script>
+  window.googletag = window.googletag || { cmd: [] };
+</script>
+```
+
+In a client component, create the provider after the consumer has initialized
+`window.googletag`:
+
 ```tsx
 "use client";
 
