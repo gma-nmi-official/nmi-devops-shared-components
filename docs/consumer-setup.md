@@ -139,7 +139,8 @@ provider and must not request the live GPT script.
 
 ## 4. Find component-specific guidance
 
-Run the showcase and open `/catalog` to find each approved component's:
+Run the showcase and open `/catalog` to choose a dedicated guide for each
+approved component or integration. Every guide includes:
 
 - purpose and supported states
 - public props, events, and configuration
@@ -148,7 +149,10 @@ Run the showcase and open `/catalog` to find each approved component's:
 - stylesheet and installation requirements
 - link to its dedicated Storybook story
 
-The deployed `/docs` route is the interactive component reference; `/catalog` is the consumer onboarding reference.
+The deployed `/docs` route is the interactive component reference. `/catalog`
+is the consumer onboarding index, with durable pages at
+`/catalog/portal-header`, `/catalog/cookie-agreement`, `/catalog/ad-slot`, and
+`/catalog/google-analytics`.
 
 Portal Header migration from the legacy widget is documented in
 [`portal-header-migration.md`](portal-header-migration.md).

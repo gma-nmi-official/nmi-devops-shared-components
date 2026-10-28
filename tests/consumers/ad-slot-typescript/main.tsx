@@ -1,21 +1,33 @@
+"use client";
+
+import { useMemo } from "react";
 import { AdSlot, createGptAdProvider, type AdPlacementConfig, type GptCompatible } from "nmi-devops-shared-components";
 import "nmi-devops-shared-components/styles.css";
 
-declare const googletag: GptCompatible;
-
 const config: AdPlacementConfig = {
-  key: "article-leaderboard",
-  format: "leaderboard",
-  reservedSize: [970, 250],
+  key: "article-mrec",
+  format: "mrec",
+  reservedSize: [300, 250],
   rules: [
-    { minWidth: 0, maxWidth: 767, enabled: false },
-    { minWidth: 768, maxWidth: 1199, adUnitPath: "/123/news/tablet", sizes: [[728, 90]] },
-    { minWidth: 1200, adUnitPath: "/123/news/desktop", sizes: [[970, 250], [970, 90]] },
+    {
+      minWidth: 768,
+      adUnitPath: "/123/news/article-mrec",
+      sizes: [[300, 250]],
+    },
   ],
 };
 
-const provider = createGptAdProvider({ googletag });
+export function ArticleAd({
+  googletag,
+  hasAdConsent,
+}: {
+  googletag: GptCompatible;
+  hasAdConsent: boolean;
+}) {
+  const provider = useMemo(
+    () => createGptAdProvider({ googletag }),
+    [googletag],
+  );
 
-export function TypeScriptAdSlotFixture({ eligible }: { eligible: boolean }) {
-  return <AdSlot config={config} enabled={eligible} provider={provider} />;
+  return <AdSlot config={config} enabled={hasAdConsent} provider={provider} />;
 }

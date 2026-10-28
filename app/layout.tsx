@@ -5,7 +5,8 @@ import "nmi-devops-shared-components/styles.css";
 
 export const metadata: Metadata = {
   title: "NMI DevOps Shared Components",
-  description: "Configurable shared components for Next.js applications.",
+  description:
+    "Installation, setup, and operational guidance for shared GNO React components and integrations.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

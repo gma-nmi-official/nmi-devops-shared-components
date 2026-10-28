@@ -1,10 +1,26 @@
-import { createGoogleAnalytics, type DataLayer } from "nmi-devops-shared-components";
+"use client";
 
-const dataLayer: DataLayer = { push: () => undefined };
-export const analytics = createGoogleAnalytics({
-  transport: { type: "gtm", dataLayer },
-  consent: "unknown",
-  customDimensions: { content_type: "article" },
-});
+import {
+  createGoogleAnalytics,
+  type ConsentState,
+  type Gtag,
+} from "nmi-devops-shared-components";
 
-export const result = analytics.trackPageView({ page_title: "Fixture" });
+export function trackCurrentPage({
+  consent,
+  gtag,
+}: {
+  consent: ConsentState;
+  gtag: Gtag;
+}) {
+  const analytics = createGoogleAnalytics({
+    transport: { type: "gtag", gtag },
+    measurementId: "G-EXAMPLE",
+    consent: "unknown",
+    portalSection: "News",
+  });
+
+  analytics.initialize();
+  analytics.setConsent(consent);
+  return analytics.trackPageView({ page_title: document.title });
+}

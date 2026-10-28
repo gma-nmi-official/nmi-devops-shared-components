@@ -10,8 +10,8 @@ The project includes two documentation surfaces:
 
 - `/docs` — the interactive Storybook reference, with component states,
   controls, accessibility notes, and release information.
-- `/catalog` — a friendly consumer guide with installation, configuration,
-  examples, and parameter details.
+- `/catalog` — the consumer guide index, with a dedicated installation, setup,
+  configuration, and operations page for every public component or integration.
 
 ## Local setup guide
 
@@ -40,8 +40,9 @@ npm run dev
 The `predev` lifecycle step builds the shared package first so a clean checkout has the package stylesheet and runtime output available to the showcase.
 
 Open `http://localhost:3000` for the documentation landing page. The consumer
-guide is available at `http://localhost:3000/catalog`, and the interactive
-Storybook is available at `http://localhost:3000/docs`.
+guide index is available at `http://localhost:3000/catalog`, dedicated guides
+live below `/catalog/<component>`, and the interactive Storybook is available at
+`http://localhost:3000/docs`.
 
 ### Open the deployed documentation
 
@@ -113,7 +114,7 @@ export function SiteHeader() {
 }
 ```
 
-The repository and its release assets are private. Consumers need repository access and a `GH_TOKEN` authorized to download the release asset; keep it in the consumer's CI secret store and never commit it. `nmi-devops-shared-components` remains the package and import name. See `/catalog` while running the showcase for the current inventory and copyable JavaScript/TypeScript examples.
+The repository and its release assets are private. Consumers need repository access and a `GH_TOKEN` authorized to download the release asset; keep it in the consumer's CI secret store and never commit it. `nmi-devops-shared-components` remains the package and import name. See `/catalog` while running the showcase for the current inventory, then open the dedicated Portal Header, Cookie Agreement, Ad Slot, or Google Analytics guide for copyable JavaScript/TypeScript examples and operational notes.
 
 For complete setup guidance, see [`docs/consumer-setup.md`](docs/consumer-setup.md).
 

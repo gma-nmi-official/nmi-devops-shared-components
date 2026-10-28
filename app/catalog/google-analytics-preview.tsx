@@ -37,7 +37,7 @@ export function GoogleAnalyticsPreview() {
     setConsent(next);
     analytics.setConsent(next);
     if (next === "granted") {
-      analytics.trackPageView({ page_title: "Catalog" });
+      analytics.trackPageView({ page_title: "Google Analytics guide" });
     }
   }
 
@@ -77,7 +77,7 @@ export function GoogleAnalyticsPreview() {
         <button
           type="button"
           onClick={() => {
-            const result = analytics.trackClick({ content_id: "catalog-card" });
+            const result = analytics.trackClick({ content_id: "guide-example" });
             setStatus(result.status);
           }}
         >

@@ -27,5 +27,6 @@ The project history previously maintained in the external `PERSONAL_WORKFLOW` ch
 - [`gno-shared-components-v2-adoption/`](2026/gno-shared-components-v2-adoption/) — repository adoption
 - [`gno-shared-components-v2-registration/`](2026/gno-shared-components-v2-registration/) — repository registration
 - [`gno-shared-components-v2-foundation/`](2026/gno-shared-components-v2-foundation/) — foundation requirements, `portal_header` specifications, execution evidence, and presentation
+- [`documentation-site-revamp/`](2026/documentation-site-revamp/) — proposed professional documentation home, dedicated component/integration guides, and GMA favicon update
 
 Future agents should use these repository-local records as the primary project source of truth. The external workflow checkout is no longer required to discover this project's specifications.
