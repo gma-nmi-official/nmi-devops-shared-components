@@ -43,57 +43,69 @@ async function focusWithKeyboard(page: Page, accessibleName: string) {
   return link;
 }
 
-test("navigates through the documentation home and component catalog with keyboard focus", async ({ page }) => {
+test("navigates through the documentation home, catalog, and a dedicated guide", async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveTitle("NMI DevOps Shared Components");
-  await expect(page.getByText("NMI DevOps Shared Components", { exact: true })).toBeVisible();
+  await expect(page.getByText("Shared Components", { exact: true })).toBeVisible();
 
   await expect(
-    page.getByRole("heading", { level: 1, name: "Build consistent portal experiences with shared components." }),
+    page.getByRole("heading", { level: 1, name: "Build consistent portal experiences with confidence." }),
   ).toBeVisible();
-  await expect(page.getByRole("heading", { level: 2, name: "Everything you need to use the package." })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Start with the outcome you need." })).toBeVisible();
 
-  const catalogLink = await focusWithKeyboard(page, "Read the package guide");
+  const catalogLink = await focusWithKeyboard(page, "Explore component guides");
   await catalogLink.press("Enter");
 
   await expect(page).toHaveURL(/\/catalog\/?$/);
-  await expect(page).toHaveTitle("Component catalog | NMI DevOps Shared Components");
+  await expect(page).toHaveTitle("Component guides | NMI DevOps Shared Components");
   await expect(
-    page.getByRole("heading", { level: 1, name: "Build consistent portal experiences in minutes." }),
+    page.getByRole("heading", { level: 1, name: "Choose a component. Start with a complete guide." }),
   ).toBeVisible();
-  await expect(page.getByRole("heading", { level: 2, name: "What is Portal Header?" })).toBeVisible();
-  await expect(page.getByRole("heading", { level: 2, name: "What is Cookie Agreement?" })).toBeVisible();
-  await expect(page.getByRole("region", { name: "Cookie notice" })).toBeVisible();
-  await expect(page.getByText("Primary and network navigation", { exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Portal Header/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Cookie Agreement/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Ad Slot/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Google Analytics/ })).toBeVisible();
+
+  await page.getByRole("link", { name: /Portal Header/ }).click();
+  await expect(page).toHaveURL(/\/catalog\/portal-header\/?$/);
+  await expect(page).toHaveTitle("Portal Header guide | NMI DevOps Shared Components");
+  await expect(page.getByRole("heading", { level: 1, name: "Portal Header" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Install" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Setup" })).toBeVisible();
   await expect(page.getByText('import { PortalHeader } from "nmi-devops-shared-components";', { exact: false })).toBeVisible();
 
   await page.goBack();
-  await expect(page).toHaveURL(/\/$/);
-  await expect(page.getByRole("heading", { level: 1, name: "Build consistent portal experiences with shared components." })).toBeVisible();
+  await expect(page).toHaveURL(/\/catalog\/?$/);
 
   await page.goForward();
-  await expect(page).toHaveURL(/\/catalog\/?$/);
-  await expect(page.getByRole("link", { name: "Documentation home" })).toBeVisible();
+  await expect(page).toHaveURL(/\/catalog\/portal-header\/?$/);
+  await expect(page.getByRole("link", { name: "Home", exact: true })).toBeVisible();
 });
 
-test("paired Portal Header parameters preserve separate code labels", async ({ page }) => {
-  await page.goto("/catalog#parameters");
+test("Portal Header guide preserves configuration labels", async ({ page }) => {
+  await page.goto("/catalog/portal-header#configuration");
 
-  for (const labels of [
-    ["menuLabel", "closeMenuLabel"],
-    ["searchToggleLabel", "closeSearchLabel"],
+  for (const label of [
+    "brand",
+    "navigationPreset",
+    "primaryNavigation / networkNavigation",
+    "socialPreset / socialLinks",
+    "search",
+    "renderLink",
+    "theme",
   ]) {
-    const row = page.locator(".catalog__parameters > div").filter({
-      has: page.getByText(labels[0], { exact: true }),
-    });
-
-    await expect(row.locator("code")).toHaveText(labels);
-    await expect(row).toContainText(`${labels[0]} and ${labels[1]}`);
-    await expect(row.locator("code").filter({ hasText: "and" })).toHaveCount(0);
+    await expect(page.locator(".configuration-list code", { hasText: label })).toHaveCount(1);
   }
 });
 
-for (const path of ["/", "/catalog"] as const) {
+for (const path of [
+  "/",
+  "/catalog",
+  "/catalog/portal-header",
+  "/catalog/cookie-agreement",
+  "/catalog/ad-slot",
+  "/catalog/google-analytics",
+] as const) {
   test(`${path} has no page-level horizontal overflow`, async ({ page }) => {
     await page.goto(path);
 
@@ -106,8 +118,54 @@ for (const path of ["/", "/catalog"] as const) {
   });
 }
 
+test("documentation routes expose distinct metadata and local NMI branding", async ({ page }) => {
+  const routes = [
+    ["/", "NMI DevOps Shared Components"],
+    ["/catalog", "Component guides | NMI DevOps Shared Components"],
+    ["/catalog/portal-header", "Portal Header guide | NMI DevOps Shared Components"],
+    ["/catalog/cookie-agreement", "Cookie Agreement guide | NMI DevOps Shared Components"],
+    ["/catalog/ad-slot", "Ad Slot guide | NMI DevOps Shared Components"],
+    ["/catalog/google-analytics", "Google Analytics guide | NMI DevOps Shared Components"],
+  ] as const;
+
+  for (const [path, title] of routes) {
+    await page.goto(path);
+    await expect(page).toHaveTitle(title);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /\S+/);
+    await expect(page.locator('link[rel="icon"]')).toHaveAttribute("href", /favicon\.ico/);
+    await expect(
+      page.getByRole("link", { name: "NMI DevOps Shared Components home" }),
+    ).toBeVisible();
+    await expect(page.locator(".docs-brand__logo")).toHaveAttribute(
+      "src",
+      /nmi-logo-dark-bg\.svg/,
+    );
+  }
+});
+
+test("unknown component guide is not generated", async ({ page }) => {
+  const response = await page.request.get("/catalog/not-a-component");
+
+  expect(response.status()).toBe(404);
+});
+
+test("guide Storybook links forward their path query into the docs frame", async ({ page }) => {
+  await page.goto("/catalog/portal-header");
+  await page.getByRole("link", { name: "Open in Storybook" }).click();
+
+  await expect(page).toHaveURL(
+    /\/docs\/?\?path=\/story\/components-portalheader--desktop$/,
+  );
+  await expect(
+    page.getByTitle("NMI DevOps Shared Components interactive documentation"),
+  ).toHaveAttribute(
+    "src",
+    /\/storybook\/index\.html\?path=%2Fstory%2Fcomponents-portalheader--desktop$/,
+  );
+});
+
 test("Portal Header exposes safe social links and a working native GET search", async ({ page }) => {
-  await page.goto("/catalog");
+  await page.goto("/catalog/portal-header");
 
   const menuButton = page.getByRole("button", { name: "Open menu" });
   await menuButton.click();
@@ -128,16 +186,16 @@ test("Portal Header exposes safe social links and a working native GET search", 
   }
   await search.fill("   ");
   await search.press("Enter");
-  await expect(page).toHaveURL(/\/catalog\/?$/);
+  await expect(page).toHaveURL(/\/catalog\/portal-header\/?$/);
 
   await search.fill("  sample query  ");
   await search.press("Enter");
-  await expect(page).toHaveURL(/\/catalog\/?\?q=sample(\+|%20)query$/);
+  await expect(page).toHaveURL(/\/catalog\/portal-header\/?\?q=sample(\+|%20)query$/);
 });
 
 test("mobile dropdown closes with Escape and restores trigger focus", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto("/catalog");
+  await page.goto("/catalog/portal-header");
   const menuButton = page.getByRole("button", { name: "Open menu" });
 
   await menuButton.click();
@@ -154,8 +212,10 @@ test("Ad Slot catalog preview uses consumer configuration without a live ad-netw
     if (/doubleclick|googlesyndication|googletagservices/i.test(request.url())) adNetworkRequests.push(request.url());
   });
 
-  await page.goto("/catalog");
-  await expect(page.getByRole("heading", { level: 2, name: "Configurable display ads without hidden inventory defaults" })).toBeVisible();
+  await page.goto("/catalog/ad-slot");
+  await expect(page.getByRole("heading", { level: 1, name: "Ad Slot" })).toBeVisible();
+  await expect(page.getByText("googletag: GptCompatible", { exact: false })).toBeVisible();
+  await expect(page.getByText("createGptAdProvider({ googletag })", { exact: false })).toBeVisible();
   const slot = page.getByRole("complementary", { name: "Example advertisement" });
   await expect(slot).toHaveAttribute("data-ad-format", "mrec");
   await expect(slot).toHaveAttribute("data-ad-state", "filled");
@@ -165,11 +225,16 @@ test("Ad Slot catalog preview uses consumer configuration without a live ad-netw
 test("Google Analytics catalog preview stays consent-aware and makes no provider request", async ({ page }) => {
   const analyticsRequests: string[] = [];
   page.on("request", (request) => {
-    if (/google-analytics|googletagmanager|google-analytics\.com/i.test(request.url())) analyticsRequests.push(request.url());
+    const hostname = new URL(request.url()).hostname;
+    if (/google-analytics\.com|googletagmanager\.com/i.test(hostname)) {
+      analyticsRequests.push(request.url());
+    }
   });
 
-  await page.goto("/catalog#google-analytics");
-  await expect(page.getByRole("heading", { level: 2, name: "Consent-aware GA4 delivery" })).toBeVisible();
+  await page.goto("/catalog/google-analytics");
+  await expect(page.getByRole("heading", { level: 1, name: "Google Analytics" })).toBeVisible();
+  await expect(page.getByText("consent: ConsentState", { exact: false })).toBeVisible();
+  await expect(page.getByText("gtag: Gtag", { exact: false })).toBeVisible();
   const preview = page.getByRole("region", { name: "Google Analytics preview" });
   await expect(preview).toBeVisible();
   await expect(preview.getByText("Waiting for consent")).toBeVisible();
@@ -183,7 +248,7 @@ test("Google Analytics catalog preview stays consent-aware and makes no provider
 for (const width of [375, 1440]) {
   test(`Portal Header traps visible menu focus and restores it after outside close at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: width < 768 ? 812 : 900 });
-    await page.goto("/catalog");
+    await page.goto("/catalog/portal-header");
     const menuButton = page.getByRole("button", { name: "Open menu" });
 
     await menuButton.click();
@@ -201,7 +266,7 @@ for (const width of [375, 1440]) {
     await page.keyboard.press("Shift+Tab");
     await expect(last).toBeFocused();
 
-    await page.locator(".catalog__header").click();
+    await page.locator(".guide-hero").click();
     await expect(panel).toBeHidden();
     await expect(menuButton).toBeFocused();
     await expect(page.locator("body")).not.toHaveCSS("overflow", "hidden");
@@ -210,7 +275,7 @@ for (const width of [375, 1440]) {
 
 test("Portal Header matches the approved production visual structure", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/catalog");
+  await page.goto("/catalog/portal-header");
 
   const header = page.locator(".gno-portal-header");
   const bar = header.locator(".gno-portal-header__bar");
@@ -277,13 +342,11 @@ test("Portal Header matches the approved production visual structure", async ({ 
 
   const homeBox = await panel.getByRole("link", { name: "Home", exact: true }).boundingBox();
   const lifestyleBox = await panel.getByRole("link", { name: "Lifestyle", exact: true }).boundingBox();
-  const sparkleBox = await panel.getByRole("link", { name: "Sparkle GMA Artist Center" }).boundingBox();
-  const pinoyBox = await panel.getByRole("link", { name: "GMA Pinoy TV" }).boundingBox();
-  const playBox = await panel.getByRole("link", { name: "GMA Play", exact: true }).boundingBox();
+  const firstNetworkLinkBox = await panel
+    .getByRole("link", { name: "Sparkle GMA Artist Center" })
+    .boundingBox();
   expect(lifestyleBox?.y).toBeGreaterThan(homeBox?.y ?? 0);
-  expect(sparkleBox?.x).toBeGreaterThan(homeBox?.x ?? 0);
-  expect(pinoyBox?.x).toBeGreaterThan(sparkleBox?.x ?? 0);
-  expect(playBox?.x).toBeGreaterThan(pinoyBox?.x ?? 0);
+  expect(firstNetworkLinkBox?.x).toBeGreaterThan(homeBox?.x ?? 0);
 
   await page.setViewportSize({ width: 375, height: 812 });
   expect((await bar.boundingBox())?.height).toBeCloseTo(42.4, 0);
@@ -310,7 +373,7 @@ test("Portal Header matches the approved production visual structure", async ({ 
 });
 
 test("Portal Header applies its text token from the component root", async ({ page }) => {
-  await page.goto("/catalog");
+  await page.goto("/catalog/portal-header");
 
   const header = page.locator(".gno-portal-header");
   const sectionLabel = header.locator(".gno-portal-header__section-label");
@@ -340,7 +403,7 @@ test("Portal Header applies its text token from the component root", async ({ pa
 for (const width of [320, 375, 768, 1024, 1440]) {
   test(`Portal Header has no horizontal overflow at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
-    await page.goto("/catalog");
+    await page.goto("/catalog/portal-header");
     const dimensions = await page.evaluate(() => ({
       clientWidth: document.documentElement.clientWidth,
       scrollWidth: document.documentElement.scrollWidth,

@@ -21,7 +21,7 @@ export function PortalHeaderPreview() {
       primaryNavigation={[{ id: "news", current: true }]}
       renderLink={renderNextLink}
       search={{
-        action: "/catalog",
+        action: "/catalog/portal-header",
         queryParam: "q",
         placeholder: "Search the synthetic catalog",
       }}
