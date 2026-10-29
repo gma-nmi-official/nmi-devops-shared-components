@@ -26,7 +26,7 @@
 | Accessibility | Label customization, semantic role/name, focus behavior | Slot is identifiable and does not create an unexpected focus target |
 | Storybook/docs | All formats and states, examples, package exports | Stories and documentation match supported API |
 | Network | Full harness/browser run | No production ad requests or partner scripts |
-| Package size | Compiled ads modules excluding React/GPT | Proposed uncompressed total is at most 20 KiB |
+| Package size | Compiled ads modules excluding React/GPT | Gzip total is at most 8 KiB; raw bytes are reported for observability |
 
 ## Exit criteria
 

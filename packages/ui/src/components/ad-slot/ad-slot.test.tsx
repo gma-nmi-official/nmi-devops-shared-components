@@ -61,6 +61,26 @@ describe("AdSlot", () => {
     expect(screen.getByLabelText("Advertisement")).toHaveClass("gno-ad-slot--disabled");
   });
 
+  it("hides disabled responsive rules in the server-rendered markup", () => {
+    const fake = createProvider();
+    const markup = renderToString(<AdSlot config={config} enabled provider={fake.provider} />);
+    expect(markup).toContain("data-ad-enabled=\"true\"");
+    expect(markup).toContain("@media (min-width:0px) and (max-width:767px)");
+    expect(markup).toContain("display:none");
+  });
+
+  it("keeps reserved space when consumer eligibility is disabled", async () => {
+    const fake = createProvider();
+    render(<AdSlot config={config} enabled={false} provider={fake.provider} />);
+    await act(async () => undefined);
+    const slot = screen.getByLabelText("Advertisement");
+    expect(slot).not.toHaveClass("gno-ad-slot--disabled");
+    expect(slot).toHaveStyle({
+      "--gno-ad-slot-width": "300px",
+      "--gno-ad-slot-height": "250px",
+    });
+  });
+
   it("surfaces a blocked GPT command queue as an error", async () => {
     const provider = createGptAdProvider({
       googletag: {
@@ -82,6 +102,29 @@ describe("AdSlot", () => {
     })).rejects.toThrow("GPT did not become ready");
   });
 
+  it("collapses after a blocked GPT command queue reaches the component error state", async () => {
+    const provider = createGptAdProvider({
+      googletag: {
+        cmd: { push: vi.fn() },
+        defineSlot: vi.fn(),
+        destroySlots: vi.fn(() => true),
+        display: vi.fn(),
+        pubads: vi.fn(),
+      },
+      readinessTimeoutMs: 1,
+    });
+    const collapseConfig: AdPlacementConfig = {
+      ...config,
+      emptyBehavior: "collapse",
+      reservedSize: undefined,
+    };
+
+    Object.defineProperty(window, "innerWidth", { configurable: true, value: 1024, writable: true });
+    render(<AdSlot config={collapseConfig} enabled provider={provider} />);
+    await waitFor(() => expect(screen.getByLabelText("Advertisement")).toHaveAttribute("data-ad-state", "error"));
+    expect(screen.getByLabelText("Advertisement")).toHaveClass("gno-ad-slot--collapsed");
+  });
+
   it("bypasses a stalled create when disabled", async () => {
     Object.defineProperty(window, "innerWidth", { configurable: true, value: 1024, writable: true });
     const pending = deferred<{ id: string }>();
@@ -93,7 +136,11 @@ describe("AdSlot", () => {
     await waitFor(() => expect(provider.createSlot).toHaveBeenCalledTimes(1));
 
     view.rerender(<AdSlot config={config} enabled={false} provider={provider} />);
-    await waitFor(() => expect(screen.getByLabelText("Advertisement")).toHaveClass("gno-ad-slot--disabled"));
+    await waitFor(() => expect(screen.getByLabelText("Advertisement")).not.toHaveClass("gno-ad-slot--disabled"));
+    expect(screen.getByLabelText("Advertisement")).toHaveStyle({
+      "--gno-ad-slot-width": "300px",
+      "--gno-ad-slot-height": "250px",
+    });
     expect(provider.destroySlot).not.toHaveBeenCalled();
     pending.resolve({ id: "late-slot" });
     await act(async () => undefined);

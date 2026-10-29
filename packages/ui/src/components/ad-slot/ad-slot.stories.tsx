@@ -438,8 +438,20 @@ export const Loading: Story = { args: { provider: loadingProvider, placeholder: 
 export const CustomLabel: Story = { args: { label: "Sponsored placement" } };
 export const ConsumerDisabled: Story = { args: { enabled: false } };
 export const ReducedMotion: Story = {
+  args: {
+    config: {
+      ...mrecConfig,
+      emptyBehavior: "collapse",
+      reservedSize: undefined,
+    },
+    provider: fakeProvider("empty"),
+  },
   parameters: {
-    docs: { description: { story: "Use the browser or OS reduced-motion preference to verify collapse transitions are disabled." } },
+    docs: {
+      description: {
+        story: "This story reaches the collapsed state. Emulate prefers-reduced-motion: reduce in browser devtools or your operating system to verify the transition is disabled.",
+      },
+    },
   },
 };
 export const DisabledResponsive: Story = { args: { config: leaderboardConfig } };

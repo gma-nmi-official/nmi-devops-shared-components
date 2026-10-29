@@ -17,6 +17,18 @@ function sanitizeElementId(value: string) {
   return sanitized || "slot";
 }
 
+function getDisabledRuleCss(config: AdSlotProps["config"], elementId: string) {
+  return config.rules
+    .filter((rule) => rule.enabled === false)
+    .map((rule) => {
+      const media = rule.maxWidth === undefined
+        ? `(min-width:${rule.minWidth}px)`
+        : `(min-width:${rule.minWidth}px) and (max-width:${rule.maxWidth}px)`;
+      return `@media ${media}{[data-ad-slot-id="${elementId}"][data-ad-enabled="true"]{display:none}}`;
+    })
+    .join("");
+}
+
 export function AdSlot({
   config,
   enabled,
@@ -64,7 +76,7 @@ export function AdSlot({
     cleanupRef.current = undefined;
     const activeConfig = cfgRef.current;
     const generation = ++genRef.current;
-    let cancelled = false;
+    let effectCancelled = false;
     let resizeTimer: ReturnType<typeof setTimeout> | undefined;
     let signature: string | undefined;
 
@@ -74,7 +86,7 @@ export function AdSlot({
       return queued;
     };
 
-    const isCurrent = () => !cancelled && genRef.current === generation;
+    const isCurrent = () => !effectCancelled && genRef.current === generation;
     const emit = (nextState: AdSlotState, error?: unknown) => {
       if (!isCurrent()) {
         return;
@@ -126,7 +138,6 @@ export function AdSlot({
             return;
           }
           signature = "disabled-by-prop";
-          setRuleActive(false);
           emit("idle");
           return;
         }
@@ -153,7 +164,7 @@ export function AdSlot({
         emit("loading");
         const requestGen = genRef.current;
         let cancel!: () => void;
-        const cancelled = new Promise<void>((resolve) => {
+        const cancelSignal = new Promise<void>((resolve) => {
           cancel = resolve;
         });
         cancelRef.current = cancel;
@@ -172,7 +183,7 @@ export function AdSlot({
             }
           },
         }));
-        const created = await Promise.race([request, cancelled.then(() => undefined)]);
+        const created = await Promise.race([request, cancelSignal.then(() => undefined)]);
         if (cancelRef.current === cancel) {
           cancelRef.current = undefined;
         }
@@ -213,7 +224,7 @@ export function AdSlot({
     window.addEventListener("resize", schedule, { passive: true });
 
     return () => {
-      cancelled = true;
+      effectCancelled = true;
       genRef.current += 1;
       const marker = {};
       cleanupRef.current = marker;
@@ -233,7 +244,7 @@ export function AdSlot({
 
   const emptyBehavior = config.emptyBehavior ?? "reserve";
   const collapsed = emptyBehavior === "collapse" && (state === "empty" || state === "error");
-  const disabled = ruleActive === false;
+  const disabled = enabled && ruleActive === false;
   const reservedSize = config.reservedSize;
   const style = reservedSize && !collapsed && !disabled
     ? ({
@@ -241,27 +252,33 @@ export function AdSlot({
       "--gno-ad-slot-height": `${reservedSize[1]}px`,
     } as CSSProperties)
     : undefined;
+  const disabledRuleCss = getDisabledRuleCss(config, elementId);
 
   return (
-    <aside
-      aria-label={label}
-      className={[
-        "gno-ad-slot",
-        `gno-ad-slot--${config.format}`,
-        collapsed ? "gno-ad-slot--collapsed" : "",
-        disabled ? "gno-ad-slot--disabled" : "",
-        className,
-      ].filter(Boolean).join(" ")}
-      data-ad-format={config.format}
-      data-ad-state={state}
-      style={style}
-    >
-      <span className="gno-ad-slot__label">{label}</span>
-      {state === "loading" && placeholder ? (
-        <div className="gno-ad-slot__placeholder">{placeholder}</div>
-      ) : null}
-      <div className="gno-ad-slot__provider" id={elementId} />
-    </aside>
+    <>
+      {disabledRuleCss ? <style dangerouslySetInnerHTML={{ __html: disabledRuleCss }} /> : null}
+      <aside
+        aria-label={label}
+        className={[
+          "gno-ad-slot",
+          `gno-ad-slot--${config.format}`,
+          collapsed ? "gno-ad-slot--collapsed" : "",
+          disabled ? "gno-ad-slot--disabled" : "",
+          className,
+        ].filter(Boolean).join(" ")}
+        data-ad-enabled={enabled ? "true" : "false"}
+        data-ad-format={config.format}
+        data-ad-slot-id={elementId}
+        data-ad-state={state}
+        style={style}
+      >
+        <span className="gno-ad-slot__label">{label}</span>
+        {state === "loading" && placeholder ? (
+          <div className="gno-ad-slot__placeholder">{placeholder}</div>
+        ) : null}
+        <div className="gno-ad-slot__provider" id={elementId} />
+      </aside>
+    </>
   );
 }
 

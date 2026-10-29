@@ -202,6 +202,6 @@ The `news` reference also injects AllAccess `deliverjs.nmi`/`deliveraw.nmi` scri
 3. Use explicit disabled responsive rules; consumers own every active rule's full unit path and size list.
 4. Require explicit consumer eligibility and consumer-provided string/string-array targeting.
 5. Reserve by default with required `reservedSize`; allow explicit collapse; clear placeholder on every terminal state.
-6. Use the approved 100 ms resize debounce, 20 KiB uncompressed ads-module target, and repository Chromium desktop/mobile automation matrix.
+6. Use the approved 100 ms resize debounce, 8 KiB gzip ads-module target with raw-size reporting, and repository Chromium desktop/mobile automation matrix. ADS-A10 supersedes the original uncompressed planning target.
 
 These requirements are approved by ADS-A04. Source implementation remains subject to separate development approval.
