@@ -8,6 +8,12 @@ const storybookStore: ConsentStore = {
   clear: () => undefined,
 };
 
+const storageErrorStore: ConsentStore = {
+  read: () => { throw new Error("storybook storage failure"); },
+  write: () => undefined,
+  clear: () => undefined,
+};
+
 const meta = {
   title: "Components/CookieAgreement",
   component: CookieAgreement,
@@ -56,4 +62,12 @@ export const LongCopy: Story = {
 };
 export const CustomPrivacyDestination: Story = {
   args: { findOutMoreHref: "https://example.com/privacy" },
+};
+export const StorageError: Story = {
+  args: { store: storageErrorStore },
+};
+export const ReducedMotion: Story = {
+  parameters: {
+    docs: { description: { story: "Use the browser or OS reduced-motion preference to verify the notice transition is disabled." } },
+  },
 };

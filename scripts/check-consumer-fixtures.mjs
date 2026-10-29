@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { build } from "vite";
@@ -25,4 +26,8 @@ for (const entry of entries) {
 
 await import(pathToFileURL(resolve("packages/ui/dist/index.js")).href);
 
-console.log(`Built ${entries.length} JavaScript and TypeScript consumer fixtures and verified SSR-safe package import.`);
+if (!existsSync(resolve("packages/ui/dist/assets/gno-npc-seal.webp"))) {
+  throw new Error("CookieAgreement NPC seal asset was not emitted in the package build.");
+}
+
+console.log(`Built ${entries.length} JavaScript and TypeScript consumer fixtures, including CookieAgreement, and verified SSR-safe package import.`);

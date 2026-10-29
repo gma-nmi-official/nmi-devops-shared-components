@@ -1,4 +1,4 @@
-import { PortalHeader, type PortalHeaderNavigationItem } from "nmi-devops-shared-components";
+import { CookieAgreement, PortalHeader, type PortalHeaderNavigationItem } from "nmi-devops-shared-components";
 import "nmi-devops-shared-components/styles.css";
 
 const navigation: PortalHeaderNavigationItem[] = [
@@ -7,4 +7,8 @@ const navigation: PortalHeaderNavigationItem[] = [
 
 export function TypeScriptPortalHeaderFixture() {
   return <PortalHeader primaryNavigation={navigation} socialPreset="news" />;
+}
+
+export function TypeScriptCookieAgreementFixture() {
+  return <CookieAgreement policyVersion="2026-01" seal={null} />;
 }
