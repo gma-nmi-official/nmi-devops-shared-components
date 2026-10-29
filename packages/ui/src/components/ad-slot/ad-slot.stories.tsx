@@ -437,6 +437,12 @@ export const CustomDisplay: Story = {
 export const Loading: Story = { args: { provider: loadingProvider, placeholder: "Waiting for the fake provider…" } };
 export const CustomLabel: Story = { args: { label: "Sponsored placement" } };
 export const ConsumerDisabled: Story = { args: { enabled: false } };
+export const ReducedMotion: Story = {
+  parameters: {
+    docs: { description: { story: "Use the browser or OS reduced-motion preference to verify collapse transitions are disabled." } },
+  },
+};
+export const DisabledResponsive: Story = { args: { config: leaderboardConfig } };
 export const ReservedEmpty: Story = { args: { provider: fakeProvider("empty") } };
 export const CollapsedEmpty: Story = {
   args: {

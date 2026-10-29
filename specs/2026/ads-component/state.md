@@ -1,9 +1,9 @@
 # Current state: Ads component
 
 - Objective: specify a reusable MREC and leaderboard ads component using the read-only `news` repository as behavior evidence.
-- Stage: Push approved; final metadata amendment and push execution in progress.
+- Stage: Review adjustment implementation complete; independent review pending.
 - Primary role: Atlas coordinating independent Argus findings and the proposed Forge/Vera correction cycle.
-- Last updated: 2026-10-26 Asia/Shanghai.
+- Last updated: 2026-10-29 Asia/Shanghai.
 - Repository baseline: shared components `feature/ads-component` / `a546c6858312b4d3a168009efad37da276afe9b1`; comparison `origin/master` / `f4d5579`, merge base `c453774`, branch 3 commits behind and 2 ahead. News reference `hotfix/GNO-21329` / `28d3312872ac7dee53215939faeeda50b0d37e87`.
 - Worktree status: the ads delivery changes package source/tests/styles, Storybook/catalog, consumer fixtures/docs, release metadata, and project records. Pre-existing untracked `.playwright-mcp/` remains unrelated and unmodified.
 - Approval: ADS-A01/ADS-A02 authorize planning; ADS-A03 records consumer-owned sizing; ADS-A04 approves requirements; ADS-A05 approves implementation and verification of DU-1 through DU-5; ADS-A06 approves ADS-ADJ01–ADS-ADJ04. Git/release actions remain unapproved.
@@ -24,7 +24,17 @@
 - Commit result: approved scope committed on `feature/ads-component` with message `feat: add configurable ad slot component`; final metadata amendment will preserve the reviewed behavior.
 - Push approval: ADS-A09 approves pushing the final commit to `origin/feature/ads-component` with `git push origin feature/ads-component`.
 - Active owner: Orion for final commit amendment and push execution.
-- Next action: verify final HEAD, push the approved branch, then hand off PR preparation. PR/merge/release remain unapproved.
+- PR #9 adjustment status: CR-001 GPT readiness timeout plus disable/unmount
+  queue bypass, CR-002 disabled-rule no-reservation behavior, and CR-003
+  reduced-motion handling are implemented
+  on `feature/ads-review-adjustments`; focused/full Vitest, typecheck,
+  consumers, docs coverage, lint, and diff checks pass. Playwright rerun was
+  blocked by an existing local server on port 3100 and is not claimed.
+- Bundle-budget correction: the initial corrected build exceeded the 20,480-byte
+  AdSlot limit at 20,731 bytes; internal identifier optimization reduced it to
+  20,461 bytes. The complete quality-gate stages now pass.
+- Next action: independent Argus review of the adjustment diff. Commit, push,
+  PR, merge, release, and deployment remain unapproved.
 
 ## Artifact status
 
