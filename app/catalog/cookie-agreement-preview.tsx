@@ -16,6 +16,7 @@ export function CookieAgreementPreview() {
     <CookieAgreement
       policyVersion="2026-01"
       scrollRevealThreshold={0}
+      seal={null}
       store={catalogStore}
     />
   );

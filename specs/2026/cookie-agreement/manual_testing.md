@@ -22,6 +22,8 @@
 | MT-09 | CA-R05, CA-AC05 | Simulate missing, malformed, expired, and failed storage. | Notice remains safe and visible; failures do not create false acceptance and are observable through the error callback. | PASS | User-confirmed LGTM |
 | MT-10 | CA-R07, CA-AC07 | Inspect network requests, browser globals, and built output while interacting. | No GA, generic analytics, tag management, consent-mode behavior, or remote visual asset request exists. | PASS | User-confirmed LGTM |
 | MT-11 | CA-R11, CA-AC13 | Open `/catalog` and navigate to the Cookie Agreement section. | The catalog shows the component overview, fixed-bottom preview, install example, and configurable props without writing a real consent cookie. | PASS | User-confirmed LGTM |
+| MT-12 | CA-R06, CA-AC06 | Open `/catalog/cookie-agreement` at 375px and 1440px with the no-seal preview. | The no-seal body is wider than half the notice at both widths and remains readable. | PASS | Playwright 2/2 passed on chromium-mobile and chromium-desktop at both widths, 2026-10-29 |
+| MT-13 | CA-R11, CA-AC12 | Open `/catalog/cookie-agreement` with reduced motion enabled. | The visible notice has a near-zero computed transition duration. | PASS | Playwright 2/2 passed with `reducedMotion: "reduce"`, 2026-10-29 |
 
 ## QA sign-off
 
@@ -30,3 +32,9 @@
 - Date/time/timezone: 2026-10-23, time unavailable, Asia/Shanghai
 - Overall result: PASS (LGTM)
 - Open issues: None recorded; manual execution required.
+
+## Follow-up execution
+
+- Revision: `feature/cookie-agreement-review-adjustments-v2` from `master`
+  `72d2bcc`.
+- Automated browser follow-up: MT-12 and MT-13 PASS on 2026-10-29.
