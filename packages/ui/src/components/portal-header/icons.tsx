@@ -69,5 +69,14 @@ export function PortalHeaderIcon({ icon, className }: { icon: FontAwesomeIconDat
 }
 
 export function PortalHeaderSocialIcon({ icon }: { icon: string }) {
-  return <PortalHeaderIcon className="gno-portal-header__social-icon" icon={socialIcons[icon as PortalHeaderSocialIcon] ?? faLink} />;
+  const resolvedIcon = Object.prototype.hasOwnProperty.call(socialIcons, icon)
+    ? socialIcons[icon as PortalHeaderSocialIcon]
+    : faLink;
+
+  return (
+    <PortalHeaderIcon
+      className="gno-portal-header__social-icon"
+      icon={resolvedIcon}
+    />
+  );
 }

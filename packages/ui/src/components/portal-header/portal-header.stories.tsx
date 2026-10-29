@@ -105,7 +105,7 @@ export const FailureFallbacks: Story = {
     brand: { logoSrc: "invalid-logo.svg", sectionLabel: "Fallbacks" },
     socialLinks: [
       { id: "unsafe", href: "javascript:alert(1)", label: "Unsafe link" },
-      { id: "community", href: "https://example.com/community", label: "Community", icon: "unknown-icon" },
+      { id: "community", href: "https://example.com/community", label: "Community", icon: "constructor" },
     ],
   },
 };

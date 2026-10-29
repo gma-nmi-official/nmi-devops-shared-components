@@ -107,6 +107,20 @@ describe("PortalHeader", () => {
     expect(screen.getAllByRole("link", { name: "Community" })).not.toHaveLength(0);
   });
 
+  it("falls back safely for unknown social icon names", () => {
+    const { container } = render(
+      <PortalHeader
+        socialLinks={[
+          { id: "custom", href: "https://example.com/custom", label: "Custom", icon: "constructor" },
+        ]}
+        socialPreset="none"
+      />,
+    );
+
+    expect(screen.getByRole("link", { name: "Custom" })).toBeInTheDocument();
+    expect(container.querySelector(".gno-portal-header__social-icon path")).toBeInTheDocument();
+  });
+
   it("opens the full-width menu, traps focus, closes with Escape, and restores focus", async () => {
     const user = userEvent.setup();
     render(<PortalHeader primaryNavigation={primaryNavigation} socialPreset="none" />);
