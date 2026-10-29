@@ -16,6 +16,25 @@ Check negative cases, permissions/status transitions where relevant, and existin
 data/interface compatibility. Use safe test fixtures; production access and
 destructive tests are not implicitly authorized.
 
+Verify affected algorithms against requirements rather than reproducing the
+implementation in assertions. Cover relevant invariants, boundary values,
+ordering, state transitions, termination, and resource limits. Use realistic
+workloads when complexity or an approved performance budget is at risk.
+
+For bug fixes, reproduce the original failure when feasible and confirm the
+regression detects the defective behavior and passes with the correction.
+Record when reproduction is unavailable and why. For asynchronous changes,
+exercise relevant races, repeated calls, delayed completion, cancellation,
+disable/unmount, consent changes, and stale results. Check callback counts and
+timer/listener/resource cleanup. Verify SSR/hydration, layout, and keyboard
+behavior when affected; non-visual code can still require browser validation.
+
+Exercise applicable invalid inputs, dependency throws/rejections, timeouts,
+retry exhaustion, fallback paths, and recovery. Assert actionable errors reach
+the intended reporting channel, failures do not appear successful, and sensitive
+data is not exposed. Select these checks by risk and scope; document material
+coverage gaps and return implementation defects to Forge through Atlas.
+
 Record exact commands, environment, revision, expected/actual behavior, exit
 results, and evidence. Mark PASS, FAIL, BLOCKED, or N/A with rationale.
 Unavailable tools and unrun required checks are BLOCKED, never PASS.
