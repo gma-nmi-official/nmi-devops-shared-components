@@ -58,6 +58,46 @@ describe("AdSlot", () => {
     render(<AdSlot config={config} enabled provider={fake.provider} />);
     await act(async () => undefined);
     expect(fake.createSlot).not.toHaveBeenCalled();
+    expect(screen.getByLabelText("Advertisement")).toHaveClass("gno-ad-slot--disabled");
+  });
+
+  it("surfaces a blocked GPT command queue as an error", async () => {
+    const provider = createGptAdProvider({
+      googletag: {
+        cmd: { push: vi.fn() },
+        defineSlot: vi.fn(),
+        destroySlots: vi.fn(() => true),
+        display: vi.fn(),
+        pubads: vi.fn(),
+      },
+      readinessTimeoutMs: 1,
+    });
+
+    await expect(provider.createSlot({
+      elementId: "blocked-slot",
+      adUnitPath: "/123/blocked",
+      sizes: [[300, 250]],
+      targeting: {},
+      onStateChange: vi.fn(),
+    })).rejects.toThrow("GPT did not become ready");
+  });
+
+  it("bypasses a stalled create when disabled", async () => {
+    Object.defineProperty(window, "innerWidth", { configurable: true, value: 1024, writable: true });
+    const pending = deferred<{ id: string }>();
+    const provider = {
+      createSlot: vi.fn(() => pending.promise),
+      destroySlot: vi.fn(),
+    } satisfies AdProvider;
+    const view = render(<AdSlot config={config} enabled provider={provider} />);
+    await waitFor(() => expect(provider.createSlot).toHaveBeenCalledTimes(1));
+
+    view.rerender(<AdSlot config={config} enabled={false} provider={provider} />);
+    await waitFor(() => expect(screen.getByLabelText("Advertisement")).toHaveClass("gno-ad-slot--disabled"));
+    expect(provider.destroySlot).not.toHaveBeenCalled();
+    pending.resolve({ id: "late-slot" });
+    await act(async () => undefined);
+    expect(provider.destroySlot).toHaveBeenCalledTimes(1);
   });
 
   it("passes the consumer ad unit path, sizes, and targeting to the provider", async () => {

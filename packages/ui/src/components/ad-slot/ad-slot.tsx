@@ -33,8 +33,11 @@ export function AdSlot({
     [reactId, slotId],
   );
   const [state, setState] = useState<AdSlotState>("idle");
+  const [ruleActive, setRuleActive] = useState<boolean | undefined>(undefined);
   const generationRef = useRef(0);
   const lifecycleQueueRef = useRef<Promise<void>>(Promise.resolve());
+  const pendingCreateCancelRef = useRef<(() => void) | undefined>(undefined);
+  const cleanupPendingRef = useRef<object | undefined>(undefined);
   const configRef = useRef(config);
   const onStateChangeRef = useRef(onStateChange);
   const ownedSlotRef = useRef<{
@@ -58,6 +61,7 @@ export function AdSlot({
   }, [onStateChange]);
 
   useEffect(() => {
+    cleanupPendingRef.current = undefined;
     const activeConfig = configRef.current;
     const generation = ++generationRef.current;
     let cancelled = false;
@@ -122,6 +126,7 @@ export function AdSlot({
             return;
           }
           activeSignature = "disabled-by-prop";
+          setRuleActive(false);
           emit("idle");
           return;
         }
@@ -139,13 +144,20 @@ export function AdSlot({
         activeSignature = nextSignature;
 
         if (!isActiveAdResponsiveRule(rule)) {
+          setRuleActive(false);
           emit("idle");
           return;
         }
 
+        setRuleActive(true);
         emit("loading");
         const requestGeneration = generationRef.current;
-        const created = await provider.createSlot({
+        let cancelCreate!: () => void;
+        const createCancelled = new Promise<void>((resolve) => {
+          cancelCreate = resolve;
+        });
+        pendingCreateCancelRef.current = cancelCreate;
+        const createRequest = Promise.resolve().then(() => provider.createSlot({
           elementId,
           adUnitPath: rule.adUnitPath,
           sizes: rule.sizes,
@@ -159,7 +171,17 @@ export function AdSlot({
               emit(nextState, error);
             }
           },
-        });
+        }));
+        const created = await Promise.race([createRequest, createCancelled.then(() => undefined)]);
+        if (pendingCreateCancelRef.current === cancelCreate) {
+          pendingCreateCancelRef.current = undefined;
+        }
+        if (!created) {
+          void createRequest.then((lateSlot) => {
+            void Promise.resolve(provider.destroySlot(lateSlot)).catch(() => undefined);
+          }, () => undefined);
+          return;
+        }
         ownedSlotRef.current = { provider, slot: created };
 
         if (!isCurrent() || requestGeneration !== generationRef.current || activeSignature !== nextSignature) {
@@ -183,12 +205,24 @@ export function AdSlot({
       }, RESIZE_DEBOUNCE_MS);
     };
 
+    if (!enabled) {
+      pendingCreateCancelRef.current?.();
+      pendingCreateCancelRef.current = undefined;
+    }
     void enqueue(activate);
     window.addEventListener("resize", schedule, { passive: true });
 
     return () => {
       cancelled = true;
       generationRef.current += 1;
+      const cleanupMarker = {};
+      cleanupPendingRef.current = cleanupMarker;
+      queueMicrotask(() => {
+        if (cleanupPendingRef.current === cleanupMarker) {
+          pendingCreateCancelRef.current?.();
+          pendingCreateCancelRef.current = undefined;
+        }
+      });
       if (resizeTimer) {
         clearTimeout(resizeTimer);
       }
@@ -199,8 +233,9 @@ export function AdSlot({
 
   const emptyBehavior = config.emptyBehavior ?? "reserve";
   const collapsed = emptyBehavior === "collapse" && (state === "empty" || state === "error");
+  const disabled = ruleActive === false;
   const reservedSize = config.reservedSize;
-  const style = reservedSize && !collapsed
+  const style = reservedSize && !collapsed && !disabled
     ? ({
       "--gno-ad-slot-width": `${reservedSize[0]}px`,
       "--gno-ad-slot-height": `${reservedSize[1]}px`,
@@ -214,6 +249,7 @@ export function AdSlot({
         "gno-ad-slot",
         `gno-ad-slot--${config.format}`,
         collapsed ? "gno-ad-slot--collapsed" : "",
+        disabled ? "gno-ad-slot--disabled" : "",
         className,
       ].filter(Boolean).join(" ")}
       data-ad-format={config.format}

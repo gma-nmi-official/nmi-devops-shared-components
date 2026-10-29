@@ -40,13 +40,26 @@ function cloneTargetingValue(value: AdTargetingValue): string | readonly string[
   return typeof value === "string" ? value : [...value];
 }
 
-export function createGptAdProvider({ googletag }: { googletag: GptCompatible }): AdProvider {
+export function createGptAdProvider({
+  googletag,
+  readinessTimeoutMs = 5000,
+}: {
+  googletag: GptCompatible;
+  readinessTimeoutMs?: number;
+}): AdProvider {
   const slots = new WeakMap<AdProviderSlot, InternalSlot>();
 
   return {
     createSlot(request: AdProviderSlotRequest) {
       return new Promise<AdProviderSlot>((resolve, reject) => {
+        let settled = false;
+        const timeout = setTimeout(() => {
+          if (settled) return;
+          settled = true;
+          reject(new Error(`GPT did not become ready within ${readinessTimeoutMs}ms`));
+        }, readinessTimeoutMs);
         googletag.cmd.push(() => {
+          if (settled) return;
           let handle: AdProviderSlot | undefined;
           let internal: InternalSlot | undefined;
           try {
@@ -71,8 +84,12 @@ export function createGptAdProvider({ googletag }: { googletag: GptCompatible })
             internal = { destroyed: false, listener, listenerRemoved: false, pubads, slot };
             slots.set(handle, internal);
             googletag.display(request.elementId);
+            settled = true;
+            clearTimeout(timeout);
             resolve(handle);
           } catch (error) {
+            settled = true;
+            clearTimeout(timeout);
             if (internal && handle) {
               try {
                 internal.pubads.removeEventListener("slotRenderEnded", internal.listener);
