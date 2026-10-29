@@ -27,7 +27,7 @@ Implemented the approved CR-001–CR-013 follow-up scope on
 - Focused Google Analytics suite: 22/22 passed.
 - Full Vitest suite: 86/86 passed across 9 test files.
 - Typecheck/package build: passed.
-- Analytics gzip size gate: passed (5,475 bytes / 8,192-byte limit).
+- Analytics gzip size gate: passed (5,462 bytes / 8,192-byte limit).
 - Consumer fixtures: passed for all 6 fixtures.
 - Storybook coverage and documentation check: passed.
 - Targeted ESLint: passed.
