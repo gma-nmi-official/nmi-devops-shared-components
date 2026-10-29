@@ -19,6 +19,23 @@ declarations, and package versions are unchanged; no migration is required.
 Storybook and Next.js builds, GitHub Pages static export, and browser regression
 checks pass. Independent readability review remains pending.
 
+## [1.4.1] - 2026-10-29
+
+### Fixed
+
+- Batched PortalHeader, CookieAgreement, AdSlot, and Google Analytics review
+  corrections, including consent/lifecycle edge cases, responsive behavior,
+  runtime validation, and browser-safe package output.
+- Preserved consumer-facing APIs while adding regression coverage, Storybook
+  states, catalog guidance, and corrected package metadata.
+
+**Consumer impact / SemVer:** Patch. Existing consumers require no migration.
+
+**Validation evidence:** merged PRs #13, #14, #15, and #16; full Vitest,
+typecheck, consumer fixtures, size gates, Storybook, and Next.js production
+builds passed. Browser verification limitations remain documented in the
+component execution records.
+
 ## [1.4.0] - 2026-10-26
 
 ### Added
