@@ -3,6 +3,7 @@ import type {
   PortalHeaderSocialLink,
   PortalHeaderSocialPreset,
 } from "./types";
+import { mergeDefined } from "./merge-defined";
 
 export type ResolvedSocialLink = {
   id: string;
@@ -14,17 +15,37 @@ export type ResolvedSocialLink = {
 };
 
 const entertainment = [
-  { id: "facebook", href: "https://facebook.com/gmanetwork", label: "GMA Network on Facebook", icon: "facebook" },
+  {
+    id: "facebook",
+    href: "https://facebook.com/gmanetwork",
+    label: "GMA Network on Facebook",
+    icon: "facebook",
+  },
   { id: "twitter", href: "https://twitter.com/gmanetwork", label: "GMA Network on X", icon: "x" },
-  { id: "instagram", href: "https://instagram.com/gmanetwork", label: "GMA Network on Instagram", icon: "instagram" },
+  {
+    id: "instagram",
+    href: "https://instagram.com/gmanetwork",
+    label: "GMA Network on Instagram",
+    icon: "instagram",
+  },
   { id: "youtube", href: "https://youtube.com/gmanetwork", label: "GMA Network on YouTube", icon: "youtube" },
   { id: "rss", href: "https://www.gmanetwork.com/rss", label: "GMA Network RSS feed", icon: "rss" },
 ] as const satisfies readonly Omit<ResolvedSocialLink, "target">[];
 
 const news = [
-  { id: "facebook", href: "https://www.facebook.com/gmanews", label: "GMA News on Facebook", icon: "facebook" },
+  {
+    id: "facebook",
+    href: "https://www.facebook.com/gmanews",
+    label: "GMA News on Facebook",
+    icon: "facebook",
+  },
   { id: "twitter", href: "https://twitter.com/gmanews", label: "GMA News on X", icon: "x" },
-  { id: "instagram", href: "https://www.instagram.com/gmanews", label: "GMA News on Instagram", icon: "instagram" },
+  {
+    id: "instagram",
+    href: "https://www.instagram.com/gmanews",
+    label: "GMA News on Instagram",
+    icon: "instagram",
+  },
   { id: "youtube", href: "https://www.youtube.com/gmanews", label: "GMA News on YouTube", icon: "youtube" },
   { id: "viber", href: "https://chats.viber.com/gmanews", label: "GMA News on Viber", icon: "viber" },
   { id: "rss", href: "https://www.gmanetwork.com/news/rss", label: "GMA News RSS feed", icon: "rss" },
@@ -46,13 +67,6 @@ function isSafeSocialHref(href: string | undefined): href is string {
   }
 }
 
-function mergeDefined<T extends object>(base: T, patch: object): T {
-  const definedPatch = Object.fromEntries(
-    Object.entries(patch).filter(([, value]) => value !== undefined),
-  );
-  return { ...base, ...definedPatch };
-}
-
 export function resolvePortalHeaderSocialLinks(
   preset: PortalHeaderSocialPreset = "entertainment",
   patches: readonly PortalHeaderSocialLink[] = [],
@@ -71,10 +85,14 @@ export function resolvePortalHeaderSocialLinks(
       continue;
     }
     patchById.delete(item.id);
-    if (patch.hidden) continue;
+    if (patch.hidden) {
+      continue;
+    }
     const merged = mergeDefined(item, patch);
     const label = merged.label?.trim();
-    if (!isSafeSocialHref(merged.href) || !label) continue;
+    if (!isSafeSocialHref(merged.href) || !label) {
+      continue;
+    }
     resolved.push({
       id: merged.id,
       href: merged.href,
@@ -86,10 +104,14 @@ export function resolvePortalHeaderSocialLinks(
   }
 
   for (const patch of patches) {
-    if (!patchById.has(patch.id)) continue;
+    if (!patchById.has(patch.id)) {
+      continue;
+    }
     patchById.delete(patch.id);
     const label = patch.label?.trim();
-    if (patch.hidden || !label || !isSafeSocialHref(patch.href)) continue;
+    if (patch.hidden || !label || !isSafeSocialHref(patch.href)) {
+      continue;
+    }
     resolved.push({
       id: patch.id,
       href: patch.href,

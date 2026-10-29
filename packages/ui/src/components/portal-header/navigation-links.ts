@@ -3,6 +3,7 @@ import type {
   PortalHeaderNavigationPatch,
   PortalHeaderNavigationPreset,
 } from "./types";
+import { mergeDefined } from "./merge-defined";
 
 const primaryNavigation = [
   { id: "home", label: "Home", href: "https://www.gmanetwork.com/" },
@@ -30,13 +31,6 @@ function freezeItems(items: readonly PortalHeaderNavigationItem[]) {
   return Object.freeze(items.map((item) => Object.freeze({ ...item })));
 }
 
-function mergeDefined<T extends object>(base: T, patch: object): T {
-  const definedPatch = Object.fromEntries(
-    Object.entries(patch).filter(([, value]) => value !== undefined),
-  );
-  return { ...base, ...definedPatch };
-}
-
 export const portalHeaderNavigationPresets = Object.freeze({
   gma: Object.freeze({
     primaryNavigation: freezeItems(primaryNavigation),
@@ -62,20 +56,28 @@ function resolveNavigationGroup(
       continue;
     }
     patchById.delete(item.id);
-    if (patch.hidden) continue;
+    if (patch.hidden) {
+      continue;
+    }
     const merged = mergeDefined(item, patch);
     const label = merged.label?.trim();
     const href = merged.href?.trim();
-    if (!label || !href) continue;
+    if (!label || !href) {
+      continue;
+    }
     resolved.push({ ...merged, label, href });
   }
 
   for (const patch of patches) {
-    if (!patchById.has(patch.id)) continue;
+    if (!patchById.has(patch.id)) {
+      continue;
+    }
     patchById.delete(patch.id);
     const label = patch.label?.trim();
     const href = patch.href?.trim();
-    if (patch.hidden || !label || !href) continue;
+    if (patch.hidden || !label || !href) {
+      continue;
+    }
     resolved.push({ ...patch, label, href });
   }
 

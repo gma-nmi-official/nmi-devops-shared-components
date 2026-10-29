@@ -1,19 +1,19 @@
 # Current state: Portal Header
 
 - Objective: deliver the approved reusable Portal Header component.
-- Phase/stage: Commit approved under PH-A23; Orion executing the path-scoped commit.
-- Owner: Orion performs only the approved path-scoped Git action.
-- Last updated: 2026-10-22 Asia/Shanghai.
+- Phase/stage: PR #13 review-adjustment implementation; Vera validation and Argus review pending.
+- Owner: Forge implements the approved corrections; Vera validates; Argus independently reviews; Orion handles later approved Git actions.
+- Last updated: 2026-10-29 Asia/Shanghai.
 - Approval: `approvals.md`; PH-A10/PH-A11 are revised by PH-A12/PH-A13 production alignment, PH-A14/PH-A15 complete ordered navigation, PH-A16/PH-A17 menu-grid replacement, PH-A18 solid-cell correction, and PH-A19 logo-label optical alignment at base `0b256157` plus the existing dirty candidate.
-- Blockers: None for commit preparation. ARG-PH-01 through ARG-PH-03 are closed in report 13. PH-A20/PH-A21 residual risks are unchanged, and PH-AC19 remains a later exact-release-revision gate rather than a commit-preparation blocker.
-- Next action: stage only report 14's exact 66-file scope, verify exclusions and staged integrity, then create `feat: add GNO-21354 portal header`. Push remains separately gated.
-- Delivery instruction: PH-A23 authorizes only the exact report 14 commit using `feat: add GNO-21354 portal header`; it does not authorize push or any later Git/release action.
+- Blockers: None for commit preparation. Vera validation and Argus review are complete; `.playwright-mcp/` remains excluded.
+- Next action: Present the exact commit scope and request explicit commit approval. Push, PR, merge, release, and deployment remain separately gated.
+- Delivery instruction: PH-A24 authorizes implementation and validation of PR #13 CR-004 through CR-007 only; it does not authorize Git or release actions.
 
 ## Baseline
 
 | Repository | Branch/HEAD | Dirty evidence | Adoption |
 | --- | --- | --- | --- |
-| `D:\gno-node-projects\gno-shared-components-v2` | `feature/portal-header` / `0b2561575b68f1e89ea9cf16fdaaa7e039670296` | Untracked `.playwright-mcp/` belongs to the user and is excluded from project scope | `../gno-shared-components-v2-adoption/adoption.md`; refreshed in `initial_setup.md` on 2026-10-19 |
+| `D:\gno-node-projects\gno-shared-components-v2` | `feature/portal-header-review-adjustments-v2` / `72d2bcc514e321f5e98dcce28e4acb7a69505e73` | Dirty follow-up diff is recorded in report 16; untracked `.playwright-mcp/` belongs to the user and is excluded from project scope | `../gno-shared-components-v2-adoption/adoption.md`; refreshed in `initial_setup.md` on 2026-10-19 |
 
 ## Proposed stages
 

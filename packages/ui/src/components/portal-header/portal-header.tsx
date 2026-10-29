@@ -3,6 +3,7 @@
 /* eslint-disable @next/next/no-img-element -- Public library code cannot depend on Next.js Image. */
 
 import {
+  Component,
   useEffect,
   useId,
   useRef,
@@ -80,6 +81,28 @@ function DefaultLink(props: PortalHeaderLinkRenderProps) {
   return <a {...anchorProps}>{children}</a>;
 }
 
+class LinkAdapterBoundary extends Component<
+  { fallbackProps: PortalHeaderLinkRenderProps; children: ReactNode },
+  { hasError: boolean }
+> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError(): { hasError: boolean } {
+    return { hasError: true };
+  }
+
+  componentDidCatch() {
+    // Fall back to the safe anchor when a consumer element throws while rendering.
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <DefaultLink {...this.props.fallbackProps} />;
+    }
+    return this.props.children;
+  }
+}
+
 function renderSafeLink(
   props: PortalHeaderLinkRenderProps,
   renderLink: PortalHeaderRenderLink | undefined,
@@ -88,7 +111,7 @@ function renderSafeLink(
     try {
       const rendered = renderLink(props);
       if (rendered != null) {
-        return rendered;
+        return <LinkAdapterBoundary fallbackProps={props}>{rendered}</LinkAdapterBoundary>;
       }
     } catch {
       // Consumer adapters must not make core navigation unavailable.

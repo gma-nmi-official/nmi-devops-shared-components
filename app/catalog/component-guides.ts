@@ -55,7 +55,11 @@ export function SiteHeader() {
       { name: "primaryNavigation / networkNavigation", description: "Patch, hide, or append links by stable ID." },
       { name: "socialPreset / socialLinks", description: "Select a safe preset or patch HTTPS social destinations." },
       { name: "search", description: "Configure the native GET form action, query name, labels, and placeholder." },
-      { name: "renderLink", description: "Connect a consumer router from a Client Component when needed." },
+      {
+        name: "renderLink",
+        description:
+          "Connect a consumer router from a Client Component; a throwing adapter falls back to a standard anchor.",
+      },
       { name: "theme", description: "Override the accent, mode hook, class name, or component CSS properties." },
     ],
     accessibility: [

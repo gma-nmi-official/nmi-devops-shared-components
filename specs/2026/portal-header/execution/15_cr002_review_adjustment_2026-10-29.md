@@ -3,10 +3,12 @@
 ## Scope
 
 The attached review identified CR-001 (catalog overflow) and CR-002 (custom
-social icon names). CR-001 remains applicable on `feature/portal-header` because
-the referenced catalog selectors are still present; this correction hardens
-their narrow-width behavior. CR-002 remains valid in the current implementation
-and is already corrected by the own-key icon fallback.
+social icon names). CR-001 was resolved on the synchronized master revision by
+the documentation revamp (`b447759`), which removed the referenced
+`.catalog__usage` and `.catalog__entry` selectors. The branch-local CSS fix
+(`0c1b90b`) was superseded by the synchronization merge (`9f73ebd`); the
+recorded 48/48 Playwright result at `d7354c1` covers the resulting catalog and
+PortalHeader behavior. CR-002 is corrected by the own-key icon fallback.
 
 ## Finding and correction
 
@@ -39,11 +41,11 @@ map; unknown names use the Font Awesome link fallback. The Storybook
 - **CR-003 corrected:** navigation and social patch resolution now ignores
   explicitly undefined patch values, preserving defaults. Regression coverage
   was added for default-preserving overrides.
-- **CR-001 corrected and verified:** `app/globals.css` retains the catalog
-  selectors but now applies narrow-width safeguards. Targeted Playwright
-  overflow checks pass at 320/375/768/1024/1440px.
-- CR-004 remains an optional risk concerning errors thrown while rendering a
-  React element returned by a custom link adapter.
+- **CR-001 resolved by the docs revamp and synchronized revision:** the stale
+  catalog selectors no longer exist, and the recorded 48/48 Playwright result
+  at `d7354c1` includes the 320/375/768/1024/1440px coverage.
+- CR-004 remained an optional risk at the time of this historical report and is
+  closed by the follow-up record `16_pr13_portal_header_code_review_adjustment_2026-10-29.md`.
 
 Review decision: **PASS** for the scoped CR-001/CR-003 corrections. Full E2E is
 green on the synchronized revision. The verification workflow now requires a

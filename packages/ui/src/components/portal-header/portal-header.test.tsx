@@ -1,7 +1,7 @@
 import axe from "axe-core";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { resolvePortalHeaderNavigation } from "./navigation-links";
 import { PortalHeader } from "./portal-header";
 import { resolvePortalHeaderSocialLinks } from "./social-links";
@@ -203,6 +203,27 @@ describe("PortalHeader", () => {
     render(<PortalHeader primaryNavigation={primaryNavigation} renderLink={() => { throw new Error("adapter failed"); }} socialPreset="none" />);
     fireEvent.click(screen.getByRole("button", { name: "Open menu" }));
     expect(screen.getAllByRole("link", { name: "Home" })[0]).toHaveAttribute("href", "/");
+  });
+
+  it("falls back to anchors when an adapter element throws during rendering", () => {
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    function ThrowingLink(): never {
+      throw new Error("render failed");
+    }
+
+    try {
+      render(
+        <PortalHeader
+          primaryNavigation={primaryNavigation}
+          renderLink={() => <ThrowingLink />}
+          socialPreset="none"
+        />,
+      );
+      fireEvent.click(screen.getByRole("button", { name: "Open menu" }));
+      expect(screen.getAllByRole("link", { name: "Home" })[0]).toHaveAttribute("href", "/");
+    } finally {
+      consoleError.mockRestore();
+    }
   });
 
   it("accepts approved relative and HTTPS navigation while rejecting ambiguous or unsafe values", () => {

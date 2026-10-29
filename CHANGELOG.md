@@ -22,12 +22,16 @@ declarations, and package versions are unchanged; no migration is required.
 
 **Validation evidence:** type checking, lint, unit and consumer tests, size gates,
 Storybook and Next.js builds, GitHub Pages static export, and browser regression
-checks pass. Independent readability review remains pending.
+checks pass. Independent readability review is complete for the current
+PortalHeader follow-up.
 
 ## [1.4.1] - 2026-10-29
 
 ### Fixed
 
+- Hardened `PortalHeader` router adapters with a per-link anchor fallback when
+  a consumer element throws during rendering, shared defined-value patch
+  merging, and readable resolver control flow.
 - Batched PortalHeader, CookieAgreement, AdSlot, and Google Analytics review
   corrections, including consent/lifecycle edge cases, responsive behavior,
   runtime validation, and browser-safe package output.
