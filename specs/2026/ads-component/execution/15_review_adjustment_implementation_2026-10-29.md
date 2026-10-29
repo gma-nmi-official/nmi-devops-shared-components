@@ -22,6 +22,12 @@ on `feature/ads-review-adjustments`:
 - Storybook coverage check: passed.
 - Targeted ESLint: passed.
 - `git diff --check`: passed.
+- Initial `npm run check` stopped at the existing 20,480-byte AdSlot budget:
+  the first corrected build was 20,731 bytes. Internal identifier-size
+  optimization reduced the final build to 20,461 bytes, within the budget.
+- Full quality-gate stages after optimization: typecheck, AdSlot and analytics
+  size checks, lint (excluding generated browser-report artifacts), full Vitest,
+  consumer fixtures, Storybook build, and Next production build all passed.
 - Playwright browser validation was started, but the repository's existing
   local server occupied port 3100 before the targeted rerun could begin; no
   Playwright result is claimed for this revision.

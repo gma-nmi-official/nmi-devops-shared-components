@@ -30,6 +30,9 @@
   on `feature/ads-review-adjustments`; focused/full Vitest, typecheck,
   consumers, docs coverage, lint, and diff checks pass. Playwright rerun was
   blocked by an existing local server on port 3100 and is not claimed.
+- Bundle-budget correction: the initial corrected build exceeded the 20,480-byte
+  AdSlot limit at 20,731 bytes; internal identifier optimization reduced it to
+  20,461 bytes. The complete quality-gate stages now pass.
 - Next action: independent Argus review of the adjustment diff. Commit, push,
   PR, merge, release, and deployment remain unapproved.
 

@@ -36,8 +36,8 @@ export function AdSlot({
   const [ruleActive, setRuleActive] = useState<boolean | undefined>(undefined);
   const generationRef = useRef(0);
   const lifecycleQueueRef = useRef<Promise<void>>(Promise.resolve());
-  const pendingCreateCancelRef = useRef<(() => void) | undefined>(undefined);
-  const cleanupPendingRef = useRef<object | undefined>(undefined);
+  const cancelRef = useRef<(() => void) | undefined>(undefined);
+  const cleanupRef = useRef<object | undefined>(undefined);
   const configRef = useRef(config);
   const onStateChangeRef = useRef(onStateChange);
   const ownedSlotRef = useRef<{
@@ -61,12 +61,12 @@ export function AdSlot({
   }, [onStateChange]);
 
   useEffect(() => {
-    cleanupPendingRef.current = undefined;
+    cleanupRef.current = undefined;
     const activeConfig = configRef.current;
     const generation = ++generationRef.current;
     let cancelled = false;
     let resizeTimer: ReturnType<typeof setTimeout> | undefined;
-    let activeSignature: string | undefined;
+    let signature: string | undefined;
 
     const enqueue = (operation: () => Promise<void>) => {
       const queued = lifecycleQueueRef.current.then(operation, operation);
@@ -125,7 +125,7 @@ export function AdSlot({
           if (!isCurrent()) {
             return;
           }
-          activeSignature = "disabled-by-prop";
+          signature = "disabled-by-prop";
           setRuleActive(false);
           emit("idle");
           return;
@@ -133,7 +133,7 @@ export function AdSlot({
 
         const rule = resolveAdResponsiveRule(activeConfig, window.innerWidth);
         const nextSignature = getAdResponsiveRuleSignature(rule);
-        if (nextSignature === activeSignature) {
+        if (nextSignature === signature) {
           return;
         }
 
@@ -141,7 +141,7 @@ export function AdSlot({
         if (!isCurrent()) {
           return;
         }
-        activeSignature = nextSignature;
+        signature = nextSignature;
 
         if (!isActiveAdResponsiveRule(rule)) {
           setRuleActive(false);
@@ -151,13 +151,13 @@ export function AdSlot({
 
         setRuleActive(true);
         emit("loading");
-        const requestGeneration = generationRef.current;
-        let cancelCreate!: () => void;
-        const createCancelled = new Promise<void>((resolve) => {
-          cancelCreate = resolve;
+        const requestGen = generationRef.current;
+        let cancel!: () => void;
+        const cancelled = new Promise<void>((resolve) => {
+          cancel = resolve;
         });
-        pendingCreateCancelRef.current = cancelCreate;
-        const createRequest = Promise.resolve().then(() => provider.createSlot({
+        cancelRef.current = cancel;
+        const request = Promise.resolve().then(() => provider.createSlot({
           elementId,
           adUnitPath: rule.adUnitPath,
           sizes: rule.sizes,
@@ -165,32 +165,32 @@ export function AdSlot({
           onStateChange: (nextState, error) => {
             if (
               isCurrent()
-              && requestGeneration === generationRef.current
-              && activeSignature === nextSignature
+                && requestGen === generationRef.current
+                && signature === nextSignature
             ) {
               emit(nextState, error);
             }
           },
         }));
-        const created = await Promise.race([createRequest, createCancelled.then(() => undefined)]);
-        if (pendingCreateCancelRef.current === cancelCreate) {
-          pendingCreateCancelRef.current = undefined;
+        const created = await Promise.race([request, cancelled.then(() => undefined)]);
+        if (cancelRef.current === cancel) {
+          cancelRef.current = undefined;
         }
         if (!created) {
-          void createRequest.then((lateSlot) => {
+          void request.then((lateSlot) => {
             void Promise.resolve(provider.destroySlot(lateSlot)).catch(() => undefined);
           }, () => undefined);
           return;
         }
         ownedSlotRef.current = { provider, slot: created };
 
-        if (!isCurrent() || requestGeneration !== generationRef.current || activeSignature !== nextSignature) {
+        if (!isCurrent() || requestGen !== generationRef.current || signature !== nextSignature) {
           await destroyOwnedSlot();
           return;
         }
       } catch (error) {
         if (!ownedSlotRef.current) {
-          activeSignature = undefined;
+          signature = undefined;
         }
         emit("error", error);
       }
@@ -206,8 +206,8 @@ export function AdSlot({
     };
 
     if (!enabled) {
-      pendingCreateCancelRef.current?.();
-      pendingCreateCancelRef.current = undefined;
+      cancelRef.current?.();
+      cancelRef.current = undefined;
     }
     void enqueue(activate);
     window.addEventListener("resize", schedule, { passive: true });
@@ -215,12 +215,12 @@ export function AdSlot({
     return () => {
       cancelled = true;
       generationRef.current += 1;
-      const cleanupMarker = {};
-      cleanupPendingRef.current = cleanupMarker;
+      const marker = {};
+      cleanupRef.current = marker;
       queueMicrotask(() => {
-        if (cleanupPendingRef.current === cleanupMarker) {
-          pendingCreateCancelRef.current?.();
-          pendingCreateCancelRef.current = undefined;
+        if (cleanupRef.current === marker) {
+          cancelRef.current?.();
+          cancelRef.current = undefined;
         }
       });
       if (resizeTimer) {
