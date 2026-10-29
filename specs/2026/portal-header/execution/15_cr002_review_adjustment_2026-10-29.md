@@ -31,11 +31,8 @@ map; unknown names use the Font Awesome link fallback. The Storybook
   and regenerating it against this revision.
 - Targeted Playwright catalog/PortalHeader overflow checks at 320/375/768/1024/
   1440: passed.
-- Full Playwright suite: **21 passed, 7 failed**. The seven failures are
-  unrelated showcase-baseline expectations (trailing-slash URL, homepage
-  heading, social-link token, and root-page mobile overflow); no PortalHeader
-  width-overflow failure occurred. Overall E2E status is **PASS WITH BASELINE
-  FAILURES**, not a clean suite pass.
+- Full Playwright suite: **48/48 passed** after synchronizing the feature branch
+  with `origin/master`; no baseline failures remain on the tested revision.
 
 ## Follow-up review findings
 
@@ -48,10 +45,10 @@ map; unknown names use the Font Awesome link fallback. The Storybook
 - CR-004 remains an optional risk concerning errors thrown while rendering a
   React element returned by a custom link adapter.
 
-Review decision: **PASS WITH BASELINE FAILURES** for the scoped CR-001/CR-003
-corrections. The full E2E baseline remains non-green and must not be represented
-as a clean pass. A verification-skill/process change is proposed for review,
-but has not been applied without a separately scoped workflow-change approval.
+Review decision: **PASS** for the scoped CR-001/CR-003 corrections. Full E2E is
+green on the synchronized revision. A verification-skill/process change is
+proposed for review, but has not been applied without a separately scoped
+workflow-change approval.
 
 ## Delivery
 
@@ -59,4 +56,4 @@ This is a focused follow-up correction for the already merged Portal Header.
 The `.playwright-mcp/` user-owned files remain excluded. The report, source,
 test, and Storybook changes are intended for `feature/portal-header`; PR
 creation and merge remain owner actions. The scoped corrections are ready for
-commit review; the unrelated baseline E2E failures remain documented.
+commit review with clean browser verification on the synchronized revision.
