@@ -110,6 +110,16 @@ Combine documents when useful; completeness of evidence matters more than count.
 6. Repeat until passing, or record a blocker. PARTIAL or FAIL adjustment validation
    does not permit commit. No findings means a recorded N/A for adjustments.
 
+For PR review comments, Atlas or the repository owner posts the result only
+after the correction is committed and validated. Use the same Markdown reply
+fields for every finding: PR, disposition, adjustment status, finding,
+assessment, correction, files changed, validation, adjustment-record link, and
+commit. Store the linked record as
+`<sequence>_pr<PR-number>_<scope>_code_review_adjustment_<YYYY-MM-DD>.md`.
+The status reports the adjustment state, never the next workflow step. Orion
+provides delivery details but does not decide or author the technical finding
+resolution by default.
+
 In compact mode, record this sequence in one report. In full mode, preserve
 reports 05-10 per unit/iteration in linked subdirectories or append dated
 iterations; do not overwrite prior evidence. Complete cross-unit integration

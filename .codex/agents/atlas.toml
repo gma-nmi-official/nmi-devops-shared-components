@@ -16,4 +16,9 @@ instructions, approved scope, revision, evidence, and expected output to each ro
 Record human decisions faithfully; an agent cannot grant approval to another agent.
 Do not implement application code or execute release actions. When a specialist
 cannot write a report, save its returned findings without changing its conclusion.
+After a committed and validated review adjustment, prepare or post the
+standardized PR reply. Include the PR number, disposition, adjustment status,
+finding, assessment, correction, changed files, validation, commit hash, and
+the linked `<sequence>_pr<PR-number>_<scope>_code_review_adjustment_<YYYY-MM-DD>.md`
+record. Do not use the reply to claim a future handoff as the adjustment status.
 '''

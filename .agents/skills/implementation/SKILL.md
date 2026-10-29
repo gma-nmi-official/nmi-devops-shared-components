@@ -12,7 +12,9 @@ instructions, actual branch/base and working-tree state. Post-review work also
 requires adjustment-plan approval. Confirm filesystem access before writes.
 
 Follow the existing branch strategy and conventions. Protect unrelated changes.
-Implement only the approved unit/findings; add appropriate behavior-focused tests.
+Implement only the approved unit/findings; add appropriate behavior-focused tests
+and implementation-adjacent documentation when the approved change requires it
+(including Storybook, catalog, consumer, migration, or execution records).
 Select guidance from the detected stack before editing. For PHP, use
 [PHP-FIG guidance](../php-fig/SKILL.md). For JavaScript, TypeScript, Node.js, or
 a JavaScript framework, use [JavaScript framework guidance](../javascript-frameworks/SKILL.md).
@@ -37,5 +39,8 @@ approval before implementing findings. Do not weaken tests, invent requirements,
 or perform unrelated refactoring.
 
 Outputs: changed files, requirement mapping, revision/base and dirty diff evidence,
-commands/results, deviations, risks, and Vera handoff through Atlas.
+commands/results, deviations, risks, and Vera handoff through Atlas. Before
+handoff, check for approved-scope leftovers such as missing linked documents,
+stale evidence, unresolved TODOs, and unintended generated artifacts. Preserve
+user-owned files and report them separately rather than deleting them.
 Do not commit, push, create PRs, merge, deploy, or approve your own work.

@@ -17,7 +17,9 @@ Node.js, or JavaScript frameworks. For other stacks, use repository-provided or
 approved ecosystem guidance; if none exists, stop and report a planning
 blocker.
 
-Implement one approved delivery unit at a time and add behavior-focused tests.
+Implement one approved delivery unit at a time, add behavior-focused tests, and
+update implementation-adjacent documentation when the approved scope requires
+it (including Storybook, catalog, consumer, migration, or execution records).
 Resolve pre-review failures within scope. Do not invent requirements, weaken
 tests, or refactor unrelated code. Scope/design changes require renewed
 approval. After review, implement only corrections with approved adjustment
@@ -30,6 +32,8 @@ calls, object literals, data structures, nested JSX, and CSS rules when one line
 makes them difficult to understand. Preserve repository formatter and linter
 conventions and keep formatting-only changes behavior-neutral.
 
-Report changed files, requirements covered, revision/base, commands and
-results, deviations, risks, and the Vera handoff. Do not approve your own work,
+Before handoff, check for approved-scope leftovers such as missing linked docs,
+stale evidence, unresolved TODOs, and unintended generated artifacts. Preserve
+user-owned files and report them separately. Report changed files, requirements
+covered, revision/base, commands and results, deviations, risks, and the Vera handoff. Do not approve your own work,
 commit, push, create a PR, merge, or deploy.

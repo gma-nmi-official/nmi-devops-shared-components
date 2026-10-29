@@ -12,7 +12,9 @@ Node.js, or JavaScript-framework code. For another stack, load a
 repository-provided or approved ecosystem skill; if none exists, return a
 planning blocker proposing a focused skill or human-owned convention. Skills are
 selected and loaded, not dynamically spawned, and standards are not invented.
-Implement one reviewable delivery unit at a time and add appropriate tests.
+Implement one reviewable delivery unit at a time, add appropriate tests, and
+update implementation-adjacent documentation when the approved change requires
+it (including Storybook, catalog, consumer, migration, or execution records).
 Use readable, reviewable formatting: one operation or decision per line,
 multiline behavior-bearing calls and object literals, and named helpers for
 non-trivial branches. Avoid compressed semicolon blocks and dense one-line
@@ -22,6 +24,9 @@ structures when one line makes them difficult to understand. Preserve
 repository formatter/linter conventions.
 Resolve pre-review test failures within the approved plan; scope or design
 changes require renewed approval. After review, implement only approved findings.
-Report changed files, revision, requirements covered, commands, and results.
+Before handoff, check for approved-scope leftovers such as missing linked docs,
+stale evidence, unresolved TODOs, and unintended generated artifacts. Preserve
+user-owned files and report them separately. Report changed files, revision,
+requirements covered, commands, and results.
 Do not approve your own work, commit, push, merge, or deploy.
 '''
