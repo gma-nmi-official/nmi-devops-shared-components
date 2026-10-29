@@ -1,12 +1,12 @@
 # NMI DevOps Shared Components Foundation
 
-> Updated 2026-10-19: Current distribution uses GitHub Releases. Release approval, private asset authentication, and workflow details are in [`docs/versioning.md`](../../../docs/versioning.md) and [`docs/consumer-setup.md`](../../../docs/consumer-setup.md).
+> Updated 2026-10-23: Current distribution uses private GitHub Release assets. Release approval, authenticated consumer downloads, and workflow details are in [`docs/versioning.md`](../../../docs/versioning.md) and [`docs/consumer-setup.md`](../../../docs/consumer-setup.md).
 
 ## Team-lead presentation
 
 **Date:** 2026-10-08  
 **Repository:** `repository checkout root`  
-**Remote:** `https://github.com/gma-nmi-official/2026-GNO-Website-Revamp---Shared-Components.git`
+**Remote:** `https://github.com/gma-nmi-official/nmi-devops-shared-components.git`
 
 ## 1. Purpose
 
@@ -78,38 +78,29 @@ npm ci → typecheck/lint/test → TypeScript package build → CSS copy
 Consumers install the package once and import approved named exports:
 
 ```bash
-gh release download v1.0.0 --repo gma-nmi-official/2026-GNO-Website-Revamp---Shared-Components --pattern 'nmi-devops-shared-components-1.0.0.tgz'
-npm install ./nmi-devops-shared-components-1.0.0.tgz
+gh release download v1.1.0 --repo gma-nmi-official/nmi-devops-shared-components --pattern 'nmi-devops-shared-components-1.1.0.tgz'
+npm install ./nmi-devops-shared-components-1.1.0.tgz
 ```
 
 ```tsx
-import { PortalHeader, PortalFooter } from "nmi-devops-shared-components";
+import { PortalHeader } from "nmi-devops-shared-components";
 import "nmi-devops-shared-components/styles.css";
-
-const navigation = [
-  { label: "Home", href: "/" },
-  { label: "News", href: "/news" },
-  { label: "Entertainment", href: "/entertainment" },
-];
 
 export default function SiteHeader() {
   return (
-    <>
-      <PortalHeader
-        brand={{ label: "GMA Network", href: "/" }}
-        navigation={navigation}
-        activePath="/"
-      />
-      <main>{/* consumer page content */}</main>
-      <PortalFooter links={[{ label: "Contact", href: "/contact" }]} />
-    </>
+    <PortalHeader
+      brand={{ href: "/", sectionLabel: "News" }}
+      primaryNavigation={[{ id: "news", current: true }]}
+      socialPreset="news"
+      search={{ action: "/search", queryParam: "q" }}
+    />
   );
 }
 ```
 
-The GitHub Release URL is the release source; the installed package and import name remain `nmi-devops-shared-components`. Since the repository is private, consumers need repository access and authenticated asset downloads. The package is intended to support both JavaScript and TypeScript consumers.
+The private GitHub Release URL is the release source; consumers need repository access and a `GH_TOKEN` authorized to download assets. Keep the token in a CI secret store. The installed package and import name remain `nmi-devops-shared-components`. The package supports both JavaScript and TypeScript consumers.
 
-The `PortalHeader` and `PortalFooter` examples are illustrative until their requirements and public prop contracts are approved. Consumers compose approved components and provide application data; each component owns its layout, responsive behavior, accessibility, and component-scoped styles.
+`PortalHeader` is the first released public component. Its current API, rendered preview, configuration guidance, and supported states are documented in `/catalog` and the linked Storybook stories. Consumers provide application data while the component owns its layout, responsive behavior, accessibility, and component-scoped styles.
 
 Implementation model:
 
@@ -154,11 +145,11 @@ Every public component will receive:
 - dedicated Storybook story with supported controls and states
 - interaction and accessibility coverage when behavior requires it
 
-The catalog is currently intentionally empty because generic demonstration components were removed. The first approved GNO component will establish the initial public contract.
+The catalog now includes `PortalHeader` as the first released GNO component, with a live preview, configuration guidance, public API examples, supported states, and Storybook links.
 
-## 6. PortalHeader direction
+## 6. PortalHeader release
 
-The first planned component is `portal_header`.
+The first released component is `PortalHeader`.
 
 Approved scope:
 
@@ -169,7 +160,6 @@ Approved scope:
 - no account or SSO integration
 - no GA or analytics integration
 - no cookie agreement or consent banner
-- bundled, component-scoped Inter 600 font asset
 - React implementation replacing legacy global DOM mutation
 
 The supplied production JavaScript and CSS were reviewed and converted into requirements and user stories.
@@ -194,7 +184,6 @@ Previous foundation validation passed typecheck, lint, tests, package build, Sto
 
 ## 8. Deliberate exclusions
 
-- `PortalHeader` implementation
 - account/SSO logic
 - GA/analytics
 - cookie consent
@@ -206,20 +195,15 @@ Previous foundation validation passed typecheck, lint, tests, package build, Sto
 
 ## 9. Current review status
 
-Argus independently reviewed the foundation and identified two commit-blocking findings:
+`PortalHeader` and its public documentation are merged to `master`. The `v1.1.0` release candidate has passed quality, browser, packaging, shipped-dependency audit, and whitespace checks. A-026 corrected stale presentation content, and A-028 aligns active guidance with the private repository contract.
 
-1. The package is unscoped but configured with restricted npm access.
-2. The private workspace root and publishable package use the same package name.
+Review reports: `execution/20_v1_1_0_independent_review_2026-10-23.md` and `execution/21_v1_1_0_review_adjustment_plan_2026-10-23.md`.
 
-Additional cleanup findings are restoring standard `.gitignore` exclusions and replacing the placeholder README import example.
+## 10. Current release and naming status
 
-Review report: `execution/07_code_review_report.md`.
+The product is **NMI DevOps Shared Components**, with consumer package ID `nmi-devops-shared-components` and private workspace root `nmi-devops-shared-components-workspace`. The current release candidate is `v1.1.0`, which adds the released `PortalHeader` public component. The former package ID is retained in the changelog as the migration source.
 
-## 10. Current review and naming status
-
-The previous Argus findings were closed for the earlier package identity. The product is now **NMI DevOps Shared Components**, with consumer package ID `nmi-devops-shared-components` and private workspace root `nmi-devops-shared-components-workspace`. This new package-identity change requires fresh validation and independent review before commit approval. The former package ID is retained in the changelog as the migration source.
-
-The package artifact is attached to a GitHub Release by the tag-triggered workflow; public npm registry publication is not authorized. Confirm artifact download permissions with the repository owner before consumer release.
+The package artifact is attached to a GitHub Release by the tag-triggered workflow; public npm registry publication is not authorized. Confirm authenticated artifact download access with the repository owner before consumer release.
 
 ## 11. Component versioning
 
@@ -231,15 +215,15 @@ The initial recommendation is one version for the whole package, not independent
 | Bug fix, accessibility fix, or non-breaking style correction | Patch | `0.2.0` → `0.2.1` |
 | Removed export, renamed prop, incompatible behavior, or breaking token change | Major | `0.2.1` → `1.0.0` |
 | Consumer package ID rename | Major migration | Consumers update install, package, and stylesheet imports |
-| PortalHeader pre-release testing | Pre-release tag | `0.3.0-rc.1` |
+| Backward-compatible PortalHeader enhancement | Minor | `1.1.0` → `1.2.0` |
 
 Every release should include a changelog entry, package dry-run, validation evidence, and a documented migration note for breaking changes. A component-specific version should only be introduced later if the package becomes large enough to require independent release cadence or dependencies.
 
 Release artifact flow:
 
 ```text
-annotated Git tag v1.0.0 → GitHub Actions → validate and package
-                         → nmi-devops-shared-components-1.0.0.tgz
+annotated Git tag v1.1.0 → GitHub Actions → validate and package
+                         → nmi-devops-shared-components-1.1.0.tgz
                          → GitHub Release asset
 ```
 
@@ -247,11 +231,9 @@ Consumers install the versioned `.tgz`; Git tags preserve package release histor
 
 ## 12. Next steps
 
-1. Complete package-rename verification and QA.
-2. Obtain independent review.
-3. Obtain fresh commit approval and separate push approval.
-4. Confirm private GitHub Release asset access before consumer release.
-4. Obtain Argus confirmation on the corrected revision.
-5. Obtain commit approval and commit the foundation.
-6. Request separate push approval for `origin/master`.
-7. Begin `portal_header` implementation from its approved requirements.
+1. Close the required `v1.1.0` release-review findings.
+2. Rerun release validation and obtain Argus confirmation on the corrected revision.
+3. Obtain commit approval for the reviewed release candidate.
+4. Obtain separate push and pull-request approvals; the repository owner performs the final merge.
+5. Confirm GitHub Release asset access before consumer release.
+6. Obtain separate approval for the exact `v1.1.0` tag push that triggers release publication.

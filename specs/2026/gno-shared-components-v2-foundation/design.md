@@ -39,7 +39,7 @@ The exact package builder is intentionally selected during U-002 by a small dire
 
 ## Migration and recovery
 
-The package-ID rename is a consumer-facing breaking migration: consumers of `gno-shared-components` must install `nmi-devops-shared-components`, update JavaScript/TypeScript imports and the stylesheet path, and use the versioned GitHub Release tarball. No data migration is involved. Recovery is Git reversion of the approved unit; unrelated dirty files must not be overwritten. Current GitHub release automation and authenticated download guidance are documented in [`docs/versioning.md`](../../../docs/versioning.md) and [`docs/consumer-setup.md`](../../../docs/consumer-setup.md).
+The package-ID rename is a consumer-facing breaking migration: consumers of `gno-shared-components` must install `nmi-devops-shared-components`, update JavaScript/TypeScript imports and the stylesheet path, and use the versioned GitHub Release tarball. No data migration is involved. Recovery is Git reversion of the approved unit; unrelated dirty files must not be overwritten. Current GitHub release automation and authenticated private-asset guidance are documented in [`docs/versioning.md`](../../../docs/versioning.md) and [`docs/consumer-setup.md`](../../../docs/consumer-setup.md).
 
 ## Delivery units and dependencies
 

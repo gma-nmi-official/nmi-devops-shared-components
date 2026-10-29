@@ -23,8 +23,10 @@ Reusable workflow templates are available under [`templates/`](templates/), incl
 
 The project history previously maintained in the external `PERSONAL_WORKFLOW` checkout is stored locally under [`2026/`](2026/):
 
+- [`copilot-agent-profiles/`](2026/copilot-agent-profiles/) — GitHub Copilot profiles for the six GNO roles
 - [`gno-shared-components-v2-adoption/`](2026/gno-shared-components-v2-adoption/) — repository adoption
 - [`gno-shared-components-v2-registration/`](2026/gno-shared-components-v2-registration/) — repository registration
 - [`gno-shared-components-v2-foundation/`](2026/gno-shared-components-v2-foundation/) — foundation requirements, `portal_header` specifications, execution evidence, and presentation
+- [`documentation-site-revamp/`](2026/documentation-site-revamp/) — proposed professional documentation home, dedicated component/integration guides, and GMA favicon update
 
 Future agents should use these repository-local records as the primary project source of truth. The external workflow checkout is no longer required to discover this project's specifications.

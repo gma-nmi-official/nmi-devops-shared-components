@@ -1,10 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { PortalHeader, type PortalHeaderLinkRenderProps } from "nmi-devops-shared-components";
+import {
+  PortalHeader,
+  type PortalHeaderLinkRenderProps,
+} from "nmi-devops-shared-components";
 
 function renderNextLink({ children, href, ...props }: PortalHeaderLinkRenderProps) {
-  return <Link href={href} {...props}>{children}</Link>;
+  return (
+    <Link href={href} {...props}>
+      {children}
+    </Link>
+  );
 }
 
 export function PortalHeaderPreview() {
@@ -13,7 +20,11 @@ export function PortalHeaderPreview() {
       brand={{ sectionLabel: "News" }}
       primaryNavigation={[{ id: "news", current: true }]}
       renderLink={renderNextLink}
-      search={{ action: "/catalog", queryParam: "q", placeholder: "Search the synthetic catalog" }}
+      search={{
+        action: "/catalog/portal-header",
+        queryParam: "q",
+        placeholder: "Search the synthetic catalog",
+      }}
       socialPreset="news"
     />
   );

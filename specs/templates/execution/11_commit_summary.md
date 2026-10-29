@@ -6,6 +6,8 @@ Use REPORT_TEMPLATE.md. Complete readiness before requesting commit approval.
 - [ ] Applicable required tests and build checks passed for this change set
 - [ ] Independent code review completed and required findings resolved
 - [ ] Approved adjustments validated, or justified N/A recorded
+- [ ] Intended release candidate includes reviewed versions/lockfile, changelog,
+      Storybook/catalog, consumer docs, and migration notes, or release is N/A
 - [ ] Working-tree changes understood; unrelated files excluded
 - [ ] Message follows `<type>: <description>` without a scope
 

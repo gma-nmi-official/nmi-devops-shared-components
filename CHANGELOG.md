@@ -6,6 +6,95 @@ The project follows [Semantic Versioning](https://semver.org/). The repository p
 
 ## [Unreleased]
 
+### Changed
+
+- Reformatted published component sources, Storybook stories, catalog pages,
+  and shared CSS so indentation and intentional line breaks expose nesting,
+  control flow, and data structure without changing public behavior.
+
+**Consumer impact / SemVer: None.** Public APIs, runtime behavior, CSS selectors,
+declarations, and package versions are unchanged; no migration is required.
+
+**Validation evidence:** type checking, lint, unit and consumer tests, size gates,
+Storybook and Next.js builds, GitHub Pages static export, and browser regression
+checks pass. Independent readability review remains pending.
+
+## [1.4.0] - 2026-10-26
+
+### Added
+
+- Added the consent-aware `createGoogleAnalytics` GA4 integration with direct
+  `gtag.js` and GTM `dataLayer` transports, explicit page views, semantic event
+  helpers, validated dimensions, bounded callbacks, and FIFO consent queuing.
+- Added Storybook, catalog, JavaScript/TypeScript fixtures, SSR-safe import
+  coverage, browser checks, and a 16 KiB compiled-module budget.
+
+**Consumer impact / SemVer: Minor.** This is a backward-compatible named export;
+existing consumers do not need to change.
+
+**Migration:** No existing package API migration is required. Consumers adopting
+analytics must load the approved provider, own consent policy, call route page
+views explicitly, and avoid sensitive identifiers in event dimensions.
+
+**Validation evidence:** Pending Vera verification and independent Argus review
+for this candidate revision.
+
+## [1.3.0] - 2026-10-24
+
+### Added
+
+- Added the configurable, provider-agnostic `AdSlot` component for MREC,
+  leaderboard, and custom rectangular display placements, plus a GPT adapter.
+- Added consumer-owned responsive rules that require a complete ad unit path
+  and non-empty size list for every active rule; disabled rules create no slot.
+- Added reserve-by-default and explicit collapse behavior, targeting, lifecycle
+  state callbacks, 100 ms responsive switching, Storybook/catalog guidance,
+  JavaScript/TypeScript fixtures, and fake-provider unit and browser coverage.
+- Serialized asynchronous slot replacement across React effect generations,
+  stabilized state callbacks against parent rerenders, and made GPT cleanup
+  failures observable and retryable.
+
+**Consumer impact / SemVer: Minor.** This is a backward-compatible named export.
+Existing consumers do not need to change. Ad consumers must continue to own GPT
+loading and initialization, consent and eligibility, service-wide lazy loading,
+inventory paths, sizes, and targeting policy.
+
+**Migration:** No existing package API migration is required. Legacy DFP/GPT
+wrappers should map each active breakpoint to an explicit full ad unit path and
+size list; unsupported native, video, out-of-page, refresh, and page-insertion
+behavior remains in the consuming application.
+
+**Validation evidence:** after ADS-ADJ01–ADS-ADJ05, `npm run check`, 56/56
+Vitest tests, four JavaScript/TypeScript consumer fixtures, Storybook and Next.js
+production builds, the 17,747-byte ads-module budget check, package dry run,
+30/30 configured Chromium desktop/mobile Playwright cases, and manual QA
+ADS-MT01–ADS-MT10 pass. ADS-REV01–ADS-REV06 are closed by independent Argus;
+commit and release operations remain separately gated.
+
+## [1.2.0] - 2026-10-24
+
+### Added
+
+- Added the standalone `CookieAgreement` component with explicit acceptance
+  persistence, configurable temporary Reject dismissal, configurable scroll
+  reveal and slide-up animation, separate privacy destinations, repository-local
+  NPC seal artwork, Storybook/catalog coverage, and no analytics or Portal Header
+  coupling.
+
+**Consumer impact / SemVer: Minor.** This is a backward-compatible new named
+component export. Existing consumers do not need to change. New consumers can
+import `CookieAgreement` and the existing package stylesheet.
+
+**Migration:** No existing package API migration is required. Consumers should
+review the default privacy destinations and provide an approved `policyVersion`.
+
+**Validation evidence:** `npm run check`, `npm run pack:check`, 28 Playwright
+tests, user-confirmed manual QA (MT-01 through MT-11), and independent Argus
+review passed on the merged feature revision. The release workflow will rerun
+the full quality gate for the approved `v1.2.0` tag.
+
+## [1.1.0] - 2026-10-23
+
 ### Added
 
 - Added the `PortalHeader` component and public TypeScript contracts with
@@ -38,6 +127,13 @@ The project follows [Semantic Versioning](https://semver.org/). The repository p
 - Added the public documentation landing page, consumer catalog, and embedded
   Storybook at `/docs`, with GitHub Pages deployment configuration.
 
+### Changed
+
+- Updated release validation dependencies to patched Next.js `16.4.2`,
+  Storybook `10.6.3`, Vite `7.3.7`, and Vitest `4.1.12` versions.
+- Contained catalog documentation link styles so they cannot override Portal
+  Header tokens, and corrected mobile documentation-home overflow.
+
 **Consumer impact / SemVer: Minor.** This is a backward-compatible new named
 component export. Existing consumers do not need to change. New consumers import
 `PortalHeader` and the existing package stylesheet, then optionally patch the
@@ -49,9 +145,13 @@ mapping and intentionally unsupported behavior are documented in
 [`docs/portal-header-migration.md`](docs/portal-header-migration.md).
 
 **Validation evidence:** Typecheck, lint, 13/13 unit/accessibility tests, two
-JavaScript/TypeScript consumer fixtures, Storybook, Next.js 16.3.8, the 28/28
+JavaScript/TypeScript consumer fixtures, Storybook, Next.js 16.4.2, the 28/28
 configured Playwright suite, 52/52 installed Windows Chrome/Edge cases, and the
-37-file package dry-run pass. PH-A20 waives unexecuted real screen-reader QA and
+37-file package dry-run pass. The shipped-runtime dependency audit has zero
+findings; the full audit retains five high findings in the development-only
+`eslint-config-next` → `@next/eslint-plugin-next` → `fast-glob` → `micromatch`
+→ `braces` chain under the existing A-006 exception.
+PH-A20 waives unexecuted real screen-reader QA and
 PH-A21 accepts the configured Chromium plus installed Chrome/Edge delivery
 matrix; Firefox, Safari, and second-version coverage remain explicit residual
 risk. Exact-revision GitHub Actions release evidence remains pending until an

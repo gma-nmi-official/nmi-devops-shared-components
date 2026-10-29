@@ -52,6 +52,11 @@ Propose an execution plan selecting stages, documentation depth, delivery units,
 dependencies, owners, and a definition of done. Requirements approval precedes
 development planning completion. Development approval covers the final design
 and implementation/test plan. Neither approval implies commit or push approval.
+For an intended package release, the plan also records the proposed SemVer impact
+and the release-impacting files that must be complete before final verification
+and independent review. Finalize the exact version when the delivery contents are
+known; do not defer routine version, changelog, migration, Storybook/catalog, or
+consumer-document preparation until after merge.
 
 Use functional/data/API design and decision records when behavior or interfaces
 change. Consider security, reliability, performance, accessibility, deployment,
@@ -75,6 +80,10 @@ Combine documents when useful; completeness of evidence matters more than count.
 
 1. Forge implements the approved unit using existing conventions and writes
    appropriate tests. Record requirement-to-file mapping and the exact change set.
+   When the unit is intended for package release, complete the release-impacting
+   tracked files in the same candidate: aligned root/package/lockfile versions,
+   changelog, Storybook/catalog guidance, consumer documents, and migration notes
+   as applicable.
 2. Vera completes required unit tests plus relevant build, integration,
    regression, and acceptance checks. Record commands, environment and revision.
    Create a standalone manual_testing.md from the
@@ -85,11 +94,16 @@ Combine documents when useful; completeness of evidence matters more than count.
    expected results. Record actual results only after execution; required unrun
    cases are BLOCKED. If manual checks are inapplicable, retain the document with
    a reason. Refresh affected cases after corrections and preserve prior results.
+   Before recommending review for an intended release, verify the version,
+   changelog, Storybook/catalog, consumer-document, migration, and package-dry-run
+   evidence that applies to the release-complete candidate.
 3. Pre-review failures return to implementation within the already approved scope.
    Re-run affected checks. A new requirement or material design change returns
    to Inception for approval; this is not a code review adjustment.
-4. After passing checks, Argus independently reviews the local diff against its
-   recorded base and the approved requirements/design. No PR is needed yet.
+4. After passing checks, Argus independently reviews the release-complete local
+   diff against its recorded base and the approved requirements/design. No PR is
+   needed yet. Release-impacting tracked files added after this review require
+   affected verification and refreshed independent review before commit.
 5. For findings, prepare an adjustment plan and obtain review-adjustment approval.
    Forge applies only approved corrections; Vera validates those corrections and
    affected regressions. Argus confirms required findings are resolved.
@@ -117,11 +131,15 @@ If merge/deployment is in scope, validate required CI and approved revision,
 obtain the corresponding approvals, and record merge/deployment results.
 The user or authorized repository owner performs the final merge. Once that
 owner confirms a PR has merged to `master`, Orion begins release readiness for
-the merged revision: verify the target commit and required checks, aligned root
-and package versions, and changelog entry. Missing release preparation returns
-as a blocker to Atlas and must be completed through a reviewed PR. Orion then
-presents the exact version tag, target commit, remote, command, and resulting
-GitHub Actions release behavior. The tag push requires its own explicit
+the merged revision: verify the target commit and required checks, aligned root,
+package, and lockfile versions, changelog entry, and release documentation. This
+is normally a verification-only
+stage after the single release-complete PR; it does not routinely create a
+commit or repeated PR. Missing or incorrect tracked preparation returns as a
+blocker to Atlas and must be completed through a new validated and reviewed PR
+before readiness is repeated. Orion then presents the exact version tag, target
+commit, remote, command, and resulting GitHub Actions release behavior. The tag
+push is the final agent-executed release action and requires its own explicit
 approval; a PR merge alone never authorizes tagging or package publication.
 After the approved push, Orion verifies the workflow run and release asset.
 Plan release order for dependent repositories, database compatibility, backups

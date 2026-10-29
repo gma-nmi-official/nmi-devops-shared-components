@@ -80,7 +80,27 @@ delivery unit is not ready for review while Storybook or catalog documentation i
 
 Components must remain framework-neutral React UI unless an adapter is separately approved. Consumers own routes, data, authentication, analytics, and other application integrations.
 
-## 4. Verify before review
+## 4. Prepare the release-complete candidate
+
+When the delivery is intended for a package release, select the highest-impact
+SemVer bump and finalize the release-impacting tracked files before final
+verification and independent review:
+
+- aligned root, `packages/ui`, and lockfile versions
+- the dated [`CHANGELOG.md`](CHANGELOG.md) entry
+- Storybook and catalog guidance
+- consumer documentation and migration notes
+
+This repository publishes one package version for all components:
+
+- patch: bug, accessibility, documentation, or non-breaking style fix
+- minor: new component or backward-compatible capability
+- major: removed export, renamed prop, or breaking contract/token/behavior change
+
+When multiple components change, use the highest-impact bump. Do not add routine
+release-impacting files after independent review or defer them until after merge.
+
+## 5. Verify before review
 
 Run the complete quality gate:
 
@@ -97,34 +117,44 @@ npm run pack:release
 
 Record the commands and results. Manual browser checks supplement automated tests; an unrun check is not a pass.
 
-## 5. Independent review
+## 6. Independent review
 
 Before commit, an independent reviewer or assigned review stage must compare the change against the approved requirements and the local diff. Review findings require an approved adjustment plan before corrections are implemented.
 
 The implementer must not claim their own verification as independent review.
 
-## 6. Version, changelog, and release
+The reviewer compares the release-complete candidate, including applicable
+versions, changelog, Storybook/catalog guidance, consumer documents, and
+migration notes. Later release-impacting changes require affected verification
+and refreshed independent review.
 
-This repository currently publishes one package version for all components:
+## 7. Pull request, readiness, and release
 
-- patch: bug, accessibility, documentation, or non-breaking style fix
-- minor: new component or backward-compatible capability
-- major: removed export, renamed prop, or breaking contract/token/behavior change
+Use one release-complete PR by default. Create feature, fix, documentation, or
+chore branches and open the separately approved pull request to `master`. GitHub
+Actions must pass and the required reviewer must approve it. The user or
+authorized repository owner performs the final merge; agents must not merge it.
 
-When multiple components change, use the highest-impact bump. Keep the root and `packages/ui` versions aligned, update [`CHANGELOG.md`](CHANGELOG.md), and add migration notes for breaking changes.
+After the owner confirms the merge, Orion verifies release readiness against the
+actual merged commit. This is normally a verification-only stage: confirm the
+reviewed commit, required checks, matching root/package/lockfile versions,
+changelog, and release documentation. If a tracked correction is needed, create
+a new validated and reviewed PR and repeat readiness after its owner-operated
+merge. Do not tag an incomplete release.
 
 Create an annotated tag only after validation and approval:
 
 ```bash
-git tag -a v1.0.0 -m "release: nmi-devops-shared-components v1.0.0"
+git tag -a v1.1.0 -m "release: nmi-devops-shared-components v1.1.0"
 ```
 
-GitHub tag builds produce a versioned `.tgz` asset attached to a GitHub Release. Do not publish, push a tag, create a pull request, or create a release without the separate approval required for that action.
+GitHub tag builds produce a versioned `.tgz` asset attached to a GitHub Release.
+Orion presents the exact tag, target, remote, command, and publication effect,
+then waits for explicit approval. The approved tag push is the final
+agent-executed release action for the normal path; Orion then verifies the
+workflow run and asset. A merge alone does not publish a package.
 
-After the user or authorized repository owner merges the PR to `master`, Orion begins release readiness for that merged commit. Confirm the root and `packages/ui` versions match and the changelog entry is present. Orion then presents the exact tag and explains that pushing it creates the GitHub Release asset; the tag push requires its own explicit approval. A merge alone does not publish a package.
-
-## Branch and merge ownership
-
-Create feature, fix, documentation, or chore branches and open a pull request to `master`. GitHub Actions must pass and the required reviewer must approve the pull request. The user or authorized repository owner performs the final merge. Developers and agents may prepare, review, and update the pull request, but must not merge it on the user's behalf.
+Do not publish, push a tag, create a pull request, or create a release without the
+separate approval required for that action.
 
 See [`docs/versioning.md`](docs/versioning.md) for the detailed release policy and [`docs/consumer-setup.md`](docs/consumer-setup.md) for consumer guidance.

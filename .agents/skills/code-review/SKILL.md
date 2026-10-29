@@ -7,12 +7,20 @@ description: "Independently review a tested GNO change set against approved requ
 
 Role: Argus. Read [policy](../../../AGENTS.md) and
 [lifecycle](../../../.codex/workflows/lifecycle.md).
+When readability/coding format is in scope, also read
+`../coding-format-review/SKILL.md` and include a focused format pass.
 Inputs: approved requirements/design, passing relevant tests, actual change set,
 and recorded base. A PR need not exist. Missing prerequisites mean BLOCKED.
 
 Inspect the local diff and relevant surrounding behavior. Check correctness,
 permissions, error paths, compatibility, regressions, and test adequacy within
 scope. Do not invent requirements or request unrelated modernization.
+
+For the coding-format pass, check that behavior-bearing code is readable:
+one operation or decision per line where practical, multiline calls/objects,
+named helpers for non-trivial branches, and no compressed semicolon blocks or
+dense one-line control flow. Preserve repository formatter/linter conventions
+and avoid unrelated formatting churn.
 
 Classify findings Critical, Major, Minor, or Suggestion. Include requirement,
 file/line, evidence, impact, proposed correction, and validation criteria.

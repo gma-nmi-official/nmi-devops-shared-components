@@ -1,6 +1,6 @@
 {
   "name": "nmi-devops-shared-components-workspace",
-  "version": "1.0.0",
+  "version": "1.4.0",
   "private": true,
   "workspaces": ["packages/*"],
   "engines": { "node": ">=20.9.0", "npm": ">=10" },
@@ -11,11 +11,13 @@
     "build:package": "npm run build -w nmi-devops-shared-components",
     "build-storybook": "npm run docs:check && storybook build -o public/storybook && node scripts/prepare-storybook-output.mjs",
     "docs:check": "node scripts/check-storybook-coverage.mjs",
-    "check": "npm run typecheck && npm run lint && npm run test && npm run test:consumers && npm run build-storybook && next build",
+    "check": "npm run typecheck && npm run size:ads && npm run size:analytics && npm run lint && npm run test && npm run test:consumers && npm run build-storybook && next build",
     "lint": "eslint .",
     "pack:check": "npm pack -w nmi-devops-shared-components --dry-run",
     "pack:release": "node scripts/pack-release.mjs",
     "start": "next start",
+    "size:ads": "npm run build:package && node scripts/check-ad-slot-size.mjs",
+    "size:analytics": "npm run build:package && node scripts/check-google-analytics-size.mjs",
     "test": "vitest run",
     "test:consumers": "npm run build:package && node scripts/check-consumer-fixtures.mjs",
     "test:e2e": "playwright test",
@@ -23,14 +25,14 @@
   },
   "dependencies": {
     "nmi-devops-shared-components": "workspace:*",
-    "next": "16.3.8",
+    "next": "16.4.2",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
   "devDependencies": {
-    "@storybook/addon-a11y": "^10.0.0",
-    "@storybook/addon-docs": "^10.0.0",
-    "@storybook/nextjs-vite": "^10.0.0",
+    "@storybook/addon-a11y": "^10.6.3",
+    "@storybook/addon-docs": "^10.6.3",
+    "@storybook/nextjs-vite": "^10.6.3",
     "@tailwindcss/postcss": "^4",
     "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^16.0.0",
@@ -38,16 +40,16 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@vitest/coverage-v8": "^4.0.0",
+    "@vitest/coverage-v8": "^4.1.12",
     "axe-core": "^4.0.0",
     "eslint": "^9",
-    "eslint-config-next": "16.3.8",
+    "eslint-config-next": "16.4.2",
     "jsdom": "^27.0.0",
     "playwright": "^1.50.0",
-    "storybook": "^10.0.0",
+    "storybook": "^10.6.3",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vite": "^7.0.0",
-    "vitest": "^4.0.0"
+    "vite": "^7.3.7",
+    "vitest": "^4.1.12"
   }
 }

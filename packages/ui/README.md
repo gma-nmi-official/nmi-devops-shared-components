@@ -3,10 +3,72 @@
 Reusable React 19 components for GNO portal applications. Import the required
 stylesheet once at the application root.
 
+## Google Analytics
+
+`createGoogleAnalytics` is a consent-aware GA4 integration supporting direct
+`gtag.js` and GTM `dataLayer` transports. It queues events only while consent
+is unknown, never loads provider scripts, and does not retry failed sends.
+
+```tsx
+import { createGoogleAnalytics } from "nmi-devops-shared-components";
+
+const analytics = createGoogleAnalytics({
+  transport: { type: "gtag", gtag }, measurementId: "G-EXAMPLE",
+  consent: "unknown", portalSection: "News",
+});
+analytics.setConsent("granted");
+analytics.trackPageView({ page_title: document.title });
+analytics.trackClick({ content_id: "story-card" });
+```
+
+The consumer owns provider loading, consent policy, route page views, and data
+classification. See `docs/consumer-setup.md` for GTM, SSR, and dimension guidance.
+
 ```tsx
 import { PortalHeader } from "nmi-devops-shared-components";
 import "nmi-devops-shared-components/styles.css";
 ```
+
+## Ad Slot
+
+`AdSlot` provides a small provider-agnostic lifecycle for rectangular display
+ads (`mrec`, `leaderboard`, or `custom`). Consumers own consent, eligibility,
+GPT initialization, service-wide lazy loading, targeting, full ad unit paths,
+and every permitted size. A format label never supplies inventory defaults.
+
+Consumers must load GPT themselves before creating the provider:
+
+```html
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+<script>
+  window.googletag = window.googletag || { cmd: [] };
+</script>
+```
+
+The package does not inject this third-party script or select production
+inventory. Create `createGptAdProvider({ googletag })` from a client component
+after the host has initialized `window.googletag`.
+
+```tsx
+import { AdSlot, createGptAdProvider, type AdPlacementConfig } from "nmi-devops-shared-components";
+
+const config: AdPlacementConfig = {
+  key: "sidebar-mrec",
+  format: "mrec",
+  reservedSize: [300, 250],
+  rules: [{ minWidth: 0, adUnitPath: "/123/news/sidebar", sizes: [[300, 250]] }],
+};
+
+<AdSlot config={config} enabled={hasAdConsent} provider={provider} />;
+```
+
+Create `provider` once with `createGptAdProvider({ googletag })` after the host
+has initialized GPT. `enabled={false}` and rules with `enabled: false` make no
+provider call. Active rules must cover their declared viewport range without
+gaps or overlaps and must contain a full `adUnitPath` plus non-empty `sizes`.
+Space is reserved by default; opt into `emptyBehavior: "collapse"` when empty
+or error results may collapse. Never put sensitive or directly identifying data
+in `targeting`.
 
 ## Portal Header
 
@@ -116,3 +178,28 @@ is embedded locally and performs no runtime asset request.
 
 See the repository's `docs/consumer-setup.md`, `docs/portal-header-migration.md`,
 catalog, and dedicated Storybook stories for complete integration guidance.
+
+## Cookie Agreement
+
+`CookieAgreement` is a standalone fixed-bottom privacy notice. It stays hidden
+until the configurable scroll threshold is reached, then slides up into view;
+it persists only an explicit `I AGREE` acceptance,
+and has no Google Analytics or generic analytics integration. Reject is hidden
+by default; when enabled it only dismisses the notice for the current page
+session and the notice returns after refresh.
+
+```tsx
+import { CookieAgreement } from "nmi-devops-shared-components";
+import "nmi-devops-shared-components/styles.css";
+
+<CookieAgreement policyVersion="2026-01" scrollRevealThreshold={0.1} />;
+```
+
+The default `FIND OUT MORE` URL is
+`https://www.gmanetwork.com/privacypolicy/`. The optional repository-local NPC
+seal links to `https://www.gmanetwork.com/news/privacy-notice/`. Both HTTPS
+destinations are independently configurable. Provide a typed `ConsentStore` to
+persist acceptance with the approved host-only `gno_cookie_consent` adapter
+defaults. The component does not classify or enforce consumer cookies/services;
+that remains the consumer application's responsibility. Remote seal asset URLs
+are rejected; artwork must be packaged locally by the consumer.

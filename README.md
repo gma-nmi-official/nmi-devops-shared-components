@@ -2,15 +2,16 @@
 
 This repository contains configurable, reusable GNO portal components for
 JavaScript and TypeScript consumer applications. The publishable package is
-`nmi-devops-shared-components` and currently exports the `PortalHeader`
-component.
+`nmi-devops-shared-components` and currently exports `PortalHeader`,
+`CookieAgreement`, `AdSlot`, and the consent-aware `createGoogleAnalytics`
+integration.
 
 The project includes two documentation surfaces:
 
 - `/docs` — the interactive Storybook reference, with component states,
   controls, accessibility notes, and release information.
-- `/catalog` — a friendly consumer guide with installation, configuration,
-  examples, and parameter details.
+- `/catalog` — the consumer guide index, with a dedicated installation, setup,
+  configuration, and operations page for every public component or integration.
 
 ## Local setup guide
 
@@ -39,8 +40,9 @@ npm run dev
 The `predev` lifecycle step builds the shared package first so a clean checkout has the package stylesheet and runtime output available to the showcase.
 
 Open `http://localhost:3000` for the documentation landing page. The consumer
-guide is available at `http://localhost:3000/catalog`, and the interactive
-Storybook is available at `http://localhost:3000/docs`.
+guide index is available at `http://localhost:3000/catalog`, dedicated guides
+live below `/catalog/<component>`, and the interactive Storybook is available at
+`http://localhost:3000/docs`.
 
 ### Open the deployed documentation
 
@@ -83,10 +85,14 @@ The repository includes the GNO workflow so developers and agents use the same p
 2. Adopt the repository and run the baseline checks.
 3. Define requirements, user stories, acceptance criteria, and the component design before implementation.
 4. Implement the complete delivery unit: source, exports, styles, tests, Storybook story, catalog entry, and documentation.
-5. Run automated and manual verification.
-6. Obtain independent review before commit.
-7. Update the changelog and package version according to [`docs/versioning.md`](docs/versioning.md).
-8. After an owner-confirmed merge to `master`, Orion starts release readiness; push the version tag only after its exact target and publication effect receive separate approval.
+5. For an intended package release, finalize the aligned root/package/lockfile versions, changelog, migration notes, and consumer documentation in that same candidate.
+6. Run automated and manual verification against the release-complete candidate.
+7. Obtain independent review of the complete local diff before commit.
+8. Commit, push, and open the separately approved PR; the user or authorized repository owner performs the merge to `master`.
+9. Orion verifies release readiness on the merged revision without routine tracked changes; push the version tag only after its exact target and publication effect receive separate approval.
+
+The normal release path uses one release-complete PR. A second PR is required
+only when post-merge readiness discovers a missing or incorrect tracked file.
 
 The workflow files are available under [`.codex/`](.codex/), [`.agents/`](.agents/), and [`specs/`](specs/).
 
@@ -95,8 +101,8 @@ The workflow files are available under [`.codex/`](.codex/), [`.agents/`](.agent
 Consumers install the package and import a named export:
 
 ```bash
-  gh release download v1.0.0 --repo gma-nmi-official/nmi-devops-shared-components --pattern 'nmi-devops-shared-components-1.0.0.tgz'
-npm install ./nmi-devops-shared-components-1.0.0.tgz
+gh release download v1.4.0 --repo gma-nmi-official/nmi-devops-shared-components --pattern 'nmi-devops-shared-components-1.4.0.tgz'
+npm install ./nmi-devops-shared-components-1.4.0.tgz
 ```
 
 ```tsx
@@ -108,7 +114,7 @@ export function SiteHeader() {
 }
 ```
 
-Set `GH_TOKEN` to a token with repository read access before downloading; keep it in the consumer's CI secret store. `nmi-devops-shared-components` remains the package and import name. See `/catalog` while running the showcase for the current public inventory and copyable JavaScript/TypeScript examples.
+The repository and its release assets are private. Consumers need repository access and a `GH_TOKEN` authorized to download the release asset; keep it in the consumer's CI secret store and never commit it. `nmi-devops-shared-components` remains the package and import name. See `/catalog` while running the showcase for the current inventory, then open the dedicated Portal Header, Cookie Agreement, Ad Slot, or Google Analytics guide for copyable JavaScript/TypeScript examples and operational notes.
 
 For complete setup guidance, see [`docs/consumer-setup.md`](docs/consumer-setup.md).
 
