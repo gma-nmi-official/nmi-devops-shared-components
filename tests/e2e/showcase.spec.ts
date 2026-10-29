@@ -246,6 +246,30 @@ test("Google Analytics catalog preview stays consent-aware and makes no provider
 });
 
 for (const width of [375, 1440]) {
+  test(`Cookie Agreement no-seal layout remains readable at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: width < 768 ? 812 : 900 });
+    await page.goto("/catalog/cookie-agreement");
+    const notice = page.getByRole("region", { name: "Cookie notice" });
+    const body = notice.locator(".gno-cookie-agreement__body");
+
+    await expect(notice).toBeVisible();
+    await expect(notice.locator(".gno-cookie-agreement__inner--no-seal")).toBeVisible();
+    const noticeWidth = await notice.evaluate((element) => element.getBoundingClientRect().width);
+    const bodyWidth = await body.evaluate((element) => element.getBoundingClientRect().width);
+    expect(bodyWidth).toBeGreaterThan(noticeWidth * 0.5);
+  });
+}
+
+test("Cookie Agreement disables transitions under reduced motion", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/catalog/cookie-agreement");
+  const notice = page.getByRole("region", { name: "Cookie notice" });
+
+  await expect(notice).toBeVisible();
+  await expect.poll(() => notice.evaluate((element) => getComputedStyle(element).transitionDuration)).toMatch(/0\.01ms|1e-05s|0s/);
+});
+
+for (const width of [375, 1440]) {
   test(`Portal Header traps visible menu focus and restores it after outside close at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: width < 768 ? 812 : 900 });
     await page.goto("/catalog/portal-header");

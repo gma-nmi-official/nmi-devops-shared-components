@@ -67,7 +67,15 @@ export const StorageError: Story = {
   args: { store: storageErrorStore },
 };
 export const ReducedMotion: Story = {
+  args: {
+    scrollRevealThreshold: 0,
+    seal: null,
+  },
   parameters: {
-    docs: { description: { story: "Use the browser or OS reduced-motion preference to verify the notice transition is disabled." } },
+    docs: {
+      description: {
+        story: "This story renders the visible no-seal state. Emulate prefers-reduced-motion: reduce in browser devtools or your operating system to verify the notice transition is disabled.",
+      },
+    },
   },
 };

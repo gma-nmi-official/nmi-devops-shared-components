@@ -1,18 +1,21 @@
 # Current state: Cookie Agreement
 
 - Objective: standalone reusable Cookie Agreement component plan, independently imported and rendered from Portal Header.
-- Phase/stage: Review-adjustment implementation and verification for PR #6 findings.
+- Phase/stage: PR #14 review-adjustment implementation and verification.
 - Owner: Forge; Atlas coordinates privacy, verification, and review handoffs.
 - Last updated: 2026-10-29 Asia/Shanghai.
-- Approval: `approvals.md`; CA-A01-CA-A24 record the planning, development, and review-adjustment decisions. Commit, push, PR, release, and deployment remain separately gated.
+- Approval: `approvals.md`; CA-A01-CA-A25 record the planning, development, and review-adjustment decisions. Commit, push, PR, release, and deployment remain separately gated.
 - Blockers: consumer cookie/service inventory and Accept scope; NPC seal redistribution rights and final repository path; compatibility; privacy/legal acceptance before release. Persistent rejected policy is deferred. GA is explicitly outside this project.
-- Next action: Vera validates CR-001/CR-002/CR-003/CR-005/CR-006/CR-007 corrections. Commit, push, PR, release, and deployment remain separately gated.
+- Independent review result: Argus re-review returned PROCEED for execution 03;
+  CR-002, CR-007, and CR-009 are closed with no stale current-state leftovers.
+- Next action: prepare the commit summary and request separate commit approval.
+  Push, PR, release, and deployment remain separately gated.
 
 ## Baseline
 
 | Repository | Branch/HEAD | Dirty evidence | Adoption |
 | --- | --- | --- | --- |
-| `D:\gno-node-projects\gno-shared-components-v2` | `feature/cookie-agreement-review-adjustments` / current correction revision; base `origin/master` | Review-adjustment source changes in progress; unrelated `.playwright-mcp/` remains untracked and protected | CR-001/CR-002/CR-003/CR-005/CR-006/CR-007 corrections implemented locally; verification pending |
+| `D:\gno-node-projects\gno-shared-components-v2` | `feature/cookie-agreement-review-adjustments-v2` / current correction revision; base `origin/master` | Review-adjustment source changes in progress; unrelated `.playwright-mcp/` remains untracked and protected | PR #14 CR-002/CR-007/CR-009 corrections implemented locally; verification pending |
 
 ## Proposed stages
 
