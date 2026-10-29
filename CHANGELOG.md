@@ -16,9 +16,10 @@ The project follows [Semantic Versioning](https://semver.org/). The repository p
   branches.
 - Standardized post-commit PR review-adjustment replies and PR-numbered
   `code_review_adjustment` execution records.
+- Corrected Google Analytics transport callback completion, expired-consent
+  queue cleanup, actionable validation errors, and related readability issues.
 
-**Consumer impact / SemVer: None.** Public APIs, runtime behavior, CSS selectors,
-declarations, and package versions are unchanged; no migration is required.
+**Consumer impact / SemVer:** Patch. Existing consumers require no migration.
 
 **Validation evidence:** type checking, lint, unit and consumer tests, size gates,
 Storybook and Next.js builds, GitHub Pages static export, and browser regression

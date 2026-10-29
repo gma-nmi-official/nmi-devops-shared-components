@@ -30,7 +30,10 @@ export class DeliveryState {
 
   setConsent(state: ConsentState) {
     this.consent = state;
-    if (state === "denied") this.queue.length = 0;
+    if (state === "denied") {
+      this.queue.length = 0;
+      this.expired.length = 0;
+    }
   }
 
   enqueue(eventName: string, params: EventInput): AnalyticsResult {
@@ -68,6 +71,9 @@ export class DeliveryState {
     for (let index = this.queue.length - 1; index >= 0; index -= 1) {
       if (now - this.queue[index].queuedAt > this.maxAgeMs) {
         this.expired.push(...this.queue.splice(index, 1));
+        if (this.expired.length > this.capacity) {
+          this.expired.splice(0, this.expired.length - this.capacity);
+        }
       }
     }
   }
