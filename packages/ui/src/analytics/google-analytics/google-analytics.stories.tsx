@@ -7,14 +7,16 @@ type AnalyticsHarnessProps = {
   transport?: "gtag" | "gtm";
   ready?: boolean;
   failTransport?: boolean;
+  initialConsent?: ConsentState;
 };
 
 function AnalyticsHarness({
   transport = "gtag",
   ready = true,
   failTransport = false,
+  initialConsent = "granted",
 }: AnalyticsHarnessProps) {
-  const [consent, setConsent] = useState<ConsentState>("granted");
+  const [consent, setConsent] = useState<ConsentState>(initialConsent);
   const [lastEvent, setLastEvent] = useState("No event sent");
   const [gtmEvents, setGtmEvents] = useState<unknown[]>([]);
   const dataLayer = useMemo<DataLayer>(
@@ -45,16 +47,19 @@ function AnalyticsHarness({
         ? { type: "gtag", gtag }
         : { type: "gtm", dataLayer },
       measurementId: transport === "gtag" ? "G-STORYBOOK" : undefined,
-      consent,
+      consent: initialConsent,
       portalSection: "News",
       ready,
     }),
-    [consent, dataLayer, gtag, ready, transport],
+    [dataLayer, gtag, initialConsent, ready, transport],
   );
   const analytics = useMemo(() => createGoogleAnalytics(config), [config]);
   useEffect(() => {
     analytics.initialize();
   }, [analytics]);
+  useEffect(() => {
+    analytics.setConsent(consent);
+  }, [analytics, consent]);
 
   return (
     <div style={{ display: "grid", gap: 12, maxWidth: 560 }}>
@@ -119,4 +124,4 @@ type Story = StoryObj<typeof meta>;
 
 export const DirectGtag: Story = {};
 export const GoogleTagManager: Story = { args: { transport: "gtm" } };
-export const UnknownConsent: Story = { render: () => <AnalyticsHarness transport="gtm" /> };
+export const UnknownConsent: Story = { render: () => <AnalyticsHarness transport="gtm" initialConsent="unknown" /> };

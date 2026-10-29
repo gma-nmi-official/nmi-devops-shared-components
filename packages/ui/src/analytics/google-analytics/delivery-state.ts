@@ -6,6 +6,7 @@ export class DeliveryState {
   private consent: ConsentState;
   private initialized = false;
   private readonly queue: PendingEvent[] = [];
+  private readonly expired: PendingEvent[] = [];
   constructor(
     private readonly capacity: number,
     private readonly maxAgeMs: number,
@@ -55,6 +56,10 @@ export class DeliveryState {
     return entries.filter((entry) => now - entry.queuedAt <= this.maxAgeMs);
   }
 
+  takeExpired(): PendingEvent[] {
+    return this.expired.splice(0);
+  }
+
   clear() {
     this.queue.length = 0;
   }
@@ -62,7 +67,7 @@ export class DeliveryState {
   private removeExpired(now: number) {
     for (let index = this.queue.length - 1; index >= 0; index -= 1) {
       if (now - this.queue[index].queuedAt > this.maxAgeMs) {
-        this.queue.splice(index, 1);
+        this.expired.push(...this.queue.splice(index, 1));
       }
     }
   }

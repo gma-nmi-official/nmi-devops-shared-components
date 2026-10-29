@@ -36,8 +36,11 @@ existing consumers do not need to change.
 analytics must load the approved provider, own consent policy, call route page
 views explicitly, and avoid sensitive identifiers in event dimensions.
 
-**Validation evidence:** Pending Vera verification and independent Argus review
-for this candidate revision.
+**Validation evidence:** Initial candidate typecheck, lint, unit, consumer,
+size-gate, Storybook, Next.js, browser, and audit checks passed. Follow-up
+review corrections are tracked in the Google Analytics adjustment plan before
+the release tag. Published package source maps are enabled for the corrected
+build.
 
 ## [1.3.0] - 2026-10-24
 

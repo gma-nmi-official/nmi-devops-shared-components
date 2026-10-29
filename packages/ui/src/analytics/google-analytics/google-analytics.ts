@@ -32,33 +32,67 @@ export function createGoogleAnalytics(config: AnalyticsConfig): GoogleAnalytics 
 
   const ready = () => delivery.isReady(config.ready);
 
+  const completeCallback = (params: EventInput, eventName: string) => {
+    const callback = params.callback;
+    if (typeof callback !== "function") return;
+    const complete = () => {
+      try {
+        callback();
+      } catch (error) {
+        reportError(error, eventName);
+      }
+    };
+    if (typeof params.callbackTimeoutMs === "number") {
+      setTimeout(complete, params.callbackTimeoutMs);
+    } else {
+      complete();
+    }
+  };
+
   const emit = (eventName: string, params: EventInput, queued = false): AnalyticsResult => {
     try {
       validateEvent(eventName, params);
     } catch (error) {
       reportError(error, eventName);
+      completeCallback(params, eventName);
+      return { status: "failed", eventName, reason: "invalid_payload" };
+    }
+
+    const { eventParams, callback, callbackTimeoutMs } = stripCallback(params);
+    const payload = queued ? eventParams : { ...current, ...eventParams };
+    try {
+      validateEvent(eventName, payload);
+    } catch (error) {
+      reportError(error, eventName);
+      completeCallback(params, eventName);
       return { status: "failed", eventName, reason: "invalid_payload" };
     }
 
     if (!queued && !(config.enabled ?? true)) {
-      return { status: "dropped", eventName, reason: "disabled" };
+      const result = { status: "dropped" as const, eventName, reason: "disabled" };
+      completeCallback(params, eventName);
+      return result;
     }
 
     if (!queued && delivery.getConsent() === "denied") {
-      return { status: "dropped", eventName, reason: "consent_denied" };
+      const result = { status: "dropped" as const, eventName, reason: "consent_denied" };
+      completeCallback(params, eventName);
+      return result;
     }
 
     if (!queued && delivery.getConsent() === "unknown") {
-      return delivery.enqueue(eventName, params);
+      const result = delivery.enqueue(eventName, payload);
+      completeCallback(params, eventName);
+      return result;
     }
 
     if (!ready()) {
       reportError(new Error("Analytics transport is not ready"), eventName);
-      return { status: "failed", eventName, reason: "not_ready" };
+      const result = { status: "failed" as const, eventName, reason: "not_ready" };
+      completeCallback(params, eventName);
+      return result;
     }
 
-    const { eventParams, callback, callbackTimeoutMs } = stripCallback(params);
-    const payload = { ...current, ...eventParams };
     const sent = sendTransport(
       config.transport,
       config.measurementId,
@@ -68,7 +102,7 @@ export function createGoogleAnalytics(config: AnalyticsConfig): GoogleAnalytics 
 
     return sent
       ? { status: "sent", eventName }
-      : { status: "failed", eventName, reason: "transport_error" };
+      : (completeCallback(params, eventName), { status: "failed", eventName, reason: "transport_error" });
   };
 
   const flush = () => {
@@ -76,6 +110,9 @@ export function createGoogleAnalytics(config: AnalyticsConfig): GoogleAnalytics 
 
     for (const entry of delivery.takeReady()) {
       emit(entry.eventName, entry.params, true);
+    }
+    for (const entry of delivery.takeExpired()) {
+      reportError(new Error("Analytics queue entry expired"), entry.eventName);
     }
   };
 
@@ -100,14 +137,22 @@ export function createGoogleAnalytics(config: AnalyticsConfig): GoogleAnalytics 
       flush();
     },
     setCurrentParams(params) {
-      current = replaceContext(dimensions, params);
-      scrolls.clear();
+      try {
+        current = replaceContext(dimensions, params);
+        scrolls.clear();
+      } catch (error) {
+        reportError(error);
+      }
     },
     getCurrentParams() {
       return cloneContext(current);
     },
     updateCurrentParams(params) {
-      current = updateContext(dimensions, current, params);
+      try {
+        current = updateContext(dimensions, current, params);
+      } catch (error) {
+        reportError(error);
+      }
     },
     clearCurrentParams() {
       current = { ...defaults };
