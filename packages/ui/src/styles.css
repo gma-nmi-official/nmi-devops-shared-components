@@ -104,6 +104,9 @@
     max-inline-size: 85rem;
     padding: .625rem;
   }
+  .gno-cookie-agreement__inner--no-seal {
+    grid-template-columns: 70% 30%;
+  }
   .gno-cookie-agreement__seal-link {
     align-items: center;
     display: inline-flex;
@@ -174,6 +177,9 @@
       max-inline-size: 40.625rem;
       padding: .625rem;
     }
+    .gno-cookie-agreement__inner--no-seal {
+      grid-template-columns: 1fr;
+    }
     .gno-cookie-agreement__seal {
       inline-size: auto;
       max-block-size: 3.125rem;
@@ -195,7 +201,7 @@
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .gno-cookie-agreement *, .gno-cookie-agreement *::before, .gno-cookie-agreement *::after {
+    .gno-cookie-agreement, .gno-cookie-agreement *, .gno-cookie-agreement *::before, .gno-cookie-agreement *::after {
       scroll-behavior: auto !important;
       transition-duration: 0.01ms !important;
     }

@@ -2,7 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element -- Public library code cannot depend on Next.js Image. */
 
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { createCookieConsentStore, DEFAULT_RETENTION_DAYS } from "./storage";
 import type { CookieAgreementProps, CookieAgreementRecord } from "./types";
 
@@ -59,9 +59,11 @@ export function CookieAgreement({
   className,
 }: CookieAgreementProps) {
   const [storedRecord, setStoredRecord] = useState<CookieAgreementRecord | null | undefined>(record);
+  const [storageLoaded, setStorageLoaded] = useState(record !== undefined);
   const [sessionDismissed, setSessionDismissed] = useState(false);
   const [revealed, setRevealed] = useState(false);
   const [saving, setSaving] = useState(false);
+  const decisionVersion = useRef(0);
   const descriptionId = useId();
   const resolvedCopy = { ...DEFAULT_COPY, ...copy };
   const requestedSealSrc = seal?.src ?? defaultNpcSeal;
@@ -102,15 +104,19 @@ export function CookieAgreement({
       return;
     }
     let active = true;
-    Promise.resolve(activeStore.read())
+    const readVersion = decisionVersion.current;
+    Promise.resolve()
+      .then(() => activeStore.read())
       .then((nextRecord) => {
-        if (active) {
+        if (active && readVersion === decisionVersion.current) {
           setStoredRecord(nextRecord);
+          setStorageLoaded(true);
         }
       })
       .catch((error: unknown) => {
         if (active) {
           setStoredRecord(null);
+          setStorageLoaded(true);
           onStorageError?.(error);
         }
       });
@@ -120,6 +126,7 @@ export function CookieAgreement({
   }, [activeStore, onStorageError, record]);
 
   const accept = async () => {
+    decisionVersion.current += 1;
     const nextRecord: CookieAgreementRecord = {
       policyVersion,
       status: "accepted",
@@ -139,7 +146,7 @@ export function CookieAgreement({
     }
   };
 
-  if (!needsDecision || sessionDismissed) {
+  if (!storageLoaded || !needsDecision || sessionDismissed) {
     return null;
   }
 
@@ -154,7 +161,12 @@ export function CookieAgreement({
       ].filter(Boolean).join(" ")}
       role="region"
     >
-      <div className="gno-cookie-agreement__inner">
+      <div
+        className={[
+          "gno-cookie-agreement__inner",
+          resolvedSeal ? "" : "gno-cookie-agreement__inner--no-seal",
+        ].filter(Boolean).join(" ")}
+      >
         {resolvedSeal ? (
           <a
             className="gno-cookie-agreement__seal-link"
