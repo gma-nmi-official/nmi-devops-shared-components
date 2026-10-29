@@ -3,7 +3,7 @@
 ## Scope
 
 This follow-up addresses the post-merge review comment on PR #16 against
-`origin/master` at `94a848c`. The approved scope includes CR-001, CR-005,
+`origin/master` at `72d2bcc`. The approved scope includes CR-001, CR-005,
 CR-006, CR-014 readability-only cleanup, and CR-015 formatting cleanup.
 
 The review comment was posted after PR #16 merged. Argus re-assessed each item
@@ -94,5 +94,6 @@ approved-scope leftovers remain.
 ## Status
 
 **PROCEED — ready for commit approval** on
-`feature/google-analytics-review-adjustments-v2` from `origin/master` at
-`94a848c`. Commit and Git delivery remain separately gated.
+`feature/google-analytics-review-adjustments-v2` at merge commit `92ea9c8`,
+based on `origin/master` at `72d2bcc`. Commit and Git delivery remain
+separately gated.

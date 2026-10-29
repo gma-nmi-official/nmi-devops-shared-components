@@ -180,7 +180,8 @@ Automated verification passes typecheck, lint, 73 unit tests, consumer fixtures,
 ## Follow-up revision: PR #16 adjustments
 
 - Repository, branch, revision, and dirty diff: `D:\gno-node-projects\gno-shared-components-v2`,
-  `feature/google-analytics-review-adjustments-v2`, base `94a848c`, with the
+  `feature/google-analytics-review-adjustments-v2`, merge commit `92ea9c8`, base
+  `72d2bcc`, with the
   approved follow-up diff present.
 - Scope: CR-001, CR-005, CR-006, CR-014 readability-only, and CR-015.
 - Manual browser execution: N/A for this follow-up because the corrections are
