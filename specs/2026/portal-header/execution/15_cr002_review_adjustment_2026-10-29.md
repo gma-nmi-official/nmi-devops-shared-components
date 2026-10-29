@@ -3,10 +3,10 @@
 ## Scope
 
 The attached review identified CR-001 (catalog overflow) and CR-002 (custom
-social icon names). CR-001 is stale against current `master`: the referenced
-`.catalog__usage` and `.catalog__entry` selectors no longer exist, and the
-current catalog/PortalHeader overflow coverage passes at 320px. CR-002 remains
-valid in the current implementation.
+social icon names). CR-001 remains applicable on `feature/portal-header` because
+the referenced catalog selectors are still present; this correction hardens
+their narrow-width behavior. CR-002 remains valid in the current implementation
+and is already corrected by the own-key icon fallback.
 
 ## Finding and correction
 
@@ -22,18 +22,41 @@ map; unknown names use the Font Awesome link fallback. The Storybook
 
 ## Validation
 
-- PortalHeader unit/accessibility suite: 14/14 passed.
-- Full Vitest suite: 74/74 passed across 9 test files.
-- TypeScript typecheck: passed.
+- PortalHeader unit/accessibility suite: 16/16 passed.
+- Full Vitest suite: 16/16 passed in the current checkout.
 - ESLint: passed.
-- Current Playwright suite: 48/48 passed, including `/catalog` and
-  `/catalog/portal-header` page-overflow checks and PortalHeader widths from
-  320px through 1440px on desktop/mobile Chromium.
+- Documentation coverage check: passed.
 - `git diff --check`: passed.
+- Branch-local typecheck: passed after removing stale generated `.next` output
+  and regenerating it against this revision.
+- Targeted Playwright catalog/PortalHeader overflow checks at 320/375/768/1024/
+  1440: passed.
+- Full Playwright suite: **21 passed, 7 failed**. The seven failures are
+  unrelated showcase-baseline expectations (trailing-slash URL, homepage
+  heading, social-link token, and root-page mobile overflow); no PortalHeader
+  width-overflow failure occurred. Overall E2E status is **PASS WITH BASELINE
+  FAILURES**, not a clean suite pass.
+
+## Follow-up review findings
+
+- **CR-003 corrected:** navigation and social patch resolution now ignores
+  explicitly undefined patch values, preserving defaults. Regression coverage
+  was added for default-preserving overrides.
+- **CR-001 corrected and verified:** `app/globals.css` retains the catalog
+  selectors but now applies narrow-width safeguards. Targeted Playwright
+  overflow checks pass at 320/375/768/1024/1440px.
+- CR-004 remains an optional risk concerning errors thrown while rendering a
+  React element returned by a custom link adapter.
+
+Review decision: **PASS WITH BASELINE FAILURES** for the scoped CR-001/CR-003
+corrections. The full E2E baseline remains non-green and must not be represented
+as a clean pass. A verification-skill/process change is proposed for review,
+but has not been applied without a separately scoped workflow-change approval.
 
 ## Delivery
 
 This is a focused follow-up correction for the already merged Portal Header.
 The `.playwright-mcp/` user-owned files remain excluded. The report, source,
 test, and Storybook changes are intended for `feature/portal-header`; PR
-creation and merge remain owner actions.
+creation and merge remain owner actions. The scoped corrections are ready for
+commit review; the unrelated baseline E2E failures remain documented.

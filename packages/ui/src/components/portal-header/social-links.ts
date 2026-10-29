@@ -46,6 +46,13 @@ function isSafeSocialHref(href: string | undefined): href is string {
   }
 }
 
+function mergeDefined<T extends object>(base: T, patch: object): T {
+  const definedPatch = Object.fromEntries(
+    Object.entries(patch).filter(([, value]) => value !== undefined),
+  );
+  return { ...base, ...definedPatch };
+}
+
 export function resolvePortalHeaderSocialLinks(
   preset: PortalHeaderSocialPreset = "entertainment",
   patches: readonly PortalHeaderSocialLink[] = [],
@@ -65,7 +72,7 @@ export function resolvePortalHeaderSocialLinks(
     }
     patchById.delete(item.id);
     if (patch.hidden) continue;
-    const merged = { ...item, ...patch };
+    const merged = mergeDefined(item, patch);
     const label = merged.label?.trim();
     if (!isSafeSocialHref(merged.href) || !label) continue;
     resolved.push({

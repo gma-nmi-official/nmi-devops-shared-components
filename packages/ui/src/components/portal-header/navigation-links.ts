@@ -30,6 +30,13 @@ function freezeItems(items: readonly PortalHeaderNavigationItem[]) {
   return Object.freeze(items.map((item) => Object.freeze({ ...item })));
 }
 
+function mergeDefined<T extends object>(base: T, patch: object): T {
+  const definedPatch = Object.fromEntries(
+    Object.entries(patch).filter(([, value]) => value !== undefined),
+  );
+  return { ...base, ...definedPatch };
+}
+
 export const portalHeaderNavigationPresets = Object.freeze({
   gma: Object.freeze({
     primaryNavigation: freezeItems(primaryNavigation),
@@ -56,7 +63,7 @@ function resolveNavigationGroup(
     }
     patchById.delete(item.id);
     if (patch.hidden) continue;
-    const merged = { ...item, ...patch };
+    const merged = mergeDefined(item, patch);
     const label = merged.label?.trim();
     const href = merged.href?.trim();
     if (!label || !href) continue;

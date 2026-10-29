@@ -41,6 +41,18 @@ describe("PortalHeader", () => {
     expect(resolved.networkNavigation[1]).toEqual(expect.objectContaining({ href: "https://example.com/radio" }));
   });
 
+  it("preserves navigation defaults when patch values are undefined", () => {
+    const resolved = resolvePortalHeaderNavigation("gma", [
+      { id: "news", label: undefined, href: undefined },
+    ]);
+
+    expect(resolved.primaryNavigation[1]).toEqual(expect.objectContaining({
+      id: "news",
+      label: "News",
+      href: "https://www.gmanetwork.com/news/",
+    }));
+  });
+
   it("renders all sixteen default navigation links", () => {
     const { container } = render(<PortalHeader socialPreset="none" />);
     const gridCells = container.querySelectorAll(".gno-portal-header__menu-grid-glyph rect");
@@ -91,6 +103,18 @@ describe("PortalHeader", () => {
       expect.objectContaining({ id: "rss" }),
       expect.objectContaining({ id: "community", icon: "custom", label: "Community" }),
     ]);
+  });
+
+  it("preserves social defaults when patch values are undefined", () => {
+    const resolved = resolvePortalHeaderSocialLinks("entertainment", [
+      { id: "facebook", label: undefined, href: undefined },
+    ]);
+
+    expect(resolved[0]).toEqual(expect.objectContaining({
+      id: "facebook",
+      label: "GMA Network on Facebook",
+      href: "https://facebook.com/gmanetwork",
+    }));
   });
 
   it("omits whitespace-only social labels from rendered links", () => {
