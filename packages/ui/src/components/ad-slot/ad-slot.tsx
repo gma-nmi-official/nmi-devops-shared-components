@@ -39,7 +39,7 @@ export function AdSlot({
   const cancelRef = useRef<(() => void) | undefined>(undefined);
   const cleanupRef = useRef<object | undefined>(undefined);
   const cfgRef = useRef(config);
-  const stateRef = useRef(onStateChange);
+  const stateChangeRef = useRef(onStateChange);
   const slotRef = useRef<{
     provider: AdProvider;
     slot: AdProviderSlot;
@@ -57,7 +57,7 @@ export function AdSlot({
   }, [config]);
 
   useEffect(() => {
-    stateRef.current = onStateChange;
+    stateChangeRef.current = onStateChange;
   }, [onStateChange]);
 
   useEffect(() => {
@@ -80,14 +80,14 @@ export function AdSlot({
         return;
       }
       setState(nextState);
-      stateRef.current?.(nextState, error);
+      stateChangeRef.current?.(nextState, error);
     };
     const reportCleanupError = (error: unknown) => {
       if (isCurrent()) {
         setState("error");
       }
       try {
-        stateRef.current?.("error", error);
+        stateChangeRef.current?.("error", error);
       } catch {
         // A consumer callback must not prevent the owned slot cleanup retry.
       }

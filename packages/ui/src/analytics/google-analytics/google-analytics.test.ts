@@ -48,10 +48,12 @@ describe("createGoogleAnalytics", () => {
   });
 
   it("validates merged dimensions against the total payload limit", () => {
-    const analytics = createGoogleAnalytics({ consent: "granted", transport: { type: "gtm", dataLayer: { push: vi.fn() } } });
+    const onError = vi.fn();
+    const analytics = createGoogleAnalytics({ consent: "granted", onError, transport: { type: "gtm", dataLayer: { push: vi.fn() } } });
     analytics.initialize();
     const parameters = Object.fromEntries(Array.from({ length: 15 }, (_, index) => [`custom_${index}`, index]));
     expect(analytics.trackEvent("custom_event", parameters)).toMatchObject({ status: "failed", reason: "invalid_payload" });
+    expect(onError).toHaveBeenCalledWith(expect.objectContaining({ message: "Invalid analytics configuration: event parameters must not exceed 25 entries" }), "custom_event");
   });
 
   it("reports invalid runtime context through onError", () => {
@@ -62,7 +64,8 @@ describe("createGoogleAnalytics", () => {
     expect(onError).toHaveBeenCalledOnce();
     analytics.setCurrentParams({ keywords: "x".repeat(101) });
     expect(onError).toHaveBeenCalledTimes(2);
-    expect(() => createGoogleAnalytics(null as never)).toThrow(/config:obj/);
+    expect(() => createGoogleAnalytics(null as never)).toThrow(/config must be an object/);
+    expect(() => createGoogleAnalytics({ transport: { type: "gtm", dataLayer: {} } } as never)).toThrow(/transport\.dataLayer\.push must be a function/);
   });
 
   it("handles denied, disabled, and scroll milestone outcomes", () => {
@@ -121,6 +124,61 @@ describe("createGoogleAnalytics", () => {
     analytics.initialize();
     expect(analytics.trackClick()).toMatchObject({ status: "failed", reason: "transport_error" });
     expect(onError).toHaveBeenCalledOnce();
+  });
+
+  it("completes a transport-failure callback once", () => {
+    const callback = vi.fn();
+    const analytics = createGoogleAnalytics({
+      consent: "granted",
+      transport: {
+        type: "gtm",
+        dataLayer: {
+          push: () => {
+            throw new Error("blocked");
+          },
+        },
+      },
+    });
+    analytics.initialize();
+
+    expect(analytics.trackClick({ callback, callbackTimeoutMs: 100 })).toMatchObject({
+      status: "failed",
+      reason: "transport_error",
+    });
+    expect(callback).toHaveBeenCalledOnce();
+  });
+
+  it("reports expired entries once and clears them when consent is denied", () => {
+    vi.useFakeTimers();
+    const onError = vi.fn();
+    const analytics = createGoogleAnalytics({
+      consent: "unknown",
+      onError,
+      queue: { maxAgeMs: 100 },
+      transport: { type: "gtm", dataLayer: { push: vi.fn() } },
+    });
+    analytics.initialize();
+    analytics.trackClick();
+    vi.advanceTimersByTime(101);
+    analytics.trackClick();
+    analytics.setConsent("granted");
+    expect(onError).toHaveBeenCalledWith(expect.objectContaining({ message: "Analytics queue entry expired" }), "click");
+
+    onError.mockClear();
+    const denied = createGoogleAnalytics({
+      consent: "unknown",
+      onError,
+      queue: { maxAgeMs: 100 },
+      transport: { type: "gtm", dataLayer: { push: vi.fn() } },
+    });
+    denied.initialize();
+    denied.trackClick();
+    vi.advanceTimersByTime(101);
+    denied.trackClick();
+    denied.setConsent("denied");
+    denied.setConsent("granted");
+    expect(onError).not.toHaveBeenCalled();
+    vi.useRealTimers();
   });
 
   it("bounds GTM callbacks and invokes them at most once", () => {

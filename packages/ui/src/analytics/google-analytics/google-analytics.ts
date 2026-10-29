@@ -102,7 +102,7 @@ export function createGoogleAnalytics(config: AnalyticsConfig): GoogleAnalytics 
 
     return sent
       ? { status: "sent", eventName }
-      : (completeCallback(params, eventName), { status: "failed", eventName, reason: "transport_error" });
+      : { status: "failed", eventName, reason: "transport_error" };
   };
 
   const flush = () => {

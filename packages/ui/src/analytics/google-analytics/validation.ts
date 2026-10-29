@@ -32,20 +32,20 @@ export function isScalar(value: unknown): value is AnalyticsScalar {
 export function validateName(name: string, label: string): string[] {
   const issues: string[] = [];
   if (!NAME_PATTERN.test(name) || name.length > 40) {
-    issues.push(`${label}:bad`);
+    issues.push(`${label} must start with a letter, contain only letters, numbers, or underscores, and be at most 40 characters`);
   }
   if (RESERVED_KEYS.has(name) || RESERVED_PREFIXES.some((prefix) => name.toLowerCase().startsWith(prefix))) {
-    issues.push(`${label}:reserved`);
+    issues.push(`${label} uses a reserved GA4 name or prefix`);
   }
   return issues;
 }
 
 export function validateScalar(key: string, value: unknown): string[] {
-  if (!isScalar(value)) return [`${key}:scalar`];
+  if (!isScalar(value)) return [`${key} must be a string, finite number, or boolean`];
   if (typeof value === "string") {
     const max = key === "page_title" ? 300 : key === "page_location" ? 1000 : 100;
     if (value.length > max) {
-      return [`${key}:max${max}`];
+      return [`${key} must be at most ${max} characters`];
     }
   }
   return [];
@@ -57,7 +57,7 @@ export function dimensionEntries(
   const entries: Record<string, DimensionDefinition> = {};
   for (const key of DEFAULT_DIMENSIONS) {
     entries[key] = {
-        default: key === "portal_section"
+      default: key === "portal_section"
         ? (config?.portalSection ?? "News")
         : "",
     };
@@ -71,17 +71,17 @@ export function dimensionEntries(
 export function validateConfig(config: AnalyticsConfig): void {
   const issues: string[] = [];
   if (!config || typeof config !== "object") {
-    issues.push("config:obj");
+    issues.push("config must be an object");
   }
   if (!config?.transport || (config.transport.type !== "gtag" && config.transport.type !== "gtm")) {
-    issues.push("transport");
+    issues.push("transport must be configured as gtag or gtm");
   }
   if (config?.transport?.type === "gtag") {
     if (typeof config.measurementId !== "string" || !config.measurementId.trim()) {
-      issues.push("gtag:id");
+      issues.push("measurementId must be a non-empty string for gtag transport");
     }
     if (typeof config.transport.gtag !== "function") {
-      issues.push("gtag:fn");
+      issues.push("transport.gtag must be a function");
     }
   } else if (
     config?.transport?.type === "gtm"
@@ -90,13 +90,13 @@ export function validateConfig(config: AnalyticsConfig): void {
       || typeof config.transport.dataLayer.push !== "function"
     )
   ) {
-    issues.push("gtm:p");
+    issues.push("transport.dataLayer.push must be a function");
   }
   const dimensions = dimensionEntries(config);
   for (const [key, definition] of Object.entries(dimensions)) {
     issues.push(...validateName(key, `dimension ${key}`));
     if (definition.default !== undefined && typeof definition.default !== "string") {
-      issues.push(`dim ${key}:default`);
+      issues.push(`dimension ${key}.default must be a string`);
     } else if (definition.default !== undefined) {
       issues.push(...validateScalar(key, definition.default));
     }
@@ -107,7 +107,7 @@ export function validateConfig(config: AnalyticsConfig): void {
     config?.consent !== undefined
     && !["unknown", "granted", "denied"].includes(config.consent)
   ) {
-    issues.push("consent:bad");
+    issues.push("consent must be unknown, granted, or denied");
   }
   if (
     config?.video?.eventValue !== undefined
@@ -116,13 +116,13 @@ export function validateConfig(config: AnalyticsConfig): void {
       || typeof config.video.eventValue !== "number"
     )
   ) {
-    issues.push("video");
+    issues.push("video.eventValue must be a finite number");
   }
   if (!Number.isInteger(capacity) || capacity < 1) {
-    issues.push("queue:cap");
+    issues.push("queue.capacity must be a positive integer");
   }
   if (!Number.isInteger(maxAgeMs) || maxAgeMs < 1) {
-    issues.push("queue:age");
+    issues.push("queue.maxAgeMs must be a positive integer");
   }
   if (issues.length) {
     throw new AnalyticsConfigurationError(issues);
@@ -133,7 +133,7 @@ export function validateEvent(eventName: string, params: EventInput, limit = 25)
   const issues = validateName(eventName, "event name");
   const entries = Object.entries(params).filter(([key]) => key !== "callback" && key !== "callbackTimeoutMs");
   if (entries.length > limit) {
-    issues.push(`event:max${limit}`);
+    issues.push(`event parameters must not exceed ${limit} entries`);
   }
   for (const [key, value] of entries) {
     issues.push(...validateName(key, `param ${key}`));
@@ -142,7 +142,7 @@ export function validateEvent(eventName: string, params: EventInput, limit = 25)
   const callback = params.callback;
   const timeoutMs = params.callbackTimeoutMs;
   if (callback !== undefined && typeof callback !== "function") {
-    issues.push("cb:f");
+    issues.push("callback must be a function");
   }
   if (
     timeoutMs !== undefined
@@ -152,7 +152,7 @@ export function validateEvent(eventName: string, params: EventInput, limit = 25)
       || timeoutMs < 0
     )
   ) {
-    issues.push("callback:time");
+    issues.push("callbackTimeoutMs must be a non-negative integer");
   }
   if (issues.length) {
     throw new AnalyticsConfigurationError(issues);

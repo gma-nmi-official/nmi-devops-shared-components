@@ -49,6 +49,7 @@ export function sendTransport(
       return true;
     } catch (error) {
       onError(error);
+      complete?.();
       return false;
     }
   }
@@ -68,6 +69,7 @@ export function sendTransport(
     return true;
   } catch (error) {
     onError(error);
+    complete?.();
     return false;
   }
 }

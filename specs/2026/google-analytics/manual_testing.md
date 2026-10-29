@@ -176,3 +176,20 @@ Use synthetic IDs only (`G-TEST123`), injected spies, and the local Storybook/ca
 ## Results and next action
 
 Automated verification passes typecheck, lint, 73 unit tests, consumer fixtures, package dry-run, production build, and 32/32 desktop/mobile Playwright tests. The analytics runtime size is 16,380 bytes against the approved 16,384-byte budget. All manual cases are recorded PASS from the user's QA confirmation on 2026-10-27. Next action is the separate commit-approval artifact.
+
+## Follow-up revision: PR #16 adjustments
+
+- Repository, branch, revision, and dirty diff: `D:\gno-node-projects\gno-shared-components-v2`,
+  `feature/google-analytics-review-adjustments-v2`, base `94a848c`, with the
+  approved follow-up diff present.
+- Scope: CR-001, CR-005, CR-006, CR-014 readability-only, and CR-015.
+- Manual browser execution: N/A for this follow-up because the corrections are
+  transport, queue-state, validation-message, identifier-readability, and
+  indentation changes with no new browser behavior. Existing browser cases are
+  preserved above and are not reclassified as evidence for this revision.
+- Automated regression evidence: focused GA/AdSlot tests 40/40 PASS; full
+  Vitest 88/88 PASS; typecheck/package build PASS; consumer fixtures PASS;
+  package dry-run PASS; AdSlot raw size 20,474/20,480 PASS; GA gzip size
+  5,661/8,192 PASS; targeted ESLint PASS; documentation coverage PASS; diff
+  check PASS.
+- QA handoff: Prepared; not sent or executed manually for this follow-up.
