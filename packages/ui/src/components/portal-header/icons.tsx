@@ -63,18 +63,20 @@ export function PortalHeaderIcon({ icon, className }: { icon: FontAwesomeIconDat
       viewBox={`0 0 ${width} ${height}`}
       xmlns="http://www.w3.org/2000/svg"
     >
-      {pathList.map((path, index) => (
-        <path d={path} key={index} />
-      ))}
+      {pathList.map((path, index) => <path d={path} key={index} />)}
     </svg>
   );
 }
 
 export function PortalHeaderSocialIcon({ icon }: { icon: string }) {
+  const resolvedIcon = Object.prototype.hasOwnProperty.call(socialIcons, icon)
+    ? socialIcons[icon as PortalHeaderSocialIcon]
+    : faLink;
+
   return (
     <PortalHeaderIcon
       className="gno-portal-header__social-icon"
-      icon={socialIcons[icon as PortalHeaderSocialIcon] ?? faLink}
+      icon={resolvedIcon}
     />
   );
 }

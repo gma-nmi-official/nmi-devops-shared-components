@@ -41,6 +41,18 @@ describe("PortalHeader", () => {
     expect(resolved.networkNavigation[1]).toEqual(expect.objectContaining({ href: "https://example.com/radio" }));
   });
 
+  it("preserves navigation defaults when patch values are undefined", () => {
+    const resolved = resolvePortalHeaderNavigation("gma", [
+      { id: "news", label: undefined, href: undefined },
+    ]);
+
+    expect(resolved.primaryNavigation[1]).toEqual(expect.objectContaining({
+      id: "news",
+      label: "News",
+      href: "https://www.gmanetwork.com/news/",
+    }));
+  });
+
   it("renders all sixteen default navigation links", () => {
     const { container } = render(<PortalHeader socialPreset="none" />);
     const gridCells = container.querySelectorAll(".gno-portal-header__menu-grid-glyph rect");
@@ -93,6 +105,18 @@ describe("PortalHeader", () => {
     ]);
   });
 
+  it("preserves social defaults when patch values are undefined", () => {
+    const resolved = resolvePortalHeaderSocialLinks("entertainment", [
+      { id: "facebook", label: undefined, href: undefined },
+    ]);
+
+    expect(resolved[0]).toEqual(expect.objectContaining({
+      id: "facebook",
+      label: "GMA Network on Facebook",
+      href: "https://facebook.com/gmanetwork",
+    }));
+  });
+
   it("omits whitespace-only social labels from rendered links", () => {
     const { container } = render(
       <PortalHeader
@@ -105,6 +129,20 @@ describe("PortalHeader", () => {
     );
     expect(container.querySelector('a[href="https://example.com/blank"]')).not.toBeInTheDocument();
     expect(screen.getAllByRole("link", { name: "Community" })).not.toHaveLength(0);
+  });
+
+  it("falls back safely for unknown social icon names", () => {
+    const { container } = render(
+      <PortalHeader
+        socialLinks={[
+          { id: "custom", href: "https://example.com/custom", label: "Custom", icon: "constructor" },
+        ]}
+        socialPreset="none"
+      />,
+    );
+
+    expect(screen.getByRole("link", { name: "Custom" })).toBeInTheDocument();
+    expect(container.querySelector(".gno-portal-header__social-icon path")).toBeInTheDocument();
   });
 
   it("opens the full-width menu, traps focus, closes with Escape, and restores focus", async () => {
