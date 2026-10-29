@@ -11,6 +11,11 @@ The project follows [Semantic Versioning](https://semver.org/). The repository p
 - Reformatted published component sources, Storybook stories, catalog pages,
   and shared CSS so indentation and intentional line breaks expose nesting,
   control flow, and data structure without changing public behavior.
+- Strengthened the verification workflow with a generated-output revision
+  preflight and an explicit rule that PASS evidence cannot cross commits or
+  branches.
+- Standardized post-commit PR review-adjustment replies and PR-numbered
+  `code_review_adjustment` execution records.
 
 **Consumer impact / SemVer: None.** Public APIs, runtime behavior, CSS selectors,
 declarations, and package versions are unchanged; no migration is required.

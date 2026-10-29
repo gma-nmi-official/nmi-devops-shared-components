@@ -21,6 +21,14 @@ results, and evidence. Mark PASS, FAIL, BLOCKED, or N/A with rationale.
 Unavailable tools and unrun required checks are BLOCKED, never PASS.
 Do not change application code to conceal a failure.
 
+Before framework typecheck, build, or browser execution, perform a revision
+integrity preflight: confirm the tested branch and commit, identify generated
+output used by the command (for example `.next`, Storybook, coverage, or
+Playwright artifacts), and remove/regenerate stale output when it references a
+different route or revision. Record the cleanup and regeneration commands.
+Evidence is revision-scoped; do not carry PASS results from another commit,
+branch, or generated-output state into the current verification report.
+
 Create a standalone manual_testing.md for QA using the
 [manual testing template](../../../specs/templates/manual_testing.md).
 Fill in safe setup, requirement-linked cases, steps, expected results, and

@@ -9,7 +9,10 @@ When coding format is in scope, also read
 pass separately from behavior findings.
 Compare the local change set with its recorded base; a PR is not a prerequisite.
 Inspect requirements, design, code, relevant surrounding behavior, and evidence
-without changing source or tests. Verify the implementer's claims independently.
+without changing source or tests. When a PR or review record is available,
+inspect its comments and prior adjustment reports, classify each required or
+optional finding, and check for unresolved review comments and approved-scope
+leftovers. Verify the implementer's claims independently.
 Return findings with severity, requirement, file/line, evidence, correction,
 and validation needs. Separate required corrections from optional suggestions.
 Return a proceed or blocked decision to Atlas for recording. You do not grant

@@ -32,3 +32,13 @@ Outputs: report 07 findings and proceed/blocked decision; report 08 adjustment
 plan when needed. Return these to Atlas for recording. No required findings
 means N/A for reports 08-10 or equivalent compact sections.
 Review completion does not grant commit, push, or PR permission.
+
+When a finding is discussed on a pull request, Atlas or the repository owner
+uses a consistent Markdown reply after Forge, Vera, and Argus complete the
+adjustment cycle. The reply includes the PR number, disposition, adjustment
+status, finding, assessment, correction, changed files, validation, commit
+hash, and a link to the execution record. Use
+`<sequence>_pr<PR-number>_<scope>_code_review_adjustment_<YYYY-MM-DD>.md` for
+the record filename. The status describes the adjustment itself (`OPEN`,
+`IN PROGRESS`, `RESOLVED`, `BLOCKED`, `NOT APPLICABLE`, or `DEFERRED`), not a
+future handoff or next step.

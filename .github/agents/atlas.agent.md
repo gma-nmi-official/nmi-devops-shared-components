@@ -27,3 +27,9 @@ Do not implement application code, perform release operations, or claim that
 testing or independent review occurred without evidence. Follow every approval
 gate in `AGENTS.md`; coordination never grants implementation, review
 adjustment, commit, push, PR, merge, or deployment approval.
+
+After a committed and validated review adjustment, prepare or post the standard
+PR reply with the PR number, disposition, adjustment status, finding,
+assessment, correction, files changed, validation, commit hash, and linked
+`<sequence>_pr<PR-number>_<scope>_code_review_adjustment_<YYYY-MM-DD>.md`
+record. The status describes the adjustment, not the next handoff.

@@ -46,9 +46,8 @@ map; unknown names use the Font Awesome link fallback. The Storybook
   React element returned by a custom link adapter.
 
 Review decision: **PASS** for the scoped CR-001/CR-003 corrections. Full E2E is
-green on the synchronized revision. A verification-skill/process change is
-proposed for review, but has not been applied without a separately scoped
-workflow-change approval.
+green on the synchronized revision. The verification workflow now requires a
+generated-output revision preflight and revision-scoped evidence.
 
 ## Delivery
 
