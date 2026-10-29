@@ -9,7 +9,7 @@ async function collect(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const path = join(directory, entry.name);
     if (entry.isDirectory()) await collect(path);
-    else if (extname(entry.name) === ".js") files.push(path);
+    else if (extname(entry.name) === ".js" || entry.name.endsWith(".d.ts")) files.push(path);
   }
 }
 
@@ -19,6 +19,8 @@ function resolveSpecifier(file, specifier) {
   if (extname(base) === ".js") return specifier;
   if (existsSync(`${base}.js`)) return `${specifier}.js`;
   if (existsSync(join(base, "index.js"))) return `${specifier}/index.js`;
+  if (existsSync(`${base}.d.ts`)) return `${specifier}.js`;
+  if (existsSync(join(base, "index.d.ts"))) return `${specifier}/index.js`;
   return specifier;
 }
 

@@ -14,13 +14,13 @@ const RESERVED_KEYS = new Set([
   "event", "event_name", "event_params", "eventCallback", "eventTimeout", "event_callback", "event_timeout", "send_to",
   "__proto__", "prototype", "constructor",
 ]);
-const RESERVED_PREFIXES = ["google_", "ga_", "gtm."];
+const RESERVED_PREFIXES = ["google_", "ga_", "firebase_"];
 const NAME_PATTERN = /^[A-Za-z][A-Za-z0-9_]*$/;
 
 export class AnalyticsConfigurationError extends Error {
   readonly issues: readonly string[];
   constructor(issues: readonly string[]) {
-    super("Invalid analytics");
+    super(`Invalid analytics configuration: ${issues.join(", ")}`);
     this.issues = issues;
   }
 }
@@ -57,12 +57,12 @@ export function dimensionEntries(
   const entries: Record<string, DimensionDefinition> = {};
   for (const key of DEFAULT_DIMENSIONS) {
     entries[key] = {
-      default: key === "portal_section"
-        ? (config.portalSection ?? "News")
+        default: key === "portal_section"
+        ? (config?.portalSection ?? "News")
         : "",
     };
   }
-  for (const [key, value] of Object.entries(config.customDimensions ?? {})) {
+  for (const [key, value] of Object.entries(config?.customDimensions ?? {})) {
     entries[key] = typeof value === "string" ? { default: value } : value;
   }
   return entries;
@@ -97,6 +97,8 @@ export function validateConfig(config: AnalyticsConfig): void {
     issues.push(...validateName(key, `dimension ${key}`));
     if (definition.default !== undefined && typeof definition.default !== "string") {
       issues.push(`dim ${key}:default`);
+    } else if (definition.default !== undefined) {
+      issues.push(...validateScalar(key, definition.default));
     }
   }
   const capacity = config?.queue?.capacity ?? 100;

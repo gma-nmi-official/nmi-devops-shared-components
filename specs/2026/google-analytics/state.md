@@ -1,12 +1,18 @@
 # Current state: Google Analytics
 
 - Objective: configurable standalone GA4 service with a direct-gtag runtime measurement ID or consumer-owned GTM destination, plus required page, click, search, `loaded_a_video`, `played_a_video`, and generic events. The legacy `news` file is algorithm reference material only.
-- Phase/stage: Release-readiness verification complete; commit approval pending.
+- Phase/stage: Review-adjustment implementation complete; verification and independent review pending.
 - Primary role: Atlas; Orion remains gated for Git delivery.
-- Last updated: 2026-10-26 Asia/Shanghai.
+- Last updated: 2026-10-29 Asia/Shanghai.
 - Approval: `approvals.md`; GA-A10 approves requirements and GA-A11 approves implementation of DU-1-DU-5, the verification/manual-QA plan, proposed `1.4.0` minor release candidate, and 16 KiB analytics-module budget. Commit, push, PR, merge, tag, release, deployment, and independent review remain unapproved.
 - Blockers: none for validation; commit, push, PR, merge, tag, and release actions remain separately gated. Argus final confirmation report 18 resolved GA-SIZE02; raw runtime analytics output passes at 16,380 bytes against the approved 16,384-byte budget, including `types.js`.
-- Next action: obtain approval for the prepared commit message `feat: add Google Analytics component for GNO-21356` and exact reviewed scope.
+- Follow-up branch: `feature/google-analytics-review-adjustments`, based on
+  `master` `ccce578`; CR-001–CR-013 implementation is complete in the working
+  tree. Focused/full tests, typecheck, consumer fixtures, gzip size gate,
+  docs, targeted lint, and diff checks pass. Storybook/Next and independent
+  review remain pending.
+- Next action: complete remaining verification, then hand the corrected diff to
+  Argus. Commit, push, PR, merge, tag, and release remain separately gated.
 
 ## Repository baseline
 

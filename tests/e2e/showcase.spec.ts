@@ -241,7 +241,7 @@ test("Google Analytics catalog preview stays consent-aware and makes no provider
   await preview.getByRole("button", { name: "Track click" }).click();
   await expect(preview.getByText("queued")).toBeVisible();
   await preview.getByLabel("Consent state").selectOption("granted");
-  await expect(preview.getByText("GTM queued page_view")).toBeVisible();
+  await expect(preview.getByText("GTM received page_view")).toBeVisible();
   expect(analyticsRequests).toEqual([]);
 });
 

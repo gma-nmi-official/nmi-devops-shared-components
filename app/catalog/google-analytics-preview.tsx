@@ -14,7 +14,7 @@ export function GoogleAnalyticsPreview() {
     () => ({
       push: (entry) => {
         const eventName = (entry as { event_name?: string }).event_name ?? "event";
-        setStatus(`GTM queued ${String(eventName)}`);
+        setStatus(`GTM received ${String(eventName)}`);
       },
     }),
     [],
