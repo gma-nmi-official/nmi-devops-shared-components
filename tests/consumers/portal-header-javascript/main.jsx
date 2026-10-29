@@ -1,5 +1,5 @@
 import React from "react";
-import { PortalHeader } from "nmi-devops-shared-components";
+import { CookieAgreement, PortalHeader } from "nmi-devops-shared-components";
 import "nmi-devops-shared-components/styles.css";
 
 export function JavaScriptPortalHeaderFixture() {
@@ -8,4 +8,8 @@ export function JavaScriptPortalHeaderFixture() {
     primaryNavigation: [{ id: "home", label: "Home", href: "/" }],
     socialPreset: "none",
   });
+}
+
+export function JavaScriptCookieAgreementFixture() {
+  return React.createElement(CookieAgreement, { policyVersion: "2026-01" });
 }

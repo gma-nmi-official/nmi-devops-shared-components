@@ -3,12 +3,22 @@ import type { ConsentStore, CookieAgreementRecord } from "./types";
 export const DEFAULT_COOKIE_NAME = "gno_cookie_consent";
 export const DEFAULT_RETENTION_DAYS = 365;
 
-function parseCookieValue(value: string): CookieAgreementRecord {
-  const parsed: unknown = JSON.parse(decodeURIComponent(value));
-  if (!parsed || typeof parsed !== "object" || (parsed as { status?: unknown }).status !== "accepted") {
-    throw new Error("Invalid cookie agreement record");
+function isCookieAgreementRecord(value: unknown): value is CookieAgreementRecord {
+  if (!value || typeof value !== "object") return false;
+  const record = value as Record<string, unknown>;
+  return record.status === "accepted"
+    && typeof record.policyVersion === "string"
+    && typeof record.decidedAt === "string"
+    && (record.expiresAt === undefined || typeof record.expiresAt === "string");
+}
+
+function parseCookieValue(value: string): CookieAgreementRecord | null {
+  try {
+    const parsed: unknown = JSON.parse(decodeURIComponent(value));
+    return isCookieAgreementRecord(parsed) ? parsed : null;
+  } catch {
+    return null;
   }
-  return parsed as CookieAgreementRecord;
 }
 
 export function createCookieConsentStore(cookieName = DEFAULT_COOKIE_NAME): ConsentStore {
