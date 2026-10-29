@@ -33,6 +33,26 @@ nested JSX, CSS rules, conditionals, calls, and data structures when keeping
 them on one line makes the code harder to understand. Keep formatting changes
 behavior-neutral and follow any repository formatter or linter already in use.
 
+For affected algorithms, identify the required invariants, state transitions,
+boundary cases, ordering, and termination conditions before implementing them.
+Choose time and space complexity appropriate to the approved workload and
+budgets; bound queues, caches, retries, and retained resources where applicable.
+Document non-obvious reasoning and constraints near the relevant code.
+
+For asynchronous work, define ownership of timers, listeners, callbacks, and
+pending operations. Implement cancellation, cleanup, stale-result protection,
+and idempotency where required by the contract; callbacks must complete at most
+once when that is the promised behavior. Preserve applicable SSR/hydration and
+server/client boundary guarantees.
+
+Validate inputs at the relevant trust boundary and implement the approved error
+contract with actionable messages, observable reporting or propagation, cleanup,
+and defined recovery/fallback behavior. Handle synchronous throws and rejected
+promises. Do not silently swallow failures, report success after failure, expose
+sensitive data, or add retries/fallbacks that change the approved semantics.
+Add behavior-focused tests for relevant boundaries, failure paths, and recovery;
+for bug fixes, provide a regression that detects the original defect.
+
 Correct pre-review test failures within approved scope and rerun affected checks.
 Scope or material design changes require renewed approval. After review, obtain
 approval before implementing findings. Do not weaken tests, invent requirements,
