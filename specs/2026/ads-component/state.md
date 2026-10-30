@@ -1,12 +1,12 @@
 # Current state: Ads component
 
 - Objective: specify a reusable MREC and leaderboard ads component using the read-only `news` repository as behavior evidence.
-- Stage: Review adjustment implementation complete; independent review pending.
+- Stage: PR #21 Medium review-adjustment implementation and verification.
 - Primary role: Atlas coordinating independent Argus findings and the proposed Forge/Vera correction cycle.
-- Last updated: 2026-10-29 Asia/Shanghai.
+- Last updated: 2026-10-30 Asia/Shanghai.
 - Repository baseline: shared components `feature/ads-component` / `a546c6858312b4d3a168009efad37da276afe9b1`; comparison `origin/master` / `f4d5579`, merge base `c453774`, branch 3 commits behind and 2 ahead. News reference `hotfix/GNO-21329` / `28d3312872ac7dee53215939faeeda50b0d37e87`.
 - Worktree status: the PR #15 follow-up changes AdSlot source/tests, the gzip size gate, Storybook/catalog/README guidance, changelog, manual QA, and this execution record. Pre-existing untracked `.playwright-mcp/` remains unrelated and unmodified.
-- Approval: ADS-A10 approves CR-002, CR-004, CR-005, CR-006, and CR-007, including the optional gzip readability-gate correction. Git/release actions remain unapproved.
+- Approval: ADS-A10 approves the prior PR #15 corrections; ADS-A12 approves only the PR #21 Medium CR-002/CR-008 corrections, with Low CR-005/CR-009 deferred. Git/release actions remain unapproved.
 - Findings: independent Argus review recorded two Major and three Minor required findings in `execution/08_independent_review_2026-10-25.md`: asynchronous lifecycle serialization, callback-identity recreation, invalid multi-slot manual evidence, non-retryable GPT cleanup failure, and stale release evidence.
 - Confirmed decision: ADS-A03 requires consumers to configure the full unit path and complete non-empty size list for every active responsive rule; package formats contain no operational size defaults.
 - Recommendation: GPT/GAM first; consumer-owned bootstrap; semantic MREC/leaderboard plus configurable custom standard display; explicit request eligibility; reserve-by-default no-fill policy; AllAccess/native/out-of-page/video behavior excluded from the first delivery unit.
@@ -32,11 +32,11 @@
   targeted AdSlot Playwright check (2/2) pass. Full-repository lint remains
   noisy on pre-existing generated `playwright-report` artifacts and is not
   treated as scoped evidence.
-- Independent review result: Argus re-review returned PROCEED after the active
-  size-contract records were reconciled under ADS-A10; no required findings or
-  stale active leftovers remain.
-- Next action: prepare the commit summary and request separate commit approval.
-  Push, PR, merge, release, and deployment remain unapproved.
+- Independent review result: Argus returned **PROCEED** for execution 17;
+  Medium CR-002 and CR-008 are closed, and Low CR-005/CR-009 are explicitly
+  deferred by policy.
+- Next action: present the exact execution 17 commit scope and request commit
+  approval. Push, PR, merge, release, and deployment remain unapproved.
 
 ## Artifact status
 

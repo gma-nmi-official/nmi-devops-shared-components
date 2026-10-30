@@ -20,9 +20,10 @@ The project follows [Semantic Versioning](https://semver.org/). The repository p
 ### Fixed
 
 - Corrected AdSlot disabled-breakpoint SSR rendering, preserved reserved space
-  for `enabled={false}`, documented GPT readiness and responsive behavior, and
-  added blocked-provider regression coverage. The AdSlot gate now reports raw
-  and gzip output and enforces an 8 KiB gzip budget.
+  for active `enabled={false}` ranges, validated server-generated responsive CSS
+  before emission, documented GPT readiness and responsive behavior, and added
+  blocked-provider regression coverage. The AdSlot gate now reports raw and
+  gzip output and enforces an 8 KiB gzip budget.
 
 **Consumer impact / SemVer:** Patch for the AdSlot behavior correction; no
 consumer migration is required. The existing public API remains compatible.

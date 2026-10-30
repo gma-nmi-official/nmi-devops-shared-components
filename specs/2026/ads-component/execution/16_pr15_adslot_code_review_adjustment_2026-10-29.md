@@ -53,11 +53,12 @@ Implemented all approved post-merge findings from the PR #15 review comment:
 
 ## Review status
 
-Implementation is complete on `feature/ads-review-adjustments-v2` from
-`master` `72d2bcc`. Vera validation passed with the evidence above, and Argus
-independent re-review returned **PROCEED** with no required findings or stale
-active size-contract leftovers. The candidate is ready for separate commit
-approval. Push, PR, merge, release, and deployment remain separately gated.
+Implementation was committed as `eec3e93` on `feature/ads-review-adjustments-v2`
+and is under PR #21 review. The later PR #21 re-review supersedes this record's
+readiness statement for CR-002 and introduces CR-008; execution 17 records the
+Medium corrections. CR-005 and CR-009 are Low and are explicitly deferred
+without code changes. Push, PR, merge, release, and deployment remain
+separately gated.
 
 ## Adjustment record
 

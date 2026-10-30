@@ -19,12 +19,18 @@ function sanitizeElementId(value: string) {
 
 function getDisabledRuleCss(config: AdSlotProps["config"], elementId: string) {
   return config.rules
-    .filter((rule) => rule.enabled === false)
+    .filter((rule) => (
+      rule.enabled === false
+      && Number.isInteger(rule.minWidth)
+      && rule.minWidth >= 0
+      && (rule.maxWidth === undefined
+        || (Number.isInteger(rule.maxWidth) && rule.maxWidth >= rule.minWidth))
+    ))
     .map((rule) => {
       const media = rule.maxWidth === undefined
         ? `(min-width:${rule.minWidth}px)`
         : `(min-width:${rule.minWidth}px) and (max-width:${rule.maxWidth}px)`;
-      return `@media ${media}{[data-ad-slot-id="${elementId}"][data-ad-enabled="true"]{display:none}}`;
+      return `@media ${media}{[data-ad-slot-id="${elementId}"]{display:none}}`;
     })
     .join("");
 }

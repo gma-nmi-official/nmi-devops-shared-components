@@ -63,10 +63,26 @@ describe("AdSlot", () => {
 
   it("hides disabled responsive rules in the server-rendered markup", () => {
     const fake = createProvider();
-    const markup = renderToString(<AdSlot config={config} enabled provider={fake.provider} />);
-    expect(markup).toContain("data-ad-enabled=\"true\"");
+    const markup = renderToString(<AdSlot config={config} enabled={false} provider={fake.provider} slotId="consent-slot" />);
+    expect(markup).toContain("data-ad-enabled=\"false\"");
     expect(markup).toContain("@media (min-width:0px) and (max-width:767px)");
+    expect(markup).toContain("[data-ad-slot-id=\"consent-slot\"]{display:none}");
+    expect(markup).not.toContain('[data-ad-enabled="true"]');
     expect(markup).toContain("display:none");
+  });
+
+  it("does not emit disabled-rule CSS for malformed responsive ranges", () => {
+    const fake = createProvider();
+    const malformedConfig = {
+      ...config,
+      rules: [
+        { minWidth: "0px);}</style><img data-probe=1 src=x>" as unknown as number, enabled: false },
+        config.rules[1],
+      ],
+    } as unknown as AdPlacementConfig;
+    const markup = renderToString(<AdSlot config={malformedConfig} enabled provider={fake.provider} />);
+    expect(markup).not.toContain("data-probe");
+    expect(markup).not.toContain("<style>");
   });
 
   it("keeps reserved space when consumer eligibility is disabled", async () => {

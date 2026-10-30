@@ -66,9 +66,10 @@ Create `provider` once with `createGptAdProvider({ googletag })` after the host
 has initialized GPT. Set `readinessTimeoutMs` when the host needs a timeout
 other than the default 5,000 ms; a timeout is reported as a provider error.
 `enabled={false}` prevents provider calls while preserving the configured
-reserved space. Rules with `enabled: false` are provider-free and are hidden
-for their declared viewport range from the initial server-rendered markup as
-well as after hydration. Active rules must cover their declared viewport range
+reserved space when the active responsive rule can display an ad. Rules with
+`enabled: false` are provider-free and are hidden for their declared viewport
+range, regardless of consent, from the initial server-rendered markup as well
+as after hydration. Active rules must cover their declared viewport range
 without gaps or overlaps and must contain a full `adUnitPath` plus non-empty
 `sizes`. Space is reserved by default; opt into `emptyBehavior: "collapse"`
 when empty or error results may collapse. The package quality gate reports raw
