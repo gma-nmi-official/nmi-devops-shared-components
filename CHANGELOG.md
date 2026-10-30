@@ -17,12 +17,21 @@ The project follows [Semantic Versioning](https://semver.org/). The repository p
 - Standardized post-commit PR review-adjustment replies and PR-numbered
   `code_review_adjustment` execution records.
 
-**Consumer impact / SemVer: None.** Public APIs, runtime behavior, CSS selectors,
-declarations, and package versions are unchanged; no migration is required.
+### Fixed
 
-**Validation evidence:** type checking, lint, unit and consumer tests, size gates,
-Storybook and Next.js builds, GitHub Pages static export, and browser regression
-checks pass. Independent readability review remains pending.
+- Corrected AdSlot disabled-breakpoint SSR rendering, preserved reserved space
+  for active `enabled={false}` ranges, validated server-generated responsive CSS
+  before emission, documented GPT readiness and responsive behavior, and added
+  blocked-provider regression coverage. The AdSlot gate now reports raw and
+  gzip output and enforces an 8 KiB gzip budget.
+
+**Consumer impact / SemVer:** Patch for the AdSlot behavior correction; no
+consumer migration is required. The existing public API remains compatible.
+
+**Validation evidence:** type checking, targeted lint, unit and consumer tests,
+size gates, Storybook coverage/build, and package dry-run evidence are recorded
+in the component execution records. Independent review remains pending for the
+current follow-up candidate.
 
 ## [1.4.1] - 2026-10-29
 

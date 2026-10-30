@@ -173,9 +173,10 @@ export function ArticleAd({
   return <AdSlot config={config} enabled={hasAdConsent} provider={provider} />;
 }`,
     configuration: [
-      { name: "config.rules", description: "Contiguous responsive rules with explicit paths and sizes for active ranges." },
-      { name: "enabled", description: "Bind to consent and eligibility; false guarantees that no provider slot is created." },
+      { name: "config.rules", description: "Contiguous responsive rules with explicit paths and sizes for active ranges; disabled ranges are hidden before hydration regardless of consent and never call the provider." },
+      { name: "enabled", description: "Bind to consent and eligibility; false guarantees no provider call and preserves reserved space only for active responsive ranges." },
       { name: "provider", description: "Inject the host-created provider after its SDK is initialized." },
+      { name: "readinessTimeoutMs", description: "Set on createGptAdProvider to bound GPT readiness; the default is 5,000 ms and timeout becomes an observable provider error." },
       { name: "reservedSize", description: "Reserve predictable layout space before the provider responds." },
       { name: "emptyBehavior", description: "Reserve space by default or explicitly allow collapse for empty/error results." },
       { name: "targeting", description: "Attach approved, non-sensitive values to the provider request." },

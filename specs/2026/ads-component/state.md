@@ -1,12 +1,12 @@
 # Current state: Ads component
 
 - Objective: specify a reusable MREC and leaderboard ads component using the read-only `news` repository as behavior evidence.
-- Stage: Review adjustment implementation complete; independent review pending.
+- Stage: PR #21 Medium review-adjustment implementation and verification.
 - Primary role: Atlas coordinating independent Argus findings and the proposed Forge/Vera correction cycle.
-- Last updated: 2026-10-29 Asia/Shanghai.
+- Last updated: 2026-10-30 Asia/Shanghai.
 - Repository baseline: shared components `feature/ads-component` / `a546c6858312b4d3a168009efad37da276afe9b1`; comparison `origin/master` / `f4d5579`, merge base `c453774`, branch 3 commits behind and 2 ahead. News reference `hotfix/GNO-21329` / `28d3312872ac7dee53215939faeeda50b0d37e87`.
-- Worktree status: the ads delivery changes package source/tests/styles, Storybook/catalog, consumer fixtures/docs, release metadata, and project records. Pre-existing untracked `.playwright-mcp/` remains unrelated and unmodified.
-- Approval: ADS-A01/ADS-A02 authorize planning; ADS-A03 records consumer-owned sizing; ADS-A04 approves requirements; ADS-A05 approves implementation and verification of DU-1 through DU-5; ADS-A06 approves ADS-ADJ01–ADS-ADJ04. Git/release actions remain unapproved.
+- Worktree status: the PR #15 follow-up changes AdSlot source/tests, the gzip size gate, Storybook/catalog/README guidance, changelog, manual QA, and this execution record. Pre-existing untracked `.playwright-mcp/` remains unrelated and unmodified.
+- Approval: ADS-A10 approves the prior PR #15 corrections; ADS-A12 approves only the PR #21 Medium CR-002/CR-008 corrections, with Low CR-005/CR-009 deferred. Git/release actions remain unapproved.
 - Findings: independent Argus review recorded two Major and three Minor required findings in `execution/08_independent_review_2026-10-25.md`: asynchronous lifecycle serialization, callback-identity recreation, invalid multi-slot manual evidence, non-retryable GPT cleanup failure, and stale release evidence.
 - Confirmed decision: ADS-A03 requires consumers to configure the full unit path and complete non-empty size list for every active responsive rule; package formats contain no operational size defaults.
 - Recommendation: GPT/GAM first; consumer-owned bootstrap; semantic MREC/leaderboard plus configurable custom standard display; explicit request eligibility; reserve-by-default no-fill policy; AllAccess/native/out-of-page/video behavior excluded from the first delivery unit.
@@ -23,18 +23,20 @@
 - Commit approval: ADS-A08 approves `feat: add configurable ad slot component` for the corrected ads delivery scope, excluding `.playwright-mcp/`.
 - Commit result: approved scope committed on `feature/ads-component` with message `feat: add configurable ad slot component`; final metadata amendment will preserve the reviewed behavior.
 - Push approval: ADS-A09 approves pushing the final commit to `origin/feature/ads-component` with `git push origin feature/ads-component`.
-- Active owner: Orion for final commit amendment and push execution.
-- PR #9 adjustment status: CR-001 GPT readiness timeout plus disable/unmount
-  queue bypass, CR-002 disabled-rule no-reservation behavior, and CR-003
-  reduced-motion handling are implemented
-  on `feature/ads-review-adjustments`; focused/full Vitest, typecheck,
-  consumers, docs coverage, lint, and diff checks pass. Playwright rerun was
-  blocked by an existing local server on port 3100 and is not claimed.
-- Bundle-budget correction: the initial corrected build exceeded the 20,480-byte
-  AdSlot limit at 20,731 bytes; internal identifier optimization reduced it to
-  20,461 bytes. The complete quality-gate stages now pass.
-- Next action: independent Argus review of the adjustment diff. Commit, push,
-  PR, merge, release, and deployment remain unapproved.
+- Active owner: Atlas coordinating Vera/Argus review for the PR #15 follow-up;
+  Orion remains reserved for separately approved Git delivery.
+- PR #15 follow-up status: CR-002, CR-004, CR-005, CR-006, and CR-007 are
+  implemented on `feature/ads-review-adjustments-v2` from `master` `72d2bcc`.
+  Focused AdSlot tests (26/26), full Vitest (89/89), typecheck, targeted lint,
+  consumer fixtures, Storybook build, package dry-run, gzip size gate, and the
+  targeted AdSlot Playwright check (2/2) pass. Full-repository lint remains
+  noisy on pre-existing generated `playwright-report` artifacts and is not
+  treated as scoped evidence.
+- Independent review result: Argus returned **PROCEED** for execution 17;
+  Medium CR-002 and CR-008 are closed, and Low CR-005/CR-009 are explicitly
+  deferred by policy.
+- Next action: present the exact execution 17 commit scope and request commit
+  approval. Push, PR, merge, release, and deployment remain unapproved.
 
 ## Artifact status
 
@@ -45,6 +47,6 @@
 | Specification, user stories, requirements, acceptance criteria, design, NFRs, WBS, test plan, consumer guide | Requirements approved; implementation evidence pending |
 | Requirements approval package | Approved ADS-A04 |
 | Implementation plan | Approved ADS-A05 |
-| Implementation | Complete in working tree; no Git action performed |
-| Verification | PASS for corrected candidate; report 10 and manual QA 10/10 complete |
-| Independent review and release | ADS-REV01–ADS-REV06 CLOSED / PROCEED; commit approval pending; Git/release actions remain unauthorized |
+| Implementation | Complete for PR #15 follow-up in the working tree; no Git action performed |
+| Verification | PASS for current candidate; execution 16 and manual QA ADS-MT11–ADS-MT14 recorded |
+| Independent review and release | Argus PROCEED for execution 16; commit/push/PR/merge/release remain unauthorized |
