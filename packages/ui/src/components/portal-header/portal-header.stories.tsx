@@ -122,3 +122,23 @@ export const FailureFallbacks: Story = {
     ],
   },
 };
+
+export const AdapterRenderFailure: Story = {
+  args: {
+    renderLink: () => {
+      function BrokenLink(): never {
+        throw new Error("consumer link renderer failed");
+      }
+
+      return <BrokenLink />;
+    },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "A consumer adapter that throws while rendering is isolated to a safe anchor fallback.",
+      },
+    },
+  },
+};
