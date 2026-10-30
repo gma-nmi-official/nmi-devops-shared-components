@@ -58,7 +58,7 @@ export function SiteHeader() {
       {
         name: "renderLink",
         description:
-          "Connect a consumer router from a Client Component; a throwing adapter falls back to a standard anchor.",
+          "Connect a consumer router from a Client Component; client-render failures fall back to an anchor, while SSR adapters must not throw.",
       },
       { name: "theme", description: "Override the accent, mode hook, class name, or component CSS properties." },
     ],

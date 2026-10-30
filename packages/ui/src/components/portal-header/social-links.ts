@@ -59,7 +59,9 @@ export const portalHeaderSocialPresets = {
 Object.freeze(portalHeaderSocialPresets);
 
 function isSafeSocialHref(href: string | undefined): href is string {
-  if (!href) return false;
+  if (!href) {
+    return false;
+  }
   try {
     return new URL(href).protocol === "https:";
   } catch {
@@ -81,7 +83,9 @@ export function resolvePortalHeaderSocialLinks(
   for (const item of defaults) {
     const patch = patchById.get(item.id);
     if (!patch) {
-      if (isSafeSocialHref(item.href)) resolved.push(item);
+      if (isSafeSocialHref(item.href)) {
+        resolved.push(item);
+      }
       continue;
     }
     patchById.delete(item.id);

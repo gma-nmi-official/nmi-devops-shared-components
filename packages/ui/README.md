@@ -101,8 +101,9 @@ Public configuration groups:
 - `search`: optional native GET form with consumer-owned `action` and
   `queryParam`. Input is trimmed and blank submission is rejected.
 - `renderLink`: optional router adapter. Standard anchors are the safe default;
-  if an adapter throws while it renders, the affected link falls back to a
-  standard anchor so the rest of the header remains usable.
+  during client rendering, an adapter that throws falls back to a standard
+  anchor for the affected link. Error boundaries do not catch server-rendering
+  failures, so adapters must remain safe during SSR.
 - `theme`: optional `accentColor`, `light`/`dark` mode hook, class name, and
   consumer CSS properties. The default accent is the News red `#cc0001`.
 

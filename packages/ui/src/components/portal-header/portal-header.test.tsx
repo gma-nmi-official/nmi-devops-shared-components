@@ -1,6 +1,8 @@
 import axe from "axe-core";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import type { ReactNode } from "react";
+import { renderToString } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { resolvePortalHeaderNavigation } from "./navigation-links";
 import { PortalHeader } from "./portal-header";
@@ -224,6 +226,55 @@ describe("PortalHeader", () => {
     } finally {
       consoleError.mockRestore();
     }
+  });
+
+  it("restores a healthy adapter element after a render failure", () => {
+    const consoleError = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    function ThrowingLink(): never {
+      throw new Error("render failed");
+    }
+    function HealthyLink({ children, ...props }: { children: ReactNode; href?: string; className?: string }) {
+      return <a {...props}>{children}</a>;
+    }
+
+    try {
+      const { rerender } = render(
+        <PortalHeader
+          primaryNavigation={primaryNavigation}
+          renderLink={() => <ThrowingLink />}
+          socialPreset="none"
+        />,
+      );
+      fireEvent.click(screen.getByRole("button", { name: "Open menu" }));
+      expect(screen.getAllByRole("link", { name: "Home" })[0]).toHaveAttribute("href", "/");
+
+      rerender(
+        <PortalHeader
+          primaryNavigation={primaryNavigation}
+          renderLink={(props) => <HealthyLink {...props} />}
+          socialPreset="none"
+        />,
+      );
+      expect(screen.getAllByRole("link", { name: "Home" })[0]).toHaveClass("gno-portal-header__nav-link");
+    } finally {
+      consoleError.mockRestore();
+    }
+  });
+
+  it("documents that adapter render failures remain an SSR consumer responsibility", () => {
+    function ThrowingLink(): never {
+      throw new Error("render failed");
+    }
+
+    expect(() =>
+      renderToString(
+        <PortalHeader
+          primaryNavigation={primaryNavigation}
+          renderLink={() => <ThrowingLink />}
+          socialPreset="none"
+        />,
+      ),
+    ).toThrow("render failed");
   });
 
   it("accepts approved relative and HTTPS navigation while rejecting ambiguous or unsafe values", () => {

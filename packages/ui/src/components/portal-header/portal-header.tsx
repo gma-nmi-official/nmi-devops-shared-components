@@ -91,6 +91,12 @@ class LinkAdapterBoundary extends Component<
     return { hasError: true };
   }
 
+  componentDidUpdate(prevProps: Readonly<{ fallbackProps: PortalHeaderLinkRenderProps; children: ReactNode }>) {
+    if (this.state.hasError && prevProps.children !== this.props.children) {
+      this.setState({ hasError: false });
+    }
+  }
+
   componentDidCatch() {
     // Fall back to the safe anchor when a consumer element throws while rendering.
   }

@@ -17,8 +17,19 @@ The project follows [Semantic Versioning](https://semver.org/). The repository p
 - Standardized post-commit PR review-adjustment replies and PR-numbered
   `code_review_adjustment` execution records.
 
-**Consumer impact / SemVer: None.** Public APIs, runtime behavior, CSS selectors,
-declarations, and package versions are unchanged; no migration is required.
+Workflow and documentation-only changes have no consumer impact. The PortalHeader
+fallback and recovery correction is a backward-compatible Patch change; no
+migration is required.
+
+### Fixed
+
+- Hardened `PortalHeader` router adapters with a client-render anchor fallback,
+  recovery after a transient adapter failure, shared defined-value patch
+  merging, and readable resolver control flow. Adapters must remain safe during
+  server rendering because React error boundaries do not catch SSR failures.
+
+**Consumer impact / SemVer:** Patch. Existing consumers require no migration;
+the documented fallback and recovery behavior is additive.
 
 **Validation evidence:** type checking, lint, unit and consumer tests, size gates,
 Storybook and Next.js builds, GitHub Pages static export, and browser regression
@@ -29,9 +40,6 @@ PortalHeader follow-up.
 
 ### Fixed
 
-- Hardened `PortalHeader` router adapters with a per-link anchor fallback when
-  a consumer element throws during rendering, shared defined-value patch
-  merging, and readable resolver control flow.
 - Batched PortalHeader, CookieAgreement, AdSlot, and Google Analytics review
   corrections, including consent/lifecycle edge cases, responsive behavior,
   runtime validation, and browser-safe package output.
